@@ -9,12 +9,12 @@ export default function StoreBadges({ stores, name, size = 'md' }) {
     <div className={styles.row}>
       {stores.play ? (
         <a href={stores.play} target="_blank" rel="noopener noreferrer" aria-label={`${name} no Google Play`}>
-          <img src={`${base}badges/google-play-pt-br.png`} alt="Google Play" width={Math.round(h * 2.584)} height={h} loading="lazy" />
+          <img src={`${base}badges/google-play-pt-br.png`} alt="" width={Math.round(h * 2.584)} height={h} loading="lazy" />
         </a>
       ) : null}
       {stores.appStore ? (
         <a href={stores.appStore} target="_blank" rel="noopener noreferrer" aria-label={`${name} na App Store`}>
-          <img src={`${base}badges/app-store-pt-br.svg`} alt="App Store" width={Math.round(h * 2.99)} height={h} loading="lazy" />
+          <img src={`${base}badges/app-store-pt-br.svg`} alt="" width={Math.round(h * 2.99)} height={h} loading="lazy" />
         </a>
       ) : null}
     </div>

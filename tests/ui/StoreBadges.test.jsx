@@ -17,7 +17,7 @@ describe('StoreBadges', () => {
 
   it('badge images have explicit dimensions', () => {
     render(<StoreBadges name="X" stores={{ play: 'https://p', appStore: 'https://a' }} />);
-    for (const img of screen.getAllByRole('img')) {
+    for (const img of document.querySelectorAll('img')) {
       expect(img).toHaveAttribute('width');
       expect(img).toHaveAttribute('height');
     }
