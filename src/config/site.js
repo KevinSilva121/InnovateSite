@@ -34,3 +34,5 @@ export function contactHref(config, message = DEFAULT_WHATSAPP_MESSAGE) {
 export function sameAsLinks(config) {
   return [config.stores.play, config.stores.appStore, config.social.github, config.social.instagram, config.social.linkedin].filter(Boolean);
 }
+
+export const contactLabel = (config) => (config.whatsapp ? 'Falar no WhatsApp' : 'Fale com a gente');

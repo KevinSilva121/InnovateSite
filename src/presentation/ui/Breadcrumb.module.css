@@ -1,0 +1,6 @@
+.nav { font-size: var(--text-xs); margin-bottom: var(--space-5); }
+.list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.list li + li::before { content: '/'; margin-right: 0.5rem; opacity: 0.5; }
+.list a { text-decoration: none; opacity: 0.8; }
+.list a:hover { text-decoration: underline; opacity: 1; }
+.list span { font-weight: 600; }

@@ -1,0 +1,22 @@
+.button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  min-height: 2.75rem; padding: 0 1.25rem;
+  border-radius: var(--radius-sm); border: 1.5px solid transparent;
+  font-weight: 600; font-size: var(--text-sm); line-height: 1; text-decoration: none;
+  white-space: nowrap; transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.button:active { transform: translateY(1px); }
+.icon { flex: none; transition: transform var(--dur) var(--ease); }
+.button:hover .icon { transform: translateX(2px); }
+
+.primary { background: var(--amber); color: var(--amber-ink); }
+.primary:hover { background: var(--amber-hover); }
+.secondary { background: transparent; color: var(--ink); border-color: var(--ink); }
+.secondary:hover { background: var(--paper-2); }
+.ghost { background: transparent; color: var(--ink); padding-inline: 0.5rem; }
+.ghost:hover { text-decoration: underline; }
+.onNavy { background: transparent; color: var(--on-navy); border-color: var(--line-on-navy); }
+.onNavy:hover { border-color: var(--on-navy); }
+
+.sm { min-height: 2.375rem; padding: 0 1rem; font-size: var(--text-xs); }
+.lg { min-height: 3.25rem; padding: 0 1.75rem; font-size: var(--text-md); }

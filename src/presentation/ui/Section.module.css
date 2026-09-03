@@ -1,0 +1,6 @@
+.section { padding-block: var(--section-y); }
+.paper { background: var(--paper); color: var(--ink); }
+.paper2 { background: var(--paper-2); color: var(--ink); }
+.navy { background: var(--navy-900); color: var(--on-navy); }
+.navy :global(.eyebrow) { color: var(--amber); }
+.navy :global(.lede) { color: var(--on-navy-muted); }
