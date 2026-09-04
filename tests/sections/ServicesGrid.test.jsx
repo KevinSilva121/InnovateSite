@@ -4,10 +4,10 @@ import { MemoryRouter } from 'react-router';
 import ServicesGrid from '../../src/presentation/sections/ServicesGrid.jsx';
 
 describe('ServicesGrid', () => {
-  it('renders three numbered service cards linking to their pages', () => {
+  it('renders three service cards linking to their pages, without numbering', () => {
     render(<MemoryRouter><ServicesGrid /></MemoryRouter>);
     expect(screen.getAllByRole('article')).toHaveLength(3);
-    expect(screen.getByText('01')).toBeInTheDocument();
+    expect(screen.queryByText('01')).toBeNull();
     expect(screen.getByRole('link', { name: /Ver aplicativos/ })).toHaveAttribute('href', '/aplicativos/');
     expect(screen.getByRole('link', { name: /Ver sistemas web/ })).toHaveAttribute('href', '/sistemas-web/');
   });

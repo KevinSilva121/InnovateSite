@@ -22,7 +22,7 @@ export default function ServicePage({ service }) {
       <PageHero
         id="service-title"
         breadcrumb={[{ name: 'Início', path: '/' }, { name: service.shortName, path: service.path }]}
-        eyebrow={`${service.number} · ${service.shortName}`}
+        eyebrow={service.shortName}
         title={service.hero.title}
         lead={service.hero.lead}
       >

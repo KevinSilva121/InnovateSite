@@ -20,8 +20,9 @@ describe('site config', () => {
     if (site.whatsapp) expect(site.whatsapp).toMatch(/^55\d{10,11}$/);
   });
 
-  it('has the confirmed business WhatsApp', () => {
+  it('has the confirmed business WhatsApp and e-mail', () => {
     expect(site.whatsapp).toBe('5512991077249');
+    expect(site.email).toBe('innovateappsco@gmail.com');
   });
 
   it('contactHref falls back to /contato/ when whatsapp is empty', () => {

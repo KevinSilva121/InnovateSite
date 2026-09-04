@@ -8,12 +8,105 @@
 .brand small { font-weight: 500; opacity: 0.7; font-size: 0.8em; }
 .desktop { display: none; }
 .linksWrap { position: relative; }
-.links { display: flex; gap: var(--space-5); }
-.links a { text-decoration: none; font-weight: 500; font-size: var(--text-sm); color: var(--on-navy-muted); padding-block: 0.25rem; border-bottom: 2px solid transparent; }
-.links a:hover, .links a:focus-visible { color: var(--on-navy); }
-.links a.active { color: var(--on-navy); border-bottom-color: var(--amber); }
+/* Link e gatilho compartilham a mesma caixa: mesma altura de linha, mesmo padding
+   e o mesmo traço embaixo. É o que mantém "Produtos" na linha dos vizinhos. */
+.links { display: flex; align-items: center; gap: var(--space-5); }
+.links > li { display: flex; }
+.links a, .trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 500;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--on-navy-muted);
+  text-decoration: none;
+  padding-block: 0.25rem;
+  border-bottom: 2px solid transparent;
+  transition: color var(--dur) var(--ease);
+}
+.links a:hover, .links a:focus-visible, .trigger:hover, .trigger:focus-visible { color: var(--on-navy); }
+.links a.active, .trigger.active { color: var(--on-navy); border-bottom-color: var(--amber); }
 
-/* Linha que desliza até o link da página atual. Sem JS, o traço fixo de .active acima continua valendo. */
+.chevron { transition: transform 220ms var(--ease); }
+.trigger[aria-expanded='true'] { color: var(--on-navy); }
+.trigger[aria-expanded='true'] .chevron { transform: rotate(180deg); }
+
+.produtos { position: relative; }
+
+/* O painel abre só no clique. O respiro até o gatilho fica num embrulho
+   transparente que não captura ponteiro, para o clique fora continuar fechando. */
+.panel {
+  position: absolute;
+  top: 100%;
+  left: -1rem;
+  z-index: 1;
+  padding-top: 0.85rem;
+  pointer-events: none;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transform-origin: 2.5rem top;
+  transition:
+    opacity 190ms var(--ease),
+    transform 190ms var(--ease),
+    display 190ms allow-discrete;
+}
+
+.panel[hidden] {
+  display: none;
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+}
+
+/* Sem isto o navegador não teria de onde animar a entrada de um display: none. */
+@starting-style {
+  .panel { opacity: 0; transform: translateY(-8px) scale(0.97); }
+}
+
+.panelList {
+  position: relative;
+  pointer-events: auto;
+  width: max-content;
+  max-width: 23rem;
+  padding: 0.4rem;
+  display: grid;
+  border: 1px solid rgba(243, 240, 232, 0.14);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #1B2A5E 0%, var(--navy-700) 100%);
+  box-shadow: 0 24px 50px rgba(1, 13, 51, 0.55), 0 2px 6px rgba(1, 13, 51, 0.4);
+}
+
+.panelList a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 0.7rem 0.85rem;
+  border-bottom: 0;
+  border-radius: 10px;
+  transition: background-color 160ms var(--ease);
+}
+
+/* Fio fino entre os itens, sem sobrar nas pontas. */
+.panelList li + li a { box-shadow: 0 -1px 0 rgba(243, 240, 232, 0.08); }
+.panelList a:hover, .panelList a:focus-visible { background: rgba(243, 240, 232, 0.08); box-shadow: none; }
+.panelList li + li a:hover, .panelList li + li a:focus-visible { box-shadow: none; }
+
+.panelText { display: grid; gap: 0.2rem; }
+.panelList strong { font-family: var(--font-heading); font-weight: 700; font-size: var(--text-md); color: var(--on-navy); letter-spacing: -0.01em; }
+.panelList small { font-size: var(--text-xs); line-height: 1.45; color: var(--on-navy-muted); }
+
+.panelArrow {
+  color: var(--amber);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 160ms var(--ease), transform 160ms var(--ease);
+}
+.panelList a:hover .panelArrow, .panelList a:focus-visible .panelArrow { opacity: 1; transform: translateX(0); }
+.panelActive strong { color: var(--amber); }
+.panelActive .panelArrow { opacity: 1; transform: translateX(0); }
+
+/* Linha que desliza até o item da página atual. Sem JS, o traço fixo de .active acima continua valendo. */
 .indicator {
   position: absolute;
   left: 0;
@@ -27,11 +120,14 @@
   transition: opacity 160ms var(--ease), transform 380ms var(--ease), width 380ms var(--ease);
 }
 .linksWrap[data-ready='true'] .indicator { opacity: 1; }
-.linksWrap[data-ready='true'] .links a.active { border-bottom-color: transparent; }
+.linksWrap[data-ready='true'] .links a.active,
+.linksWrap[data-ready='true'] .trigger.active { border-bottom-color: transparent; }
 .linksWrap[data-init='true'] .indicator { transition: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .indicator { transition: opacity 160ms linear; }
+  .chevron, .panel, .panelList a, .panelArrow, .links a, .trigger { transition: none; }
+  .panel[hidden] { transform: none; }
 }
 .actions { display: flex; align-items: center; gap: var(--space-3); }
 .actions > a { display: none; }
@@ -40,6 +136,18 @@
 .mobileLinks { display: grid; padding-block: var(--space-4); }
 .mobileLinks a { display: block; padding: 0.875rem 0; font-family: var(--font-heading); font-size: 1.375rem; font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--line-on-navy); }
 .mobileLinks a.active { color: var(--amber); }
+
+/* No celular os produtos ficam abertos como subitens: menos toques que um acordeão. */
+.mobileGroup {
+  padding: 0.875rem 0 0.5rem;
+  font-family: var(--font-heading);
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--on-navy-muted);
+}
+.mobileSub { padding-left: var(--space-4); border-left: 2px solid var(--line-on-navy); }
+.mobileSub a { font-size: 1.125rem; padding: 0.7rem 0; }
+.mobileSub li:last-child a { border-bottom: 0; }
 
 @media (min-width: 64rem) {
   .desktop { display: block; }

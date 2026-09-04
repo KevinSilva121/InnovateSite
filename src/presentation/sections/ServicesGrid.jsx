@@ -16,7 +16,6 @@ export default function ServicesGrid() {
       <div className={styles.grid}>
         {services.map((s) => (
           <article key={s.slug} className={styles.card} data-reveal>
-            <span className={styles.number} aria-hidden="true">{s.number}</span>
             <h3>{s.name}</h3>
             <p className={styles.summary}>{s.summary}</p>
             <ul className={styles.bullets}>

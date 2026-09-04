@@ -3,3 +3,5 @@
 .hero h1 { max-width: 44rem; font-size: var(--display-2); font-weight: 800; }
 .lead { margin-top: var(--space-4); max-width: 38rem; font-size: var(--text-lg); color: var(--on-navy-muted); }
 .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
+.meta { margin-top: var(--space-4); font-size: var(--text-sm); color: var(--on-navy-muted); }
+.meta :global(.sep) { margin-inline: 0.5rem; opacity: 0.5; }

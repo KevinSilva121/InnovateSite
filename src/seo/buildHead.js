@@ -10,15 +10,21 @@ export function escapeHtml(value) {
 const meta = (attr, key, value) => `<meta ${attr}="${key}" content="${escapeHtml(value)}">`;
 
 // Gera as tags do <head> de uma página. Puro: recebe meta da rota e o site, devolve string.
+// Páginas de artigo declaram `article` e ganham og:type article mais as datas.
 export function buildHead(page, site) {
   const canonical = page.path ? `${site.url}${page.path}` : null;
   const image = `${site.url}/og/default.png`;
+  const art = page.article ?? null;
   const lines = [
     `<title>${escapeHtml(page.title)}</title>`,
     meta('name', 'description', page.description),
     meta('name', 'robots', page.robots ?? 'index, follow'),
     canonical ? `<link rel="canonical" href="${escapeHtml(canonical)}">` : null,
-    meta('property', 'og:type', 'website'),
+    meta('property', 'og:type', art ? 'article' : 'website'),
+    art ? meta('property', 'article:published_time', art.published) : null,
+    art ? meta('property', 'article:modified_time', art.modified ?? art.published) : null,
+    art?.section ? meta('property', 'article:section', art.section) : null,
+    art ? meta('property', 'article:author', site.name) : null,
     meta('property', 'og:title', page.title),
     meta('property', 'og:description', page.description),
     canonical ? meta('property', 'og:url', canonical) : null,

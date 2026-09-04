@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight, ChevronDown } from 'lucide-react';
 import { site, contactHref, contactLabel } from '../../config/site.js';
 import { services } from '../../data/content/services.js';
 import Button from '../ui/Button.jsx';
@@ -10,33 +10,68 @@ import styles from './Navbar.module.css';
 // que a linha apareça fora do lugar por um frame.
 const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
+// Os três serviços saíram do primeiro nível e viram o menu "Produtos".
 const links = [
   { name: 'Início', path: '/', end: true },
-  ...services.map((s) => ({ name: s.shortName, path: s.path })),
+  { name: 'Blog', path: '/blog/' },
   { name: 'Sobre', path: '/sobre/' },
 ];
 const mark = `${import.meta.env.BASE_URL}logo/mark.png`;
+const emProdutos = (pathname) => services.some((s) => pathname === s.path || pathname === s.path.replace(/\/$/, ''));
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [produtos, setProdutos] = useState(false);
   const { pathname } = useLocation();
   const navRef = useRef(null);
+  const produtosRef = useRef(null);
+  const gatilhoRef = useRef(null);
   const firstMeasure = useRef(true);
-  useEffect(() => setOpen(false), [pathname]);
+  const naSecao = emProdutos(pathname);
 
-  // Mede o link ativo e move a linha até ele. A largura muda com o texto e com a fonte,
+  useEffect(() => {
+    setOpen(false);
+    setProdutos(false);
+  }, [pathname]);
+
+  // Esc devolve o foco ao gatilho; clique fora só fecha.
+  useEffect(() => {
+    if (!produtos) return undefined;
+    const foraDaqui = (evento) => {
+      if (!produtosRef.current?.contains(evento.target)) setProdutos(false);
+    };
+    const tecla = (evento) => {
+      if (evento.key !== 'Escape') return;
+      setProdutos(false);
+      gatilhoRef.current?.focus();
+    };
+    document.addEventListener('pointerdown', foraDaqui);
+    document.addEventListener('focusin', foraDaqui);
+    document.addEventListener('keydown', tecla);
+    return () => {
+      document.removeEventListener('pointerdown', foraDaqui);
+      document.removeEventListener('focusin', foraDaqui);
+      document.removeEventListener('keydown', tecla);
+    };
+  }, [produtos]);
+
+  // Mede o item ativo e move a linha até ele. A largura muda com o texto e com a fonte,
   // por isso remedimos ao trocar de página, ao redimensionar e quando as fontes carregam.
+  // Usamos retângulos, e não offsetLeft: o item de "Produtos" tem posicionamento próprio
+  // para ancorar o painel, o que muda o offsetParent do gatilho.
   const placeIndicator = useCallback(() => {
     const wrap = navRef.current;
     if (!wrap) return;
-    const active = wrap.querySelector('a[aria-current="page"]');
+    const active = wrap.querySelector('[data-nav-item][aria-current="page"], [data-nav-item][data-current="page"]');
     if (!active) {
       wrap.dataset.ready = 'false';
       return;
     }
     if (firstMeasure.current) wrap.dataset.init = 'true';
-    wrap.style.setProperty('--ind-x', `${active.offsetLeft}px`);
-    wrap.style.setProperty('--ind-w', `${active.offsetWidth}px`);
+    const base = wrap.getBoundingClientRect();
+    const alvo = active.getBoundingClientRect();
+    wrap.style.setProperty('--ind-x', `${alvo.left - base.left}px`);
+    wrap.style.setProperty('--ind-w', `${alvo.width}px`);
     wrap.dataset.ready = 'true';
     if (firstMeasure.current) {
       firstMeasure.current = false;
@@ -54,13 +89,20 @@ export default function Navbar() {
     return () => window.removeEventListener('resize', placeIndicator);
   }, [pathname, placeIndicator]);
 
-  const items = links.map((l) => (
+  const linkItem = (l) => (
     <li key={l.path}>
-      <NavLink to={l.path} end={l.end} className={({ isActive }) => (isActive ? styles.active : undefined)}>
+      <NavLink
+        to={l.path}
+        end={l.end}
+        data-nav-item=""
+        className={({ isActive }) => (isActive ? styles.active : undefined)}
+      >
         {l.name}
       </NavLink>
     </li>
-  ));
+  );
+
+  const [inicio, ...demais] = links;
 
   return (
     <header className={styles.header}>
@@ -72,7 +114,44 @@ export default function Navbar() {
 
         <nav aria-label="Principal" className={styles.desktop}>
           <div className={styles.linksWrap} ref={navRef}>
-            <ul className={styles.links}>{items}</ul>
+            <ul className={styles.links}>
+              {linkItem(inicio)}
+
+              <li className={styles.produtos} ref={produtosRef}>
+                <button
+                  type="button"
+                  ref={gatilhoRef}
+                  className={[styles.trigger, naSecao ? styles.active : ''].filter(Boolean).join(' ')}
+                  aria-expanded={produtos}
+                  aria-controls="menu-produtos"
+                  data-nav-item=""
+                  data-current={naSecao ? 'page' : undefined}
+                  onClick={() => setProdutos((v) => !v)}
+                >
+                  Produtos
+                  <ChevronDown size={16} strokeWidth={2.25} aria-hidden="true" className={styles.chevron} />
+                </button>
+
+                {/* Abre só no clique. Links normais, sem semântica de menu de aplicativo. */}
+                <div id="menu-produtos" className={styles.panel} hidden={!produtos}>
+                  <ul className={styles.panelList}>
+                    {services.map((s) => (
+                      <li key={s.path}>
+                        <NavLink to={s.path} className={({ isActive }) => (isActive ? styles.panelActive : undefined)}>
+                          <span className={styles.panelText}>
+                            <strong>{s.shortName}</strong>
+                            <small>{s.navHint}</small>
+                          </span>
+                          <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" className={styles.panelArrow} />
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </li>
+
+              {demais.map(linkItem)}
+            </ul>
             <span className={styles.indicator} aria-hidden="true" />
           </div>
         </nav>
@@ -95,7 +174,18 @@ export default function Navbar() {
       <div id="menu-mobile" className={styles.mobile} hidden={!open}>
         <nav aria-label="Principal (celular)" className="container">
           <ul className={styles.mobileLinks}>
-            {items}
+            {linkItem(inicio)}
+            <li>
+              <p className={styles.mobileGroup} id="produtos-mobile">Produtos</p>
+              <ul className={styles.mobileSub} aria-labelledby="produtos-mobile">
+                {services.map((s) => (
+                  <li key={s.path}>
+                    <NavLink to={s.path} className={({ isActive }) => (isActive ? styles.active : undefined)}>{s.shortName}</NavLink>
+                  </li>
+                ))}
+              </ul>
+            </li>
+            {demais.map(linkItem)}
             <li><NavLink to="/contato/">Contato</NavLink></li>
           </ul>
         </nav>

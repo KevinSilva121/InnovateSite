@@ -1,13 +1,33 @@
 import { site } from '../config/site.js';
 import { services } from '../data/content/services.js';
 import { homeFaq } from '../data/content/faq.js';
+import { postsByDate, postPath } from '../data/content/posts.js';
 import { ProjectRepository } from '../data/repositories/ProjectRepository.js';
 import { GetProjects } from '../domain/usecases/GetProjects.js';
-import { graph, localBusiness, webSite, breadcrumb, faqPage, service, softwareAppList } from './jsonld.js';
+import { graph, localBusiness, webSite, breadcrumb, faqPage, service, softwareAppList, blog, blogPosting } from './jsonld.js';
 
 const apps = () => new GetProjects(new ProjectRepository()).execute({ type: 'app' });
 const base = () => [localBusiness(site), webSite(site)];
 const crumbs = (name, path) => breadcrumb(site, [{ name: 'Início', path: '/' }, { name, path }]);
+const BRAND = 'InnovateApps Co.';
+
+// Cada artigo do blog vira uma página indexável. A chave leva o slug para que
+// routes.jsx e o teste de rotas continuem casando um-para-um com `pages`.
+export const postKey = (slug) => `post:${slug}`;
+
+const postPage = (post) => ({
+  key: postKey(post.slug),
+  path: postPath(post.slug),
+  title: `${BRAND} | ${post.seo.title}`,
+  description: post.seo.description,
+  article: { published: post.date, modified: post.updated ?? post.date, section: post.category },
+  jsonLd: () =>
+    graph(
+      ...base(),
+      blogPosting(site, post),
+      breadcrumb(site, [{ name: 'Início', path: '/' }, { name: 'Blog', path: '/blog/' }, { name: post.seo.title, path: postPath(post.slug) }]),
+    ),
+});
 
 const servicePage = (key, slug, extra = () => []) => {
   const svc = services.find((s) => s.slug === slug);
@@ -31,6 +51,15 @@ export const pages = {
   aplicativos: servicePage('aplicativos', 'aplicativos', () => [softwareAppList(site, apps())]),
   sites: servicePage('sites', 'sites'),
   sistemasWeb: servicePage('sistemasWeb', 'sistemas-web'),
+  blog: {
+    key: 'blog',
+    path: '/blog/',
+    title: `${BRAND} | Blog`,
+    description: 'Artigos sobre sites, sistemas web e aplicativos para quem toca uma empresa: o que investir em tecnologia muda na prática e por onde começar.',
+    jsonLd: () => graph(...base(), blog(site, postsByDate()), crumbs('Blog', '/blog/')),
+  },
+  // Espalhados aqui um por artigo, na mesma ordem em que routes.jsx os registra.
+  ...Object.fromEntries(postsByDate().map((post) => [postKey(post.slug), postPage(post)])),
   sobre: {
     key: 'sobre',
     path: '/sobre/',

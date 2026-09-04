@@ -19,6 +19,22 @@ body {
   overflow-x: hidden;
 }
 img, svg, video { display: block; max-width: 100%; height: auto; }
+
+/* Seleção desligada no site inteiro, a pedido. Campos de formulário ficam de fora:
+   sem isso a pessoa não conseguiria corrigir o que ela mesma digitou. */
+body {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+input, textarea, select, [contenteditable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+/* Impede arrastar a imagem para fora da página (Chrome, Edge e Safari). */
+img {
+  -webkit-user-drag: none;
+}
 button, input, select, textarea { font: inherit; color: inherit; }
 button { background: none; border: 0; padding: 0; cursor: pointer; }
 a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.15em; }

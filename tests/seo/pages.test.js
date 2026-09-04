@@ -1,11 +1,22 @@
 import { describe, it, expect } from 'vitest';
-import { pages, pageByPath } from '../../src/seo/pages.js';
+import { pages, pageByPath, postKey } from '../../src/seo/pages.js';
+import { postsByDate, postPath } from '../../src/data/content/posts.js';
 
 describe('pages meta', () => {
   const indexable = Object.values(pages).filter((p) => p.path);
+  const artigos = postsByDate();
 
-  it('has six indexable pages plus notFound', () => {
-    expect(indexable.map((p) => p.path)).toEqual(['/', '/aplicativos/', '/sites/', '/sistemas-web/', '/sobre/', '/contato/']);
+  it('lists the fixed pages, the blog and one page per post, in route order', () => {
+    expect(indexable.map((p) => p.path)).toEqual([
+      '/',
+      '/aplicativos/',
+      '/sites/',
+      '/sistemas-web/',
+      '/blog/',
+      ...artigos.map((post) => postPath(post.slug)),
+      '/sobre/',
+      '/contato/',
+    ]);
     expect(pages.notFound.path).toBeNull();
     expect(pages.notFound.robots).toBe('noindex, nofollow');
   });
@@ -32,10 +43,30 @@ describe('pages meta', () => {
     expect(types(pages.aplicativos)).toContain('ItemList');
   });
 
+  it('the blog index carries a Blog node listing every post', () => {
+    const node = pages.blog.jsonLd()['@graph'].find((n) => n['@type'] === 'Blog');
+    expect(node.blogPost.map((b) => b.url)).toEqual(artigos.map((post) => expect.stringContaining(postPath(post.slug))));
+  });
+
+  it.each(artigos)('post $slug is an article page with BlogPosting and a three-level breadcrumb', (post) => {
+    const page = pages[postKey(post.slug)];
+    expect(page.path).toBe(postPath(post.slug));
+    expect(page.article).toEqual({ published: post.date, modified: post.date, section: post.category });
+    const graph = page.jsonLd()['@graph'];
+    const posting = graph.find((n) => n['@type'] === 'BlogPosting');
+    expect(posting.headline).toBe(post.title);
+    expect(posting.datePublished).toBe(post.date);
+    expect(posting.wordCount).toBeGreaterThan(100);
+    const crumbs = graph.find((n) => n['@type'] === 'BreadcrumbList');
+    expect(crumbs.itemListElement.map((i) => i.name)).toEqual(['Início', 'Blog', post.seo.title]);
+  });
+
   it('pageByPath tolerates a missing trailing slash and falls back to notFound', () => {
     expect(pageByPath('/sites')).toBe(pages.sites);
     expect(pageByPath('/sites/')).toBe(pages.sites);
     expect(pageByPath('/')).toBe(pages.home);
+    expect(pageByPath('/blog/')).toBe(pages.blog);
+    expect(pageByPath(postPath(artigos[0].slug))).toBe(pages[postKey(artigos[0].slug)]);
     expect(pageByPath('/nada/')).toBe(pages.notFound);
   });
 });

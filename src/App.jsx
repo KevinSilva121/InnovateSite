@@ -7,8 +7,8 @@ export default function App() {
   return (
     <Layout>
       <Routes>
-        {routes.map(({ path, Component, service }) => (
-          <Route key={path} path={path.replace(/\/$/, '') || '/'} element={<Component service={service} />} />
+        {routes.map(({ path, Component, service, post }) => (
+          <Route key={path} path={path.replace(/\/$/, '') || '/'} element={<Component service={service} post={post} />} />
         ))}
         <Route path="*" element={<NotFound />} />
       </Routes>

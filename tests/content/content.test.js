@@ -9,7 +9,6 @@ describe('services content', () => {
   it('has the three services in order with trailing-slash paths', () => {
     expect(services.map((s) => s.slug)).toEqual(['aplicativos', 'sites', 'sistemas-web']);
     expect(services.map((s) => s.path)).toEqual(['/aplicativos/', '/sites/', '/sistemas-web/']);
-    expect(services.map((s) => s.number)).toEqual(['01', '02', '03']);
   });
 
   it.each(services)('$slug is complete and within SEO limits', (s) => {

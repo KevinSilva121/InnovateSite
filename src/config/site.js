@@ -9,7 +9,7 @@ export const site = {
   description:
     'Desenvolvimento de sites, sistemas web e aplicativos Android e iOS sob medida para a sua empresa.',
   whatsapp: '5512991077249', // E.164 sem "+", ex.: "5512999999999"
-  email: '',
+  email: 'innovateappsco@gmail.com',
   copyrightYear: 2026, // atualizar quando virar o ano, ou no próximo deploy
   address: { locality: 'Taubaté', region: 'SP', country: 'BR' },
   areaServed: cities,

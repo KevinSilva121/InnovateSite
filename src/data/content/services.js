@@ -2,9 +2,9 @@ export const services = [
   {
     slug: 'aplicativos',
     path: '/aplicativos/',
-    number: '01',
     name: 'Aplicativos Android e iOS',
     shortName: 'Aplicativos',
+    navHint: 'Android e iOS, publicados nas duas lojas',
     summary: 'Do primeiro rascunho à publicação na Google Play e na App Store. Já fizemos isso com os nossos próprios apps.',
     bullets: ['Android e iOS com um só código', 'Publicação nas duas lojas incluída', 'Funciona offline quando precisa'],
     hero: {
@@ -41,9 +41,9 @@ export const services = [
   {
     slug: 'sites',
     path: '/sites/',
-    number: '02',
     name: 'Sites profissionais',
     shortName: 'Sites',
+    navHint: 'Institucional e landing page, prontos para o Google',
     summary: 'Site rápido, bonito e feito para aparecer no Google quando alguém da região procura o que você faz.',
     bullets: ['Otimizado para busca local', 'Carrega rápido no celular', 'Você recebe o acesso e o código'],
     hero: {
@@ -78,9 +78,9 @@ export const services = [
   {
     slug: 'sistemas-web',
     path: '/sistemas-web/',
-    number: '03',
     name: 'Sistemas web sob medida',
     shortName: 'Sistemas web',
+    navHint: 'Painéis e automações para a sua operação',
     summary: 'Cadastro, pedidos, ordens de serviço, financeiro: o sistema que a sua operação precisa, sem pagar por função que não usa.',
     bullets: ['Feito para o seu processo', 'Acesso de qualquer lugar', 'Integra com o que você já usa'],
     hero: {

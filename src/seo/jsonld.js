@@ -1,4 +1,5 @@
 import { sameAsLinks } from '../config/site.js';
+import { postPath, wordCount } from '../data/content/posts.js';
 
 export const absolute = (site, path) => `${site.url}${path.startsWith('/') ? path : `/${path}`}`;
 
@@ -80,6 +81,47 @@ export function softwareAppList(site, apps) {
         author: { '@id': businessId(site) },
       },
     })),
+  };
+}
+
+export const blogUrl = (site) => absolute(site, '/blog/');
+
+export function blog(site, posts) {
+  return {
+    '@type': 'Blog',
+    '@id': `${blogUrl(site)}#blog`,
+    name: `Blog da ${site.shortName}`,
+    description: 'Artigos sobre sites, sistemas web e aplicativos para quem toca uma empresa.',
+    url: blogUrl(site),
+    inLanguage: 'pt-BR',
+    publisher: { '@id': businessId(site) },
+    blogPost: posts.map((post) => ({
+      '@type': 'BlogPosting',
+      headline: post.title,
+      url: absolute(site, postPath(post.slug)),
+      datePublished: post.date,
+    })),
+  };
+}
+
+export function blogPosting(site, post) {
+  const url = absolute(site, postPath(post.slug));
+  return {
+    '@type': 'BlogPosting',
+    '@id': `${url}#article`,
+    headline: post.title,
+    description: post.seo.description,
+    articleSection: post.category,
+    datePublished: post.date,
+    dateModified: post.updated ?? post.date,
+    wordCount: wordCount(post),
+    inLanguage: 'pt-BR',
+    url,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    image: `${site.url}/og/default.png`,
+    author: { '@id': businessId(site) },
+    publisher: { '@id': businessId(site) },
+    isPartOf: { '@id': `${blogUrl(site)}#blog` },
   };
 }
 

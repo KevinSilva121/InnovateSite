@@ -27,6 +27,7 @@ export default function Footer() {
           <ul className={styles.list}>
             <li><Link to="/">Início</Link></li>
             {services.map((s) => <li key={s.path}><Link to={s.path}>{s.name}</Link></li>)}
+            <li><Link to="/blog/">Blog</Link></li>
             <li><Link to="/sobre/">Sobre</Link></li>
             <li><Link to="/contato/">Contato</Link></li>
           </ul>
@@ -58,8 +59,8 @@ export default function Footer() {
       </div>
 
       <div className={['container', styles.bottom].join(' ')}>
-        <p>© {site.copyrightYear} {site.name}. Todos os direitos reservados.</p>
-        <p>Feito em Taubaté, SP.</p>
+        {/* O nome já termina em ponto ("Co."); sem isto o texto sairia "Co.. Todos". */}
+        <p>© {site.copyrightYear} {site.name.replace(/\.$/, '')}. Todos os direitos reservados.</p>
       </div>
     </footer>
   );
