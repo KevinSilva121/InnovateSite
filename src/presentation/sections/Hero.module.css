@@ -1,14 +1,14 @@
 .hero { background: var(--navy-900); color: var(--on-navy); padding-block: clamp(3.5rem, 8vw, 7rem) clamp(4rem, 9vw, 7.5rem); overflow: hidden; }
 .hero :global(.eyebrow) { color: var(--amber); }
-.grid { display: grid; gap: var(--space-8); align-items: center; }
-.copy { display: grid; gap: var(--space-5); max-width: 40rem; }
+.grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-8); align-items: center; }
+.copy { display: grid; gap: var(--space-5); max-width: 40rem; min-width: 0; }
 .accent { color: var(--amber); }
-.lead { font-size: var(--text-lg); line-height: 1.55; color: var(--on-navy-muted); max-width: 34rem; }
+.lead { font-size: var(--text-lg); line-height: 1.55; color: var(--on-navy-muted); max-width: min(34rem, 100%); }
 .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
 .proof { font-size: var(--text-sm); color: var(--on-navy-muted); }
 .proof strong { color: var(--on-navy); }
 
-.cluster { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); max-width: 30rem; }
+.cluster { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); max-width: 30rem; min-width: 0; }
 .tile {
   display: grid; gap: 0.35rem; padding: var(--space-5);
   background: var(--navy-700); border: 1px solid var(--line-on-navy); border-radius: var(--radius-lg);
