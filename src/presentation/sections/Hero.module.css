@@ -1,6 +1,86 @@
-.hero { background: var(--navy-900); color: var(--on-navy); padding-block: clamp(3.5rem, 8vw, 7rem) clamp(4rem, 9vw, 7.5rem); overflow: hidden; }
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--navy-900);
+  color: var(--on-navy);
+  padding-block: clamp(3.5rem, 8vw, 7rem) clamp(4rem, 9vw, 7.5rem);
+}
+
+/* Textura de pontos, estática de propósito: animar background-position repinta
+   o hero inteiro a cada quadro e é o que fazia a rolagem engasgar. */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(243, 240, 232, 0.07) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+/* Halos desfocados em camada própria. Só transladam: escalar um elemento borrado
+   obriga o navegador a redesenhar o desfoque a cada quadro. */
+.glowA,
+.glowB {
+  position: absolute;
+  z-index: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.glowA {
+  top: -14rem;
+  left: -10rem;
+  width: 34rem;
+  height: 34rem;
+  background: var(--navy-600);
+  opacity: 0.6;
+  animation: floatA 30s ease-in-out infinite alternate;
+}
+
+.glowB {
+  right: -9rem;
+  bottom: -14rem;
+  width: 26rem;
+  height: 26rem;
+  background: var(--amber);
+  opacity: 0.1;
+  animation: floatB 38s ease-in-out infinite alternate;
+}
+
+@keyframes floatA {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(7rem, 5rem, 0); }
+}
+
+@keyframes floatB {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-6rem, -4rem, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glowA,
+  .glowB {
+    animation: none;
+    will-change: auto;
+  }
+}
+
 .hero :global(.eyebrow) { color: var(--amber); }
-.grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-8); align-items: center; }
+
+.grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-8);
+  align-items: center;
+}
+
 .copy { display: grid; gap: var(--space-5); max-width: 40rem; min-width: 0; }
 .accent { color: var(--amber); }
 .lead { font-size: var(--text-lg); line-height: 1.55; color: var(--on-navy-muted); max-width: min(34rem, 100%); }
@@ -8,21 +88,6 @@
 .proof { font-size: var(--text-sm); color: var(--on-navy-muted); }
 .proof strong { color: var(--on-navy); }
 
-.cluster { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); max-width: 30rem; min-width: 0; }
-.tile {
-  display: grid; gap: 0.35rem; padding: var(--space-5);
-  background: var(--navy-700); border: 1px solid var(--line-on-navy); border-radius: var(--radius-lg);
-  transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
-}
-.tile:hover { transform: translateY(-3px); border-color: rgba(243, 240, 232, 0.35); }
-.tile img { border-radius: 18px; margin-bottom: var(--space-2); box-shadow: var(--shadow-md); }
-.tileName { font-family: var(--font-heading); font-weight: 700; font-size: var(--text-lg); }
-.tileMeta { font-size: var(--text-xs); color: var(--on-navy-muted); }
-/* Escalonamento leve: as duas tiles da direita descem um pouco. Leitura de "prateleira", não de grade. */
-.tile[data-index='1'], .tile[data-index='3'] { transform: translateY(1.5rem); }
-.tile[data-index='1']:hover, .tile[data-index='3']:hover { transform: translateY(calc(1.5rem - 3px)); }
-
 @media (min-width: 64rem) {
   .grid { grid-template-columns: 1.15fr 0.85fr; gap: var(--space-8); }
-  .cluster { justify-self: end; }
 }

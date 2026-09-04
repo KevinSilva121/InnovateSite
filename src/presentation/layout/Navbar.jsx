@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { site, contactHref, contactLabel } from '../../config/site.js';
 import { services } from '../../data/content/services.js';
 import Button from '../ui/Button.jsx';
 import styles from './Navbar.module.css';
+
+// useLayoutEffect avisa no prerender (não roda no servidor); no cliente ele evita
+// que a linha apareça fora do lugar por um frame.
+const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 const links = [
   { name: 'Início', path: '/', end: true },
@@ -16,7 +20,39 @@ const mark = `${import.meta.env.BASE_URL}logo/mark.png`;
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
+  const navRef = useRef(null);
+  const firstMeasure = useRef(true);
   useEffect(() => setOpen(false), [pathname]);
+
+  // Mede o link ativo e move a linha até ele. A largura muda com o texto e com a fonte,
+  // por isso remedimos ao trocar de página, ao redimensionar e quando as fontes carregam.
+  const placeIndicator = useCallback(() => {
+    const wrap = navRef.current;
+    if (!wrap) return;
+    const active = wrap.querySelector('a[aria-current="page"]');
+    if (!active) {
+      wrap.dataset.ready = 'false';
+      return;
+    }
+    if (firstMeasure.current) wrap.dataset.init = 'true';
+    wrap.style.setProperty('--ind-x', `${active.offsetLeft}px`);
+    wrap.style.setProperty('--ind-w', `${active.offsetWidth}px`);
+    wrap.dataset.ready = 'true';
+    if (firstMeasure.current) {
+      firstMeasure.current = false;
+      // A primeira posição não anima: só as trocas de página deslizam.
+      requestAnimationFrame(() => {
+        if (navRef.current) delete navRef.current.dataset.init;
+      });
+    }
+  }, []);
+
+  useIsomorphicLayoutEffect(() => {
+    placeIndicator();
+    window.addEventListener('resize', placeIndicator);
+    document.fonts?.ready?.then(placeIndicator).catch(() => {});
+    return () => window.removeEventListener('resize', placeIndicator);
+  }, [pathname, placeIndicator]);
 
   const items = links.map((l) => (
     <li key={l.path}>
@@ -35,7 +71,10 @@ export default function Navbar() {
         </Link>
 
         <nav aria-label="Principal" className={styles.desktop}>
-          <ul className={styles.links}>{items}</ul>
+          <div className={styles.linksWrap} ref={navRef}>
+            <ul className={styles.links}>{items}</ul>
+            <span className={styles.indicator} aria-hidden="true" />
+          </div>
         </nav>
 
         <div className={styles.actions}>

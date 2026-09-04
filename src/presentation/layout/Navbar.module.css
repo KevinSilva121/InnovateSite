@@ -7,10 +7,32 @@
 .brand { display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none; font-family: var(--font-heading); font-weight: 700; font-size: 1.125rem; letter-spacing: -0.01em; }
 .brand small { font-weight: 500; opacity: 0.7; font-size: 0.8em; }
 .desktop { display: none; }
+.linksWrap { position: relative; }
 .links { display: flex; gap: var(--space-5); }
 .links a { text-decoration: none; font-weight: 500; font-size: var(--text-sm); color: var(--on-navy-muted); padding-block: 0.25rem; border-bottom: 2px solid transparent; }
 .links a:hover, .links a:focus-visible { color: var(--on-navy); }
 .links a.active { color: var(--on-navy); border-bottom-color: var(--amber); }
+
+/* Linha que desliza até o link da página atual. Sem JS, o traço fixo de .active acima continua valendo. */
+.indicator {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: var(--ind-w, 0);
+  height: 2px;
+  background: var(--amber);
+  transform: translateX(var(--ind-x, 0));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms var(--ease), transform 380ms var(--ease), width 380ms var(--ease);
+}
+.linksWrap[data-ready='true'] .indicator { opacity: 1; }
+.linksWrap[data-ready='true'] .links a.active { border-bottom-color: transparent; }
+.linksWrap[data-init='true'] .indicator { transition: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator { transition: opacity 160ms linear; }
+}
 .actions { display: flex; align-items: center; gap: var(--space-3); }
 .actions > a { display: none; }
 .toggle { display: inline-flex; padding: 0.5rem; color: var(--on-navy); border-radius: var(--radius-sm); }

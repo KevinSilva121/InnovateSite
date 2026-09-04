@@ -8,13 +8,17 @@ import { site, contactHref, contactLabel } from '../../src/config/site.js';
 const apps = new ProjectRepository().getProjects().filter((p) => p.type === 'app');
 
 describe('Hero', () => {
-  it('renders the H1, both CTAs and one tile per app', () => {
+  it('renders the H1, both CTAs and the app count', () => {
     render(<MemoryRouter><Hero apps={apps} /></MemoryRouter>);
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/sob medida para a sua empresa/);
     expect(screen.getByRole('link', { name: contactLabel(site) })).toHaveAttribute('href', contactHref(site));
     expect(screen.getByRole('link', { name: contactLabel(site) }).getAttribute('href').startsWith('https://wa.me/5512991077249')).toBe(true);
     expect(screen.getByRole('link', { name: 'Ver apps publicados' })).toHaveAttribute('href', '/#apps');
-    expect(screen.getAllByRole('img').filter((i) => i.getAttribute('alt'))).toHaveLength(4);
-    expect(screen.getByRole('img', { name: 'Ícone do app CalcFrete' })).toHaveAttribute('width', '72');
+    expect(screen.getByText(`${apps.length} apps`)).toBeInTheDocument();
+  });
+
+  it('shows the phone feed with the delivered screens', () => {
+    render(<MemoryRouter><Hero apps={apps} /></MemoryRouter>);
+    expect(screen.getByRole('img', { name: /Telas de aplicativos e sites/ })).toBeInTheDocument();
   });
 });

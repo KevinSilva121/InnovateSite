@@ -1,0 +1,70 @@
+.stage {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.phone {
+  position: relative;
+  width: min(17rem, 72vw);
+  padding: 0.5rem;
+  border-radius: 2.6rem;
+  background: #050F2B;
+  border: 1px solid rgba(243, 240, 232, 0.18);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.45);
+}
+
+.island {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  z-index: 2;
+  width: 32%;
+  height: 1.05rem;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #050F2B;
+}
+
+/* A tela usa a mesma proporção das imagens, então cada quadro a preenche por inteiro. */
+.screen {
+  position: relative;
+  aspect-ratio: 9 / 19.5;
+  overflow: hidden;
+  border-radius: 2.15rem;
+  background: var(--ink);
+}
+
+/* Ritmo de reels: cada tela fica parada 4s e desliza em 1s para a seguinte.
+   São 5 quadros (4 + a repetição do primeiro), então cada passo é 20%. */
+.reel {
+  will-change: transform;
+  backface-visibility: hidden;
+  animation: reel 20s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.reel img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@keyframes reel {
+  0%, 20% { transform: translate3d(0, 0, 0); }
+  25%, 45% { transform: translate3d(0, -20%, 0); }
+  50%, 70% { transform: translate3d(0, -40%, 0); }
+  75%, 95% { transform: translate3d(0, -60%, 0); }
+  100% { transform: translate3d(0, -80%, 0); }
+}
+
+.stage:hover .reel,
+.stage:focus-within .reel {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel {
+    animation: none;
+    will-change: auto;
+  }
+}

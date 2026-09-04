@@ -29,6 +29,10 @@ for (const [slug, url] of Object.entries(icons)) {
   console.log('ícone:', slug);
 }
 for (const [file, url] of Object.entries(badges)) {
-  writeFileSync(`public/badges/${file}`, await fetchBuffer(url));
+  const buf = await fetchBuffer(url);
+  // O badge oficial do Google vem com margem transparente embutida; aparamos para que
+  // ele fique do mesmo tamanho visível que o da Apple quando renderizados na mesma altura.
+  const out = file.endsWith('.png') ? await sharp(buf).trim().png().toBuffer() : buf;
+  writeFileSync(`public/badges/${file}`, out);
   console.log('badge:', file);
 }

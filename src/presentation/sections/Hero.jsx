@@ -1,11 +1,16 @@
 import { ArrowRight } from 'lucide-react';
 import { site, contactHref, contactLabel } from '../../config/site.js';
 import Button from '../ui/Button.jsx';
+import PhoneShowcase from '../ui/PhoneShowcase.jsx';
 import styles from './Hero.module.css';
 
 export default function Hero({ apps }) {
   return (
     <section className={styles.hero} aria-labelledby="hero-title">
+      {/* Fundo: dois halos desfocados que se movem devagar, para o navy não ficar chapado. */}
+      <span className={styles.glowA} aria-hidden="true" />
+      <span className={styles.glowB} aria-hidden="true" />
+
       <div className={['container', styles.grid].join(' ')}>
         <div className={styles.copy}>
           <p className="eyebrow">Desenvolvimento de software sob medida</p>
@@ -25,15 +30,7 @@ export default function Hero({ apps }) {
           </p>
         </div>
 
-        <ul className={styles.cluster} aria-label="Apps desenvolvidos pela Innovate Apps">
-          {apps.map((app, i) => (
-            <li key={app.slug} className={styles.tile} data-index={i}>
-              <img src={app.icon} alt={`Ícone do app ${app.title}`} width="72" height="72" loading={i < 2 ? 'eager' : 'lazy'} />
-              <span className={styles.tileName}>{app.title}</span>
-              <span className={styles.tileMeta}>{app.category}</span>
-            </li>
-          ))}
-        </ul>
+        <PhoneShowcase />
       </div>
     </section>
   );
