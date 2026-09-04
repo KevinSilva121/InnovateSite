@@ -69,6 +69,70 @@ describe('blog', () => {
   });
 });
 
+describe('firebase hosting', () => {
+  const config = JSON.parse(read('firebase.json')).hosting;
+  const cabecalhos = (caminho) =>
+    Object.fromEntries(
+      config.headers
+        .filter((h) => h.source === caminho)
+        .flatMap((h) => h.headers)
+        .map((h) => [h.key, h.value]),
+    );
+
+  it('publishes the build output and keeps the trailing slashes the canonicals use', () => {
+    expect(config.public).toBe('dist');
+    expect(config.trailingSlash).toBe(true);
+    // Um rewrite pega-tudo devolveria a home com status 200 para qualquer
+    // endereço inexistente, que é o "soft 404" que o Google penaliza. O 404.html
+    // gerado pelo prerender já responde com o status certo.
+    expect(config.rewrites ?? []).toEqual([]);
+    expect(existsSync('dist/404.html')).toBe(true);
+  });
+
+  it('caches the hashed bundle forever and revalidates the pages', () => {
+    expect(cabecalhos('/assets/**')['Cache-Control']).toMatch(/immutable/);
+    expect(cabecalhos('**')['Cache-Control']).toMatch(/max-age=0/);
+  });
+
+  it('sets security headers on every response', () => {
+    const h = cabecalhos('**');
+    expect(h['X-Content-Type-Options']).toBe('nosniff');
+    expect(h['Referrer-Policy']).toBe('strict-origin-when-cross-origin');
+    expect(h['Content-Security-Policy']).toContain("default-src 'self'");
+    expect(h['Content-Security-Policy']).toContain("script-src 'self'");
+  });
+
+  it('the CSP matches what the pages actually load', () => {
+    const csp = cabecalhos('**')['Content-Security-Policy'];
+    for (const page of indexable) {
+      const html = read(fileFor(page.path));
+      // Todo <script> da página ou é o módulo do bundle (tem src) ou é o JSON-LD,
+      // que não é executado. Nenhum traz código embutido, e é isso que permite
+      // script-src 'self' sem abrir exceção.
+      const tags = html.match(/<script[^>]*>/g) ?? [];
+      expect(tags.length).toBeGreaterThan(0);
+      for (const tag of tags) {
+        const externo = tag.includes(' src=');
+        const dados = tag.includes('application/ld+json');
+        expect(externo || dados, `script embutido em ${page.path}: ${tag}`).toBe(true);
+      }
+      // Nenhum recurso vem por http:. O xmlns="http://www.w3.org/2000/svg" dos
+      // ícones fica de fora: é namespace de XML, não um download.
+      expect(html.includes('src="http://')).toBe(false);
+      expect(html.includes('href="http://')).toBe(false);
+    }
+    // Estilo inline existe (a barra do menu e o brilho escrevem em style),
+    // então style-src precisa permitir.
+    expect(csp).toContain("style-src 'self' 'unsafe-inline'");
+  });
+
+  it('every cached directory named in the config exists in the build', () => {
+    const grupo = config.headers.find((h) => h.source.includes('fonts|showcase'));
+    const pastas = grupo.source.match(/@\(([^)]+)\)/)[1].split('|');
+    for (const pasta of pastas) expect(existsSync(`dist/${pasta}`), pasta).toBe(true);
+  });
+});
+
 describe('site files', () => {
   it('404.html is a real page marked noindex', () => {
     const html = read('dist/404.html');

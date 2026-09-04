@@ -10,7 +10,8 @@
     "test": "vitest run --exclude tests/build/**",
     "test:watch": "vitest --exclude tests/build/**",
     "test:build": "vitest run tests/build",
-    "assets": "node scripts/assets/fonts.mjs && node scripts/assets/app-icons.mjs && node scripts/assets/logo.mjs"
+    "assets": "node scripts/assets/fonts.mjs && node scripts/assets/app-icons.mjs && node scripts/assets/logo.mjs",
+    "deploy": "node scripts/deploy-firebase.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.395.0",

@@ -30,3 +30,10 @@ lighthouse-*.json
 
 # screenshots do helper de dev
 screenshots/
+
+# firebase-tools
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+.env.production
+.env.production.local
