@@ -5,6 +5,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { pages } from '../../src/seo/pages.js';
 
 const SITE_URL = (process.env.VITE_SITE_URL || 'https://kevinsilva121.github.io/InnovateSite').replace(/\/$/, '');
+const BASE = process.env.VITE_BASE || '/';
 const indexable = Object.values(pages).filter((p) => p.path);
 const fileFor = (path) => (path === '/' ? 'dist/index.html' : `dist${path}index.html`);
 const read = (f) => readFileSync(f, 'utf8');
@@ -65,6 +66,11 @@ describe('site files', () => {
     }
     expect(readdirSync('dist/apps')).toHaveLength(4);
     expect(existsSync('dist/server')).toBe(false);
+  });
+
+  it('every page loads its module script from the configured base', () => {
+    const pattern = new RegExp(`<script type="module"[^>]*src="${BASE.replace(/\//g, '\\/')}assets\\/`);
+    for (const p of indexable) expect(read(fileFor(p.path))).toMatch(pattern);
   });
 
   it('CSS references local fonts with the configured base', () => {

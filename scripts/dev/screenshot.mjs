@@ -2,8 +2,7 @@
 // Gera screenshots/<rota>-desktop.png (1440 largura) e -mobile.png (390 largura), altura de página inteira,
 // via CDP com emulação real de viewport (não apenas corte de imagem).
 import { spawn } from 'node:child_process';
-import { mkdirSync, mkdtempSync, rmSync } from 'node:fs';
-import { writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 
@@ -27,6 +26,10 @@ const child = spawn(
   ['--headless=new', `--remote-debugging-port=${port}`, `--user-data-dir=${userDataDir}`, 'about:blank'],
   { stdio: 'ignore' }
 );
+child.on('error', (err) => {
+  console.error('não foi possível iniciar o Chrome em', chrome, '-', err.message);
+  process.exit(1);
+});
 
 let exiting = false;
 const cleanup = () => {

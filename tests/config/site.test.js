@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { site, contactHref, sameAsLinks } from '../../src/config/site.js';
+import { site, contactHref, contactLabel, sameAsLinks } from '../../src/config/site.js';
 import { cities } from '../../src/data/content/cities.js';
 
 describe('site config', () => {
@@ -31,6 +31,11 @@ describe('site config', () => {
   it('contactHref builds a wa.me link with encoded message', () => {
     const href = contactHref({ ...site, whatsapp: '5512999999999' }, 'Olá, quero um orçamento');
     expect(href).toBe('https://wa.me/5512999999999?text=Ol%C3%A1%2C%20quero%20um%20or%C3%A7amento');
+  });
+
+  it('contactLabel reflects whether whatsapp is configured', () => {
+    expect(contactLabel({ ...site, whatsapp: '5512999999999' })).toBe('Falar no WhatsApp');
+    expect(contactLabel({ ...site, whatsapp: '' })).toBe('Fale com a gente');
   });
 
   it('sameAsLinks skips empty social fields', () => {

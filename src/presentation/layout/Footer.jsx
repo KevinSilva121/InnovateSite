@@ -58,7 +58,7 @@ export default function Footer() {
       </div>
 
       <div className={['container', styles.bottom].join(' ')}>
-        <p>© {new Date().getFullYear()} {site.name}. Todos os direitos reservados.</p>
+        <p>© {site.copyrightYear} {site.name}. Todos os direitos reservados.</p>
         <p>Feito em Taubaté, SP.</p>
       </div>
     </footer>

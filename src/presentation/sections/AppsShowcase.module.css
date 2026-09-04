@@ -14,4 +14,4 @@
 .paperTone .card { background: #fff; border-color: var(--line); }
 .paperTone .tagline { color: var(--ink-muted); }
 .paperTone .platforms li { border-color: var(--line); }
-.paperTone .category { color: var(--amber-hover); }
+.paperTone .category { color: var(--amber-text); }

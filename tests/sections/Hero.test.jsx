@@ -12,6 +12,7 @@ describe('Hero', () => {
     render(<MemoryRouter><Hero apps={apps} /></MemoryRouter>);
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/Vale do Paraíba/);
     expect(screen.getByRole('link', { name: contactLabel(site) })).toHaveAttribute('href', contactHref(site));
+    expect(screen.getByRole('link', { name: contactLabel(site) }).getAttribute('href').startsWith('https://wa.me/5512991077249')).toBe(true);
     expect(screen.getByRole('link', { name: 'Ver apps publicados' })).toHaveAttribute('href', '/#apps');
     expect(screen.getAllByRole('img').filter((i) => i.getAttribute('alt'))).toHaveLength(4);
     expect(screen.getByRole('img', { name: 'Ícone do app CalcFrete' })).toHaveAttribute('width', '72');

@@ -9,6 +9,7 @@
   --amber: #F0A030;
   --amber-hover: #E29320;
   --amber-ink: #3A2300;
+  --amber-text: #7A4E00; /* âmbar escuro para texto real sobre fundos claros (AA: ≥4.5:1 no branco e no paper-2) */
 
   --on-navy: #F3F0E8;
   --on-navy-muted: rgba(243, 240, 232, 0.72);
