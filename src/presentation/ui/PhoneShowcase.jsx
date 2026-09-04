@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './PhoneShowcase.module.css';
 
 const base = import.meta.env.BASE_URL;
@@ -29,6 +29,15 @@ const IMEDIATAS = 1;
 
 export default function PhoneShowcase() {
   const [carregarResto, setCarregarResto] = useState(false);
+  const palcoRef = useRef(null);
+
+  // A pausa ao passar o mouse era feita com `.stage:hover .frame`, o que prendia
+  // as doze telas ao recálculo de :hover que o navegador faz a cada movimento do
+  // ponteiro na página inteira. Com um atributo, o recálculo acontece duas vezes
+  // (ao entrar e ao sair) em vez de sessenta vezes por segundo.
+  const pausar = (valor) => {
+    if (palcoRef.current) palcoRef.current.dataset.pausado = valor ? 'true' : 'false';
+  };
 
   useEffect(() => {
     let cancelado = false;
@@ -49,7 +58,11 @@ export default function PhoneShowcase() {
 
   return (
     <div
+      ref={palcoRef}
       className={[styles.stage, carregarResto ? styles.rodando : ''].filter(Boolean).join(' ')}
+      data-pausado="false"
+      onPointerEnter={() => pausar(true)}
+      onPointerLeave={() => pausar(false)}
       role="img"
       aria-label="Telas de aplicativos e sites desenvolvidos pela Innovate Apps"
     >

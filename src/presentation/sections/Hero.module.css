@@ -33,19 +33,10 @@
 /* Halos de luz. Antes eram círculos sólidos com filter: blur(80px), que obriga o
    navegador a recalcular o desfoque a cada quadro. O gradiente radial dá o mesmo
    resultado visual, é rasterizado uma vez e depois só translada. */
-/* Cada halo de fundo mora dentro de um plano. O plano recebe o deslocamento do
-   parallax e o halo mantém a própria animação de vagar: as duas transformações
-   se somam sem uma sobrescrever a outra. */
-/* Sem will-change: o plano tem o tamanho do hero inteiro e forçá-lo a virar
-   camada permanente custa memória e rasterização em celular, onde o parallax
-   nem roda. O navegador promove sozinho enquanto o transform muda. */
-.plano {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
+/* Estas duas luzes vagam sozinhas, por keyframes, e nada em JavaScript encosta
+   nelas: a animação inteira roda no compositor e não custa thread principal.
+   Já tiveram parallax ligado ao mouse; medido com tracing, aquilo custava de 30 a
+   40 ms por segundo e era o que disputava espaço com o feed do iPhone ao lado. */
 .glowA,
 .glowB {
   position: absolute;
@@ -56,32 +47,40 @@
   backface-visibility: hidden;
 }
 
+/* Cada luz é desenhada na metade do tamanho e ampliada por 2. Em gradiente não
+   existe detalhe para perder, e a textura que a GPU precisa guardar e recompor a
+   cada quadro cai para um quarto. É o que sobra de custo depois que a animação
+   deixa a thread principal: banda de GPU.
+   As posições abaixo já compensam a ampliação, para o centro de cada luz cair
+   exatamente onde caía antes. */
 .glowA {
-  top: -18rem;
-  left: -12rem;
-  width: 46rem;
-  height: 46rem;
+  top: -6.5rem;
+  left: -0.5rem;
+  width: 23rem;
+  height: 23rem;
   background: radial-gradient(closest-side, rgba(46, 66, 133, 0.9), rgba(46, 66, 133, 0));
   animation: floatA 22s ease-in-out infinite alternate;
 }
 
 .glowB {
-  right: -14rem;
-  bottom: -20rem;
-  width: 38rem;
-  height: 38rem;
+  right: -4.5rem;
+  bottom: -10.5rem;
+  width: 19rem;
+  height: 19rem;
   background: radial-gradient(closest-side, rgba(240, 160, 48, 0.17), rgba(240, 160, 48, 0));
   animation: floatB 28s ease-in-out infinite alternate;
 }
 
+/* A escala vem depois do deslocamento na lista, então ela não multiplica o
+   deslocamento: as luzes vagam exatamente a mesma distância de antes. */
 @keyframes floatA {
-  from { transform: translate3d(-4rem, -2rem, 0); }
-  to { transform: translate3d(10rem, 7rem, 0); }
+  from { transform: translate3d(-4rem, -2rem, 0) scale(2); }
+  to { transform: translate3d(10rem, 7rem, 0) scale(2); }
 }
 
 @keyframes floatB {
-  from { transform: translate3d(3rem, 2rem, 0); }
-  to { transform: translate3d(-10rem, -6rem, 0); }
+  from { transform: translate3d(3rem, 2rem, 0) scale(2); }
+  to { transform: translate3d(-10rem, -6rem, 0) scale(2); }
 }
 
 /* Halo que persegue o ponteiro. Fica centrado na origem para o script só
@@ -91,9 +90,11 @@
   top: 0;
   left: 0;
   z-index: 0;
-  width: 42rem;
-  height: 42rem;
-  margin: -21rem 0 0 -21rem;
+  /* Mesma economia das outras luzes: metade do tamanho, ampliada por 2 pelo
+     script que a move. Ver usePointerGlow.js. */
+  width: 21rem;
+  height: 21rem;
+  margin: -10.5rem 0 0 -10.5rem;
   border-radius: 50%;
   /* Núcleo mais aceso com queda suave, para o foco aparecer sem virar um disco. */
   background: radial-gradient(
@@ -105,6 +106,8 @@
   pointer-events: none;
   opacity: 0;
   transition: opacity 480ms var(--ease);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 /* Acende ao entrar na seção e apaga ao sair, em vez de congelar onde estava. */

@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { site, contactHref, contactLabel } from '../../config/site.js';
 import Button from '../ui/Button.jsx';
@@ -9,30 +9,14 @@ import styles from './Hero.module.css';
 export default function Hero({ apps }) {
   const secaoRef = useRef(null);
   const haloRef = useRef(null);
-  const planoARef = useRef(null);
-  const planoBRef = useRef(null);
-
-  // Sinais opostos afastam os dois planos: um vai para um lado do cursor, o outro
-  // para o contrário, e a diferença entre eles é o que se lê como profundidade.
-  const camadas = useMemo(
-    () => [
-      { ref: planoARef, forca: 20 },
-      { ref: planoBRef, forca: -32 },
-    ],
-    [],
-  );
-  usePointerGlow(secaoRef, haloRef, camadas);
+  usePointerGlow(secaoRef, haloRef);
 
   return (
     <section className={styles.hero} aria-labelledby="hero-title" ref={secaoRef}>
-      {/* Fundo em três planos: dois halos que vagam e reagem ao ponteiro com
-          inércia, e um terceiro preso ao cursor. */}
-      <span className={styles.plano} aria-hidden="true" ref={planoARef}>
-        <span className={styles.glowA} />
-      </span>
-      <span className={styles.plano} aria-hidden="true" ref={planoBRef}>
-        <span className={styles.glowB} />
-      </span>
+      {/* Fundo em três luzes: duas que vagam sozinhas, no compositor, e uma
+          terceira presa ao cursor. */}
+      <span className={styles.glowA} aria-hidden="true" />
+      <span className={styles.glowB} aria-hidden="true" />
       <span className={styles.glowC} aria-hidden="true" data-aceso="false" ref={haloRef} />
 
       <div className={['container', styles.grid].join(' ')}>

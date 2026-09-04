@@ -1,19 +1,33 @@
 import { useEffect } from 'react';
 
 /**
- * Liga o fundo do hero ao ponteiro.
+ * Prende um halo de luz ao ponteiro dentro de uma seção.
  *
- * - O halo principal fica exatamente sob o cursor, sem interpolação.
- * - As camadas de fundo deslocam no sentido contrário, com inércia própria: é o
- *   atraso entre os planos que cria a sensação de profundidade.
- * - Tudo é escrito em style.transform, composto pela GPU, sem tocar em layout.
+ * O halo fica exatamente sob o cursor, sem interpolação: a pessoa pediu o foco
+ * junto do mouse, e não atrás dele.
+ *
+ * Aqui não existe parallax nas luzes de fundo, e a ausência é de propósito.
+ * Medido com tracing, mexer duas luzes do tamanho de meia tela junto com o
+ * ponteiro custava algo entre 30 e 40 ms de thread principal por segundo, porque
+ * cada destino novo mantinha uma transição em curso, e transição em curso é
+ * resolvida na thread principal a cada quadro. Isso disputava espaço com a
+ * animação do feed do iPhone ao lado. O halo sozinho custa uma fração disso.
+ *
+ * O que sobra por quadro é uma escrita de transform num elemento que já é camada
+ * própria: sem layout, sem repintura, e o laço morre assim que o mouse para.
+ *
+ * O halo é desenhado na metade do tamanho e ampliado aqui. É um gradiente: não há
+ * detalhe para perder, e a textura que a GPU recompõe a cada quadro cai a um
+ * quarto. O CSS declara o tamanho reduzido; a ampliação precisa vir junto do
+ * deslocamento porque as duas moram na mesma propriedade.
  *
  * @param {object} areaRef  seção que captura o ponteiro
  * @param {object} haloRef  elemento que segue o cursor
- * @param {Array<{ref: object, forca: number}>} camadas  fundos com parallax;
- *   `forca` em pixels, sinais opostos afastam os planos entre si
  */
-export function usePointerGlow(areaRef, haloRef, camadas = []) {
+// Combina com o tamanho reduzido de .glowC em Hero.module.css.
+const ESCALA = 2;
+
+export function usePointerGlow(areaRef, haloRef) {
   useEffect(() => {
     const area = areaRef.current;
     const halo = haloRef.current;
@@ -23,51 +37,26 @@ export function usePointerGlow(areaRef, haloRef, camadas = []) {
     const menosMovimento = window.matchMedia?.('(prefers-reduced-motion: reduce)');
     if (!fina?.matches || menosMovimento?.matches) return undefined;
 
-    const planos = camadas
-      .map(({ ref, forca }) => ({ el: ref.current, forca, x: 0, y: 0 }))
-      .filter((p) => p.el);
-
     let caixa = area.getBoundingClientRect();
     let ponteiroX = caixa.width * 0.72;
     let ponteiroY = caixa.height * 0.32;
     let quadro = 0;
-    let rodando = false;
+    let escrito = '';
 
+    // Um único quadro por lote de eventos, e nada é reagendado depois: quando o
+    // mouse para, o laço para junto.
     const desenhar = () => {
-      halo.style.transform = `translate3d(${ponteiroX.toFixed(1)}px, ${ponteiroY.toFixed(1)}px, 0)`;
-
-      // Posição do cursor de -1 a 1 a partir do centro da seção.
-      const nx = caixa.width ? (ponteiroX / caixa.width - 0.5) * 2 : 0;
-      const ny = caixa.height ? (ponteiroY / caixa.height - 0.5) * 2 : 0;
-
-      let faltando = false;
-      for (const plano of planos) {
-        const alvoX = -nx * plano.forca;
-        const alvoY = -ny * plano.forca;
-        plano.x += (alvoX - plano.x) * 0.06;
-        plano.y += (alvoY - plano.y) * 0.06;
-        plano.el.style.transform = `translate3d(${plano.x.toFixed(2)}px, ${plano.y.toFixed(2)}px, 0)`;
-        if (Math.abs(alvoX - plano.x) > 0.1 || Math.abs(alvoY - plano.y) > 0.1) faltando = true;
-      }
-
-      if (faltando) {
-        quadro = requestAnimationFrame(desenhar);
-      } else {
-        rodando = false;
-      }
-    };
-
-    const agendar = () => {
-      if (rodando) return;
-      rodando = true;
-      quadro = requestAnimationFrame(desenhar);
+      quadro = 0;
+      const t = `translate3d(${ponteiroX.toFixed(1)}px, ${ponteiroY.toFixed(1)}px, 0) scale(${ESCALA})`;
+      if (t === escrito) return;
+      halo.style.transform = t;
+      escrito = t;
     };
 
     const mover = (evento) => {
       ponteiroX = evento.clientX - caixa.left;
       ponteiroY = evento.clientY - caixa.top;
-      // O halo acompanha no quadro seguinte; os planos continuam convergindo.
-      agendar();
+      if (!quadro) quadro = requestAnimationFrame(desenhar);
     };
 
     const acender = () => { halo.dataset.aceso = 'true'; };
@@ -92,7 +81,7 @@ export function usePointerGlow(areaRef, haloRef, camadas = []) {
       window.removeEventListener('blur', apagar);
       window.removeEventListener('scroll', remedir);
       window.removeEventListener('resize', remedir);
-      cancelAnimationFrame(quadro);
+      if (quadro) cancelAnimationFrame(quadro);
     };
-  }, [areaRef, haloRef, camadas]);
+  }, [areaRef, haloRef]);
 }

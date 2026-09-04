@@ -88,7 +88,11 @@
 .frame:nth-child(11) { animation-delay: 36.75s; }
 .frame:nth-child(12) { animation-delay: 40.5s; }
 
-.stage:hover .frame,
+/* Pausa ao passar o mouse ou ao focar. O hover chega por atributo, e não por
+   `.stage:hover .frame`: como seletor de descendente, ele obrigava o navegador a
+   revisitar as doze telas em todo recálculo de :hover, que acontece a cada
+   movimento do ponteiro em qualquer lugar da página. */
+.stage[data-pausado='true'] .frame,
 .stage:focus-within .frame {
   animation-play-state: paused;
 }
