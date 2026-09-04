@@ -22,6 +22,9 @@ const emProdutos = (pathname) => services.some((s) => pathname === s.path || pat
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [produtos, setProdutos] = useState(false);
+  // O menu do celular tem o seu próprio estado: os dois nunca aparecem juntos, e
+  // compartilhar deixaria um aria-expanded mentindo no que está escondido.
+  const [produtosMob, setProdutosMob] = useState(false);
   const { pathname } = useLocation();
   const navRef = useRef(null);
   const produtosRef = useRef(null);
@@ -32,6 +35,7 @@ export default function Navbar() {
   useEffect(() => {
     setOpen(false);
     setProdutos(false);
+    setProdutosMob(false);
   }, [pathname]);
 
   // Esc devolve o foco ao gatilho; clique fora só fecha.
@@ -164,7 +168,7 @@ export default function Navbar() {
             aria-expanded={open}
             aria-controls="menu-mobile"
             aria-label={open ? 'Fechar menu' : 'Abrir menu'}
-            onClick={() => setOpen((v) => !v)}
+            onClick={() => { setOpen((v) => !v); setProdutosMob(false); }}
           >
             {open ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
           </button>
@@ -175,15 +179,31 @@ export default function Navbar() {
         <nav aria-label="Principal (celular)" className="container">
           <ul className={styles.mobileLinks}>
             {linkItem(inicio)}
-            <li>
-              <p className={styles.mobileGroup} id="produtos-mobile">Produtos</p>
-              <ul className={styles.mobileSub} aria-labelledby="produtos-mobile">
-                {services.map((s) => (
-                  <li key={s.path}>
-                    <NavLink to={s.path} className={({ isActive }) => (isActive ? styles.active : undefined)}>{s.shortName}</NavLink>
-                  </li>
-                ))}
-              </ul>
+            {/* No celular "Produtos" também abre só no clique. A lista fica
+                fechada por padrão e desliza, em vez de já nascer aberta. */}
+            <li className={styles.mobileItem}>
+              <button
+                type="button"
+                className={[styles.mobileGroup, naSecao ? styles.active : ''].filter(Boolean).join(' ')}
+                aria-expanded={produtosMob}
+                aria-controls="produtos-mobile"
+                onClick={() => setProdutosMob((v) => !v)}
+              >
+                Produtos
+                <ChevronDown size={20} strokeWidth={2.25} aria-hidden="true" className={styles.chevron} />
+              </button>
+              <div id="produtos-mobile" className={styles.mobileSub} data-aberto={produtosMob}>
+                <ul className={styles.mobileSubInner}>
+                  {services.map((s) => (
+                    <li key={s.path}>
+                      <NavLink to={s.path} className={({ isActive }) => (isActive ? styles.subAtivo : undefined)}>
+                        <strong>{s.shortName}</strong>
+                        <small>{s.navHint}</small>
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </li>
             {demais.map(linkItem)}
             <li><NavLink to="/contato/">Contato</NavLink></li>

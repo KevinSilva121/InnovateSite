@@ -133,21 +133,82 @@
 .actions > a { display: none; }
 .toggle { display: inline-flex; padding: 0.5rem; color: var(--on-navy); border-radius: var(--radius-sm); }
 .mobile { border-top: 1px solid var(--line-on-navy); background: var(--navy-900); }
-.mobileLinks { display: grid; padding-block: var(--space-4); }
-.mobileLinks a { display: block; padding: 0.875rem 0; font-family: var(--font-heading); font-size: 1.375rem; font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--line-on-navy); }
-.mobileLinks a.active { color: var(--amber); }
+.mobileLinks { display: grid; padding-block: var(--space-4) var(--space-5); }
 
-/* No celular os produtos ficam abertos como subitens: menos toques que um acordeão. */
+/* Linha do primeiro nível: mesma caixa para o link e para o gatilho de Produtos. */
+.mobileLinks > li > a,
 .mobileGroup {
-  padding: 0.875rem 0 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: 100%;
+  padding: 0.95rem 0;
   font-family: var(--font-heading);
   font-size: 1.375rem;
   font-weight: 600;
-  color: var(--on-navy-muted);
+  letter-spacing: -0.01em;
+  text-align: left;
+  text-decoration: none;
+  color: var(--on-navy);
+  border-bottom: 1px solid var(--line-on-navy);
 }
-.mobileSub { padding-left: var(--space-4); border-left: 2px solid var(--line-on-navy); }
-.mobileSub a { font-size: 1.125rem; padding: 0.7rem 0; }
-.mobileSub li:last-child a { border-bottom: 0; }
+
+.mobileLinks > li > a.active,
+.mobileGroup.active { color: var(--amber); }
+.mobileLinks > li:last-child > a { border-bottom: 0; }
+.mobileItem { display: grid; }
+
+/* O chevron gira ao abrir. Mesma linguagem do menu do desktop. */
+.mobileGroup .chevron { flex: none; color: var(--on-navy-muted); }
+.mobileGroup[aria-expanded='true'] { border-bottom-color: transparent; }
+.mobileGroup[aria-expanded='true'] .chevron { transform: rotate(180deg); color: var(--amber); }
+
+/* Abre e fecha deslizando. 0fr -> 1fr anima altura sem precisar saber o valor
+   final, e funciona em todos os navegadores atuais. */
+.mobileSub {
+  display: grid;
+  grid-template-rows: 0fr;
+  /* Fechado, quem fecha o grupo é o traço do próprio gatilho: sem transparente
+     aqui as duas bordas se encostariam e virariam uma linha dupla. */
+  border-bottom: 1px solid transparent;
+  transition: grid-template-rows 300ms var(--ease);
+}
+.mobileSub[data-aberto='true'] { grid-template-rows: 1fr; border-bottom-color: var(--line-on-navy); }
+
+/* visibility tira os links da ordem de tabulação enquanto está fechado, e a
+   troca espera a animação terminar para não cortar a saída. */
+.mobileSubInner {
+  overflow: hidden;
+  visibility: hidden;
+  min-height: 0;
+  transition: visibility 0s 300ms;
+}
+.mobileSub[data-aberto='true'] .mobileSubInner { visibility: visible; transition-delay: 0s; }
+
+.mobileSubInner li { margin-left: var(--space-4); border-left: 2px solid var(--line-on-navy); }
+.mobileSubInner li:first-child { padding-top: 0.25rem; }
+.mobileSubInner li:last-child { padding-bottom: 0.75rem; }
+
+.mobileSubInner a {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.7rem 0 0.7rem var(--space-4);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  margin-left: -2px;
+}
+.mobileSubInner strong { font-family: var(--font-heading); font-size: 1.0625rem; font-weight: 600; color: var(--on-navy); }
+.mobileSubInner small { font-size: var(--text-xs); line-height: 1.4; color: var(--on-navy-muted); }
+/* Precisa casar a especificidade de `.mobileSubInner a` acima, senão a borda
+   transparente de lá continua ganhando e o item atual não recebe o traço. */
+.mobileSubInner a.subAtivo { border-left-color: var(--amber); }
+.subAtivo strong { color: var(--amber); }
+
+@media (prefers-reduced-motion: reduce) {
+  .mobileSub { transition: none; }
+  .mobileSubInner { transition: none; }
+}
 
 @media (min-width: 64rem) {
   .desktop { display: block; }

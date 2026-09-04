@@ -78,13 +78,59 @@ describe('Navbar', () => {
     expect(document.getElementById('menu-mobile')).not.toHaveAttribute('hidden');
   });
 
-  it('lists the services and Contato inside the mobile menu', () => {
+  it('lists the top-level links and Contato inside the mobile menu', () => {
     r();
     fireEvent.click(screen.getByRole('button', { name: 'Abrir menu' }));
     const mobile = screen.getByRole('navigation', { name: 'Principal (celular)' });
-    for (const name of ['Início', 'Aplicativos', 'Sites', 'Sistemas web', 'Blog', 'Sobre', 'Contato']) {
+    for (const name of ['Início', 'Blog', 'Sobre', 'Contato']) {
       expect(within(mobile).getByRole('link', { name })).toBeInTheDocument();
     }
+  });
+
+  it('keeps Produtos closed in the mobile menu until it is clicked', () => {
+    r('/');
+    fireEvent.click(screen.getByRole('button', { name: 'Abrir menu' }));
+    const mobile = screen.getByRole('navigation', { name: 'Principal (celular)' });
+    const grupo = within(mobile).getByRole('button', { name: /Produtos/ });
+    const lista = document.getElementById('produtos-mobile');
+
+    expect(grupo).toHaveAttribute('aria-expanded', 'false');
+    expect(grupo).toHaveAttribute('aria-controls', 'produtos-mobile');
+    expect(lista).toHaveAttribute('data-aberto', 'false');
+
+    fireEvent.click(grupo);
+    expect(grupo).toHaveAttribute('aria-expanded', 'true');
+    expect(lista).toHaveAttribute('data-aberto', 'true');
+    for (const service of services) {
+      const link = within(lista).getByRole('link', { name: new RegExp(`^${service.shortName} `) });
+      expect(link).toHaveAttribute('href', service.path);
+      expect(link).toHaveTextContent(service.navHint);
+    }
+
+    fireEvent.click(grupo);
+    expect(lista).toHaveAttribute('data-aberto', 'false');
+  });
+
+  it('reopens the mobile menu with Produtos collapsed', () => {
+    r('/');
+    const hamburguer = () => screen.getByRole('button', { name: /menu/ });
+    fireEvent.click(hamburguer());
+    const mobile = screen.getByRole('navigation', { name: 'Principal (celular)' });
+    fireEvent.click(within(mobile).getByRole('button', { name: /Produtos/ }));
+    expect(document.getElementById('produtos-mobile')).toHaveAttribute('data-aberto', 'true');
+
+    fireEvent.click(hamburguer()); // fecha o menu
+    fireEvent.click(hamburguer()); // abre de novo
+    expect(document.getElementById('produtos-mobile')).toHaveAttribute('data-aberto', 'false');
+  });
+
+  it('marks the mobile Produtos as current on a service page', () => {
+    r('/sistemas-web/');
+    fireEvent.click(screen.getByRole('button', { name: 'Abrir menu' }));
+    const mobile = screen.getByRole('navigation', { name: 'Principal (celular)' });
+    const grupo = within(mobile).getByRole('button', { name: /Produtos/ });
+    fireEvent.click(grupo);
+    expect(within(mobile).getByRole('link', { name: /^Sistemas web / })).toHaveAttribute('aria-current', 'page');
   });
 
   it('uses the configured contact target for the CTA', () => {
