@@ -33,6 +33,19 @@
 /* Halos de luz. Antes eram círculos sólidos com filter: blur(80px), que obriga o
    navegador a recalcular o desfoque a cada quadro. O gradiente radial dá o mesmo
    resultado visual, é rasterizado uma vez e depois só translada. */
+/* Cada halo de fundo mora dentro de um plano. O plano recebe o deslocamento do
+   parallax e o halo mantém a própria animação de vagar: as duas transformações
+   se somam sem uma sobrescrever a outra. */
+/* Sem will-change: o plano tem o tamanho do hero inteiro e forçá-lo a virar
+   camada permanente custa memória e rasterização em celular, onde o parallax
+   nem roda. O navegador promove sozinho enquanto o transform muda. */
+.plano {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .glowA,
 .glowB {
   position: absolute;
@@ -90,8 +103,12 @@
     rgba(96, 130, 220, 0) 100%
   );
   pointer-events: none;
-  will-change: transform;
+  opacity: 0;
+  transition: opacity 480ms var(--ease);
 }
+
+/* Acende ao entrar na seção e apaga ao sair, em vez de congelar onde estava. */
+.glowC[data-aceso='true'] { opacity: 1; }
 
 /* Sem mouse (celular) ou com menos movimento pedido, o halo não aparece. */
 @media (pointer: coarse) {
