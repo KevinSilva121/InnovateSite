@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import ServicePage from '../../src/presentation/pages/ServicePage.jsx';
 import { services } from '../../src/data/content/services.js';
+import { site, contactLabel } from '../../src/config/site.js';
 
 const r = (svc) => render(<MemoryRouter initialEntries={[svc.path]}><ServicePage service={svc} /></MemoryRouter>);
 
@@ -15,7 +16,7 @@ describe('ServicePage', () => {
     for (const a of svc.audience) expect(screen.getByText(a.name)).toBeInTheDocument();
     for (const d of svc.deliverables) expect(screen.getByText(d.title)).toBeInTheDocument();
     expect(document.querySelectorAll('details')).toHaveLength(svc.faq.length);
-    expect(screen.getAllByRole('link', { name: 'Fale com a gente' }).length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByRole('link', { name: contactLabel(site) }).length).toBeGreaterThanOrEqual(2);
     document.body.innerHTML = '';
   });
 

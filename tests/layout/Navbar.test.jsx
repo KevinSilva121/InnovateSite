@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import Navbar from '../../src/presentation/layout/Navbar.jsx';
+import { site, contactHref, contactLabel } from '../../src/config/site.js';
 
 const r = () => render(<MemoryRouter initialEntries={['/sites/']}><Navbar /></MemoryRouter>);
 
@@ -31,8 +32,8 @@ describe('Navbar', () => {
     expect(document.getElementById('menu-mobile')).not.toHaveAttribute('hidden');
   });
 
-  it('falls back to /contato/ when whatsapp is empty', () => {
+  it('uses the configured contact target for the CTA', () => {
     r();
-    expect(screen.getAllByRole('link', { name: 'Fale com a gente' })[0]).toHaveAttribute('href', '/contato/');
+    expect(screen.getAllByRole('link', { name: contactLabel(site) })[0]).toHaveAttribute('href', contactHref(site));
   });
 });

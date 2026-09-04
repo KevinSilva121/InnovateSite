@@ -8,7 +8,7 @@ export const site = {
   url: (import.meta.env.VITE_SITE_URL || FALLBACK_URL).replace(/\/$/, ''),
   description:
     'Desenvolvimento de sites, sistemas web e aplicativos Android e iOS em Taubaté, SP, para empresas do Vale do Paraíba.',
-  whatsapp: '', // E.164 sem "+", ex.: "5512999999999"
+  whatsapp: '5512991077249', // E.164 sem "+", ex.: "5512999999999"
   email: '',
   address: { locality: 'Taubaté', region: 'SP', country: 'BR' },
   areaServed: cities,
