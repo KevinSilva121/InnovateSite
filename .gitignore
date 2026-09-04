@@ -27,3 +27,6 @@ dist-ssr
 # vitest / lighthouse output
 coverage
 lighthouse-*.json
+
+# screenshots do helper de dev
+screenshots/
