@@ -1,0 +1,12 @@
+.grid { display: grid; gap: var(--space-6); align-items: center; }
+.copy { display: grid; gap: var(--space-4); max-width: 30rem; }
+.desc { color: var(--ink-muted); }
+.copy > a { justify-self: start; }
+.frame { display: block; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow-md); text-decoration: none; background: #fff; }
+.chrome { display: flex; align-items: center; gap: 0.4rem; padding: 0.6rem 0.9rem; background: var(--paper-2); border-bottom: 1px solid var(--line); font-size: var(--text-xs); color: var(--ink-muted); }
+.chrome i { width: 9px; height: 9px; border-radius: 50%; background: var(--line); }
+.chrome span { margin-left: 0.5rem; }
+.canvas { display: grid; place-content: center; gap: 0.5rem; min-height: 16rem; padding: var(--space-6); background: var(--navy-900); color: var(--on-navy); text-align: center; }
+.wordmark { font-family: var(--font-heading); font-weight: 800; font-size: clamp(1.75rem, 4vw, 2.75rem); letter-spacing: -0.02em; }
+.domain { font-size: var(--text-sm); color: var(--amber); }
+@media (min-width: 64rem) { .grid { grid-template-columns: 0.9fr 1.1fr; gap: var(--space-8); } }
