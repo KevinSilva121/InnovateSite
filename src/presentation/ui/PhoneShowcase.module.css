@@ -26,8 +26,7 @@
   background: #050F2B;
 }
 
-/* A tela usa a mesma proporção das imagens, então cada quadro a preenche por inteiro.
-   `contain` limita o repintar ao retângulo da tela. */
+/* O visor usa a mesma proporção das imagens, então cada tela o preenche por inteiro. */
 .screen {
   position: relative;
   aspect-ratio: 9 / 19.5;
@@ -37,45 +36,64 @@
   contain: paint;
 }
 
-/* Ritmo de reels: cada tela fica parada 3s e desliza em 0,75s para a seguinte.
-   São 13 quadros (12 + a repetição do primeiro), então cada passo é 100/13 = 7,6923%.
-   Só o transform anima, o que mantém tudo no compositor. */
-.reel {
-  will-change: transform;
+.frame {
+  position: absolute;
+  inset: 0;
   backface-visibility: hidden;
-  animation: reel 45s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
 
-.reel img {
+/* Antes de o feed começar (e sem JS), aparece só a primeira tela, parada. */
+.frame:not(:first-child) { display: none; }
+
+.frame img {
   display: block;
   width: 100%;
   height: auto;
 }
 
-@keyframes reel {
-  0%, 6.6667% { transform: translate3d(0, 0, 0); }
-  8.3333%, 15% { transform: translate3d(0, -7.6923%, 0); }
-  16.6667%, 23.3333% { transform: translate3d(0, -15.3846%, 0); }
-  25%, 31.6667% { transform: translate3d(0, -23.0769%, 0); }
-  33.3333%, 40% { transform: translate3d(0, -30.7692%, 0); }
-  41.6667%, 48.3333% { transform: translate3d(0, -38.4615%, 0); }
-  50%, 56.6667% { transform: translate3d(0, -46.1538%, 0); }
-  58.3333%, 65% { transform: translate3d(0, -53.8462%, 0); }
-  66.6667%, 73.3333% { transform: translate3d(0, -61.5385%, 0); }
-  75%, 81.6667% { transform: translate3d(0, -69.2308%, 0); }
-  83.3333%, 90% { transform: translate3d(0, -76.9231%, 0); }
-  91.6667%, 98.3333% { transform: translate3d(0, -84.6154%, 0); }
-  100% { transform: translate3d(0, -92.3077%, 0); }
+/* Ritmo de reels: cada tela entra deslizando em 0,75s, fica parada 3s e sai.
+   São 12 telas, ciclo de 45s, uma troca a cada 3,75s.
+
+   Cada tela é animada isoladamente e ocupa só o tamanho do visor. Uma coluna
+   única com as 12 empilhadas daria 7154px de altura, acima do limite de textura
+   de muitas GPUs, o que impede a composição e joga a animação na thread
+   principal — onde qualquer clique a interrompe. */
+/* As animações só começam junto com o carregamento das demais telas. Ligá-las já
+   na primeira pintura custava ~400ms de recálculo de estilo e atrasava o título. */
+.rodando .frame {
+  display: block;
+  animation: frame 45s cubic-bezier(0.65, 0, 0.35, 1) infinite both;
 }
 
-.stage:hover .reel,
-.stage:focus-within .reel {
+@keyframes frame {
+  0% { transform: translate3d(0, 100%, 0); }
+  1.6667% { transform: translate3d(0, 0, 0); }
+  8.3333% { transform: translate3d(0, 0, 0); }
+  10% { transform: translate3d(0, -100%, 0); }
+  100% { transform: translate3d(0, -100%, 0); }
+}
+
+/* Atraso de 3,75s entre telas. O -0,75s da primeira faz o feed já abrir com ela
+   posicionada, em vez de deslizando. */
+.frame:nth-child(1) { animation-delay: -0.75s; }
+.frame:nth-child(2) { animation-delay: 3s; }
+.frame:nth-child(3) { animation-delay: 6.75s; }
+.frame:nth-child(4) { animation-delay: 10.5s; }
+.frame:nth-child(5) { animation-delay: 14.25s; }
+.frame:nth-child(6) { animation-delay: 18s; }
+.frame:nth-child(7) { animation-delay: 21.75s; }
+.frame:nth-child(8) { animation-delay: 25.5s; }
+.frame:nth-child(9) { animation-delay: 29.25s; }
+.frame:nth-child(10) { animation-delay: 33s; }
+.frame:nth-child(11) { animation-delay: 36.75s; }
+.frame:nth-child(12) { animation-delay: 40.5s; }
+
+.stage:hover .frame,
+.stage:focus-within .frame {
   animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reel {
-    animation: none;
-    will-change: auto;
-  }
+  .rodando .frame { animation: none; }
+  .rodando .frame:not(:first-child) { display: none; }
 }

@@ -1,11 +1,12 @@
+import { useEffect, useState } from 'react';
 import styles from './PhoneShowcase.module.css';
 
 const base = import.meta.env.BASE_URL;
 
 // Telas reais dos projetos, geradas por scripts/assets/showcase.mjs a partir das
 // capturas do cliente. Ordem definida por ele: site da Alice, Contador, Prazzo, Trama.
-// Cada arquivo sai em 540x1170 (a proporção exata da tela do aparelho) e em 360x780.
-// Ao mudar esta lista, ajuste também os passos em PhoneShowcase.module.css.
+// Cada arquivo sai em 360, 540 e 810 px de largura, sempre na proporção 9/19.5.
+// Ao mudar o número de telas, ajuste os atrasos em PhoneShowcase.module.css.
 const frames = [
   '01-advalice1',
   '02-advalice2',
@@ -21,35 +22,61 @@ const frames = [
   '12-trama4',
 ];
 
-// A primeira tela é repetida no fim: a animação termina sobre a cópia e recomeça
-// do original, então a volta ao topo não aparece.
-const reel = [...frames, frames[0]];
+// Quantas telas já vão no HTML. As outras entram depois do load: como todas
+// ocupam o mesmo retângulo, o navegador considera as doze visíveis e baixaria
+// tudo de uma vez, atrasando a primeira pintura.
+const IMEDIATAS = 1;
 
 export default function PhoneShowcase() {
+  const [carregarResto, setCarregarResto] = useState(false);
+
+  useEffect(() => {
+    let cancelado = false;
+    const ativar = () => { if (!cancelado) setCarregarResto(true); };
+    // Espera o navegador ficar ocioso: no celular, baixar as dez telas junto com a
+    // primeira pintura atrasa o título, que é o maior elemento da tela.
+    const agendar = () => {
+      if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(ativar, { timeout: 4000 });
+      else setTimeout(ativar, 2000);
+    };
+    if (document.readyState === 'complete') agendar();
+    else window.addEventListener('load', agendar, { once: true });
+    return () => {
+      cancelado = true;
+      window.removeEventListener('load', agendar);
+    };
+  }, []);
+
   return (
     <div
-      className={styles.stage}
+      className={[styles.stage, carregarResto ? styles.rodando : ''].filter(Boolean).join(' ')}
       role="img"
       aria-label="Telas de aplicativos e sites desenvolvidos pela Innovate Apps"
     >
       <div className={styles.phone}>
         <span className={styles.island} aria-hidden="true" />
         <div className={styles.screen}>
-          <div className={styles.reel}>
-            {reel.map((stem, i) => (
-              <img
-                key={`${stem}-${i}`}
-                src={`${base}showcase/${stem}.webp`}
-                srcSet={`${base}showcase/${stem}-360.webp 360w, ${base}showcase/${stem}.webp 540w`}
-                sizes="272px"
-                alt=""
-                width="540"
-                height="1170"
-                loading={i < 2 ? 'eager' : 'lazy'}
-                decoding="async"
-              />
-            ))}
-          </div>
+          {/* Cada tela é uma camada do tamanho do visor: pequena o bastante para a
+              GPU animar sozinha, sem depender da thread principal. */}
+          {frames.map((stem, i) => {
+            const mostrar = i < IMEDIATAS || carregarResto;
+            return (
+              <div className={styles.frame} key={stem}>
+                {mostrar ? (
+                  <img
+                    src={`${base}showcase/${stem}-540.webp`}
+                    srcSet={`${base}showcase/${stem}-360.webp 360w, ${base}showcase/${stem}-540.webp 540w, ${base}showcase/${stem}-810.webp 810w`}
+                    sizes="272px"
+                    alt=""
+                    width="540"
+                    height="1170"
+                    loading={i < IMEDIATAS ? 'eager' : 'lazy'}
+                    decoding="async"
+                  />
+                ) : null}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

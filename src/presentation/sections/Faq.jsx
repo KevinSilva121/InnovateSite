@@ -9,8 +9,8 @@ export default function Faq({ items, eyebrow = 'Perguntas frequentes', title = '
     <Section id={id}>
       <SectionHeading eyebrow={eyebrow} title={title} />
       <div className={styles.list}>
-        {items.map((item, i) => (
-          <details key={item.q} className={styles.item} open={i === 0 || undefined}>
+        {items.map((item) => (
+          <details key={item.q} className={styles.item}>
             <summary className={styles.summary}>
               {item.q}
               <ChevronDown size={20} aria-hidden="true" className={styles.chevron} />

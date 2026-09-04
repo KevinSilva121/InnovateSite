@@ -7,6 +7,17 @@
   padding-block: clamp(3.5rem, 8vw, 7rem) clamp(4rem, 9vw, 7.5rem);
 }
 
+/* No desktop o hero ocupa a tela inteira abaixo do cabeçalho, para o creme da
+   próxima seção só aparecer quando a pessoa rolar. */
+@media (min-width: 64rem) {
+  .hero {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - var(--header-h));
+    min-height: calc(100svh - var(--header-h));
+  }
+}
+
 /* Textura de pontos, estática de propósito: animar background-position repinta
    o hero inteiro a cada quadro e é o que fazia a rolagem engasgar. */
 .hero::before {
@@ -19,47 +30,72 @@
   background-size: 34px 34px;
 }
 
-/* Halos desfocados em camada própria. Só transladam: escalar um elemento borrado
-   obriga o navegador a redesenhar o desfoque a cada quadro. */
+/* Halos de luz. Antes eram círculos sólidos com filter: blur(80px), que obriga o
+   navegador a recalcular o desfoque a cada quadro. O gradiente radial dá o mesmo
+   resultado visual, é rasterizado uma vez e depois só translada. */
 .glowA,
 .glowB {
   position: absolute;
   z-index: 0;
   border-radius: 50%;
   pointer-events: none;
-  filter: blur(80px);
   will-change: transform;
   backface-visibility: hidden;
 }
 
 .glowA {
-  top: -14rem;
-  left: -10rem;
-  width: 34rem;
-  height: 34rem;
-  background: var(--navy-600);
-  opacity: 0.6;
-  animation: floatA 30s ease-in-out infinite alternate;
+  top: -18rem;
+  left: -12rem;
+  width: 46rem;
+  height: 46rem;
+  background: radial-gradient(closest-side, rgba(46, 66, 133, 0.9), rgba(46, 66, 133, 0));
+  animation: floatA 22s ease-in-out infinite alternate;
 }
 
 .glowB {
-  right: -9rem;
-  bottom: -14rem;
-  width: 26rem;
-  height: 26rem;
-  background: var(--amber);
-  opacity: 0.1;
-  animation: floatB 38s ease-in-out infinite alternate;
+  right: -14rem;
+  bottom: -20rem;
+  width: 38rem;
+  height: 38rem;
+  background: radial-gradient(closest-side, rgba(240, 160, 48, 0.17), rgba(240, 160, 48, 0));
+  animation: floatB 28s ease-in-out infinite alternate;
 }
 
 @keyframes floatA {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(7rem, 5rem, 0); }
+  from { transform: translate3d(-4rem, -2rem, 0); }
+  to { transform: translate3d(10rem, 7rem, 0); }
 }
 
 @keyframes floatB {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-6rem, -4rem, 0); }
+  from { transform: translate3d(3rem, 2rem, 0); }
+  to { transform: translate3d(-10rem, -6rem, 0); }
+}
+
+/* Halo que persegue o ponteiro. Fica centrado na origem para o script só
+   precisar transladá-lo até o cursor. Ver usePointerGlow.js. */
+.glowC {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 42rem;
+  height: 42rem;
+  margin: -21rem 0 0 -21rem;
+  border-radius: 50%;
+  /* Núcleo mais aceso com queda suave, para o foco aparecer sem virar um disco. */
+  background: radial-gradient(
+    closest-side,
+    rgba(122, 160, 250, 0.5),
+    rgba(102, 136, 226, 0.22) 45%,
+    rgba(96, 130, 220, 0) 100%
+  );
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Sem mouse (celular) ou com menos movimento pedido, o halo não aparece. */
+@media (pointer: coarse) {
+  .glowC { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -68,6 +104,7 @@
     animation: none;
     will-change: auto;
   }
+  .glowC { display: none; }
 }
 
 .hero :global(.eyebrow) { color: var(--amber); }
@@ -75,6 +112,7 @@
 .grid {
   position: relative;
   z-index: 1;
+  width: 100%;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--space-8);

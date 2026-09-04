@@ -36,25 +36,24 @@ if (files.length === 0) throw new Error(`nenhuma imagem encontrada em ${SRC}`);
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
 
-// Duas larguras: aparelhos de densidade baixa baixam a menor via srcset.
-const SIZES = [
-  { w: WIDTH, h: HEIGHT, suffix: '' },
-  { w: 360, h: Math.round((360 * 19.5) / 9), suffix: '-360' },
-];
+// A tela renderiza a ~256 px CSS. Três larguras cobrem densidade 1x, 2x e 3x;
+// o srcset deixa o navegador baixar só a que serve. Qualidade alta porque são
+// capturas de interface, com texto fino que borra fácil.
+const WIDTHS = [360, 540, 810];
 
 let total = 0;
 for (const [i, file] of files.entries()) {
   const slug = file.replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
   const stem = `${String(i + 1).padStart(2, '0')}-${slug}`;
-  for (const size of SIZES) {
+  for (const w of WIDTHS) {
     const info = await sharp(join(SRC, file))
-      .resize(size.w, size.h, { fit: 'cover', position: 'top' })
-      .webp({ quality: 72, effort: 6 })
-      .toFile(join(OUT, `${stem}${size.suffix}.webp`));
+      .resize(w, Math.round((w * 19.5) / 9), { fit: 'cover', position: 'top' })
+      .webp({ quality: 80, effort: 6 })
+      .toFile(join(OUT, `${stem}-${w}.webp`));
     total += info.size;
   }
   console.log('tela:', stem);
 }
-console.log(`peso total: ${(total / 1024).toFixed(0)} KB em ${files.length * SIZES.length} arquivos`);
+console.log(`peso total: ${(total / 1024).toFixed(0)} KB em ${files.length * WIDTHS.length} arquivos`);
 
 console.log(`\n${files.length} telas geradas. Atualize a lista em src/presentation/ui/PhoneShowcase.jsx.`);

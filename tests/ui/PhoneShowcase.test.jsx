@@ -1,9 +1,10 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi, afterEach } from 'vitest';
+import { act, render, screen } from '@testing-library/react';
 import PhoneShowcase from '../../src/presentation/ui/PhoneShowcase.jsx';
 
 const imgs = () => [...document.querySelectorAll('img')];
-const sources = () => imgs().map((i) => i.getAttribute('src'));
+
+afterEach(() => vi.useRealTimers());
 
 describe('PhoneShowcase', () => {
   it('exposes one accessible name for the whole composition, not one per screen', () => {
@@ -12,10 +13,28 @@ describe('PhoneShowcase', () => {
     for (const img of imgs()) expect(img).toHaveAttribute('alt', '');
   });
 
-  it('runs the screens in the order the client asked for', () => {
+  it('reserves one layer per screen so the GPU animates each one alone', () => {
     render(<PhoneShowcase />);
-    const order = [...new Set(sources())].map((s) => s.match(/\d\d-([a-z]+)\d/)[1]);
-    expect(order).toEqual([
+    const screenEl = document.querySelector('img').parentElement.parentElement;
+    expect(screenEl.children).toHaveLength(12);
+    for (const child of screenEl.children) expect(child.tagName).toBe('DIV');
+  });
+
+  it('ships only the first screen up front, the rest once the browser is idle', () => {
+    vi.useFakeTimers();
+    render(<PhoneShowcase />);
+    expect(imgs()).toHaveLength(1);
+    act(() => { vi.advanceTimersByTime(2500); });
+    expect(imgs()).toHaveLength(12);
+  });
+
+  it('runs the screens once each, in the order the client asked for', () => {
+    vi.useFakeTimers();
+    render(<PhoneShowcase />);
+    act(() => { vi.advanceTimersByTime(2500); });
+    const list = imgs().map((i) => i.getAttribute('src'));
+    expect(new Set(list).size).toBe(12);
+    expect(list.map((s) => s.match(/\d\d-([a-z]+)\d/)[1])).toEqual([
       'advalice', 'advalice',
       'contador', 'contador',
       'prazzo', 'prazzo', 'prazzo', 'prazzo',
@@ -23,18 +42,16 @@ describe('PhoneShowcase', () => {
     ]);
   });
 
-  it('repeats only the first screen at the end so the loop closes without a jump', () => {
+  it('offers three widths so each screen density downloads only what it needs', () => {
+    vi.useFakeTimers();
     render(<PhoneShowcase />);
-    const list = sources();
-    expect(list).toHaveLength(13);
-    expect(new Set(list).size).toBe(12);
-    expect(list[12]).toBe(list[0]);
-  });
-
-  it('offers a smaller file to low-density screens and states the rendered size', () => {
-    render(<PhoneShowcase />);
+    act(() => { vi.advanceTimersByTime(2500); });
     for (const img of imgs()) {
-      expect(img.getAttribute('srcset')).toMatch(/-360\.webp 360w, .+\.webp 540w$/);
+      const srcset = img.getAttribute('srcset');
+      expect(srcset).toMatch(/-360\.webp 360w/);
+      expect(srcset).toMatch(/-540\.webp 540w/);
+      expect(srcset).toMatch(/-810\.webp 810w/);
+      expect(img.getAttribute('src')).toMatch(/-540\.webp$/);
       expect(img).toHaveAttribute('sizes', '272px');
       expect(img).toHaveAttribute('width', '540');
       expect(img).toHaveAttribute('height', '1170');
@@ -42,10 +59,12 @@ describe('PhoneShowcase', () => {
     }
   });
 
-  it('loads the first two frames eagerly and defers the rest', () => {
+  it('loads the first frame eagerly and defers the rest', () => {
+    vi.useFakeTimers();
     render(<PhoneShowcase />);
+    act(() => { vi.advanceTimersByTime(2500); });
     const list = imgs();
-    expect(list.slice(0, 2).every((i) => i.getAttribute('loading') === 'eager')).toBe(true);
-    expect(list.slice(2).every((i) => i.getAttribute('loading') === 'lazy')).toBe(true);
+    expect(list[0]).toHaveAttribute('loading', 'eager');
+    expect(list.slice(1).every((i) => i.getAttribute('loading') === 'lazy')).toBe(true);
   });
 });
