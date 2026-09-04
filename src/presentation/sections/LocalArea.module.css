@@ -1,0 +1,7 @@
+.grid { display: grid; gap: var(--space-6); align-items: start; }
+.note { display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 600; }
+.cities { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.cities li { padding: 0.55rem 0.95rem; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: var(--text-sm); font-weight: 500; }
+.hq { background: var(--navy-900) !important; color: var(--on-navy); border-color: var(--navy-900) !important; }
+.hq small { color: var(--amber); font-weight: 600; margin-left: 0.35rem; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7em; }
+@media (min-width: 64rem) { .grid { grid-template-columns: 1fr 1fr; gap: var(--space-8); } }

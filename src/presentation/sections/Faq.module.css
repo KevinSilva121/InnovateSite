@@ -1,0 +1,11 @@
+.list { display: grid; max-width: 46rem; border-top: 1px solid var(--line); }
+.item { border-bottom: 1px solid var(--line); }
+.summary {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+  padding: 1.1rem 0; cursor: pointer; list-style: none;
+  font-family: var(--font-heading); font-weight: 600; font-size: var(--text-lg); letter-spacing: -0.01em;
+}
+.summary::-webkit-details-marker { display: none; }
+.chevron { flex: none; transition: transform var(--dur) var(--ease); }
+.item[open] .chevron { transform: rotate(180deg); }
+.answer { padding-bottom: 1.25rem; color: var(--ink-muted); max-width: 40rem; }
