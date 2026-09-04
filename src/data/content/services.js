@@ -12,10 +12,10 @@ export const services = [
       lead: 'Criamos apps para empresas que precisam colocar um produto na mão do cliente ou da equipe — e cuidamos da publicação nas lojas.',
     },
     audience: [
-      { name: 'Comércio e serviços', text: 'Pedidos, agendamento, fidelidade e catálogo no celular do cliente.' },
-      { name: 'Transportadoras e autônomos', text: 'Cálculo de frete, controle de viagens e financeiro na estrada, como o CalcFrete.' },
-      { name: 'Equipes em campo', text: 'Checklists, ordens de serviço e fotos sincronizadas quando a internet volta.' },
-      { name: 'Quem tem uma ideia de app', text: 'Validação rápida, versão inicial enxuta e evolução conforme o uso real.' },
+      { name: 'Comércio e serviços', text: 'Seu cliente pede, agenda e acompanha tudo pelo celular, sem depender de uma conversa solta no WhatsApp. Você recebe o pedido já organizado, com histórico por cliente e espaço para fidelidade e promoções.' },
+      { name: 'Transportadoras e autônomos', text: 'Cálculo de frete, controle de viagens, despesas e recebimentos funcionando na estrada, inclusive sem sinal. É exatamente o que o CalcFrete faz hoje para motoristas autônomos.' },
+      { name: 'Equipes em campo', text: 'Checklists, ordens de serviço, fotos e assinatura do cliente coletados direto no aparelho. A equipe trabalha offline e tudo sobe sozinho assim que a internet volta.' },
+      { name: 'Quem tem uma ideia de app', text: 'Começamos por uma versão enxuta, com o essencial para o app já ir para a loja e ser testado por gente de verdade. A partir do uso real, decidimos juntos o que vale construir em seguida.' },
     ],
     deliverables: [
       { title: 'App nas duas lojas', text: 'Um único projeto gera as versões Android e iOS. Cuidamos das contas de desenvolvedor, ícones, capturas e revisão.' },
@@ -51,9 +51,9 @@ export const services = [
       lead: 'Sites para empresas que precisam ser encontradas no Google e passar confiança no primeiro clique.',
     },
     audience: [
-      { name: 'Escritórios e clínicas', text: 'Advocacia, contabilidade, odontologia e consultórios que vivem de indicação e busca.' },
-      { name: 'Comércio e prestadores', text: 'Loja, oficina, salão, assistência técnica: quem precisa aparecer em "perto de mim".' },
-      { name: 'Indústria e B2B', text: 'Catálogo de produtos, certificações e canal de contato para compradores.' },
+      { name: 'Escritórios e clínicas', text: 'Advocacia, contabilidade, odontologia e consultórios que vivem de indicação e de quem procura no Google. O site precisa passar credibilidade nos primeiros segundos e deixar o contato a um toque no celular.' },
+      { name: 'Comércio e prestadores', text: 'Loja, oficina, salão, assistência técnica: quem precisa aparecer quando alguém busca o serviço ali perto. Estrutura, textos e dados do negócio preparados para esse tipo de busca.' },
+      { name: 'Indústria e B2B', text: 'Catálogo de produtos, certificações e um caminho direto para o comprador pedir cotação. Cada linha de produto ganha a própria página, que é como o comprador realmente pesquisa.' },
     ],
     deliverables: [
       { title: 'SEO desde o início', text: 'Estrutura, títulos, textos e dados estruturados pensados para as buscas que trazem cliente, inclusive as buscas da sua cidade.' },
@@ -88,10 +88,10 @@ export const services = [
       lead: 'Desenvolvemos sistemas web sob medida para empresas que cresceram além da planilha e do caderno.',
     },
     audience: [
-      { name: 'Operação e serviços', text: 'Ordens de serviço, agenda, controle de equipe e histórico por cliente.' },
-      { name: 'Vendas e financeiro', text: 'Pedidos, estoque, contas a receber e relatórios que a gestão consegue ler.' },
-      { name: 'Indústria e logística', text: 'Apontamento de produção, expedição e rastreio de entregas.' },
-      { name: 'Quem já tem sistema', text: 'Integrações, automações e substituição gradual de sistemas antigos.' },
+      { name: 'Operação e serviços', text: 'Ordens de serviço, agenda da equipe e histórico completo por cliente, com cada pessoa vendo só o que precisa. Acaba a dependência da planilha compartilhada e de quem tem o arquivo mais atualizado.' },
+      { name: 'Vendas e financeiro', text: 'Pedidos, estoque, contas a receber e inadimplência no mesmo lugar, com relatórios que a gestão lê sem pedir ajuda. É a ideia por trás do Prazzo, aplicada ao processo da sua empresa.' },
+      { name: 'Indústria e logística', text: 'Apontamento de produção, expedição e rastreio de entregas com registro de quem fez o quê e quando. Dados que servem para cobrar prazo e achar gargalo, não só para arquivar.' },
+      { name: 'Quem já tem sistema', text: 'Quando trocar tudo sai caro demais, integramos o que já existe e substituímos por partes. O sistema novo entra módulo a módulo, sem parar a operação.' },
     ],
     deliverables: [
       { title: 'Levantamento do processo', text: 'Entendemos como o trabalho acontece hoje antes de desenhar qualquer tela.' },

@@ -3,6 +3,8 @@
 
 html {
   color-scheme: light;
+  /* Permite animar altura de 0 até auto (usado no abre/fecha do FAQ). */
+  interpolate-size: allow-keywords;
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-h) + 1rem);
   -webkit-text-size-adjust: 100%;

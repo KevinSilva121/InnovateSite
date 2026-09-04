@@ -3,8 +3,15 @@
   display: grid; grid-template-columns: auto 1fr; gap: var(--space-5); align-items: start;
   padding: var(--space-6); border: 1px solid var(--line-on-navy); border-radius: var(--radius-lg);
   background: var(--navy-700);
+  transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
-.icon { border-radius: 18px; box-shadow: var(--shadow-md); }
+.card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(243, 240, 232, 0.35);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.34);
+}
+.icon { border-radius: 18px; box-shadow: var(--shadow-md); transition: transform var(--dur) var(--ease); }
+.card:hover .icon { transform: scale(1.05); }
 .body { display: grid; gap: var(--space-3); }
 .category { font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); }
 .tagline { color: var(--on-navy-muted); }
@@ -12,6 +19,14 @@
 .platforms li { font-size: var(--text-xs); font-weight: 600; padding: 0.2rem 0.6rem; border: 1px solid var(--line-on-navy); border-radius: 999px; }
 @media (min-width: 48rem) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .paperTone .card { background: #fff; border-color: var(--line); }
+.paperTone .card:hover { border-color: rgba(11, 18, 48, 0.28); box-shadow: var(--shadow-md); }
 .paperTone .tagline { color: var(--ink-muted); }
 .paperTone .platforms li { border-color: var(--line); }
 .paperTone .category { color: var(--amber-text); }
+
+/* Sem movimento: mantém o realce de borda e sombra, tira o deslocamento. */
+@media (prefers-reduced-motion: reduce) {
+  .card, .icon { transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+  .card:hover { transform: none; }
+  .card:hover .icon { transform: none; }
+}
