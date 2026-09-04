@@ -9,7 +9,7 @@ const host = (url) => new URL(url).host;
 export default function WebCase({ project }) {
   return (
     <Section id="case">
-      <SectionHeading eyebrow="Case" title="Um site que precisa transmitir autoridade" lead="Escritório de advocacia em Taubaté. Paleta sóbria, tipografia forte e contato a um toque." />
+      <SectionHeading eyebrow="Case" title="Um site que precisa transmitir autoridade" lead="Escritório de advocacia. Paleta sóbria, tipografia forte e contato a um toque." />
       <div className={styles.grid} data-reveal>
         <div className={styles.copy}>
           <p className="eyebrow">{project.category}</p>

@@ -24,8 +24,8 @@ export default function Sobre() {
         id="sobre-title"
         breadcrumb={[{ name: 'Início', path: '/' }, { name: 'Sobre', path: '/sobre/' }]}
         eyebrow={`Sobre a ${site.shortName}`}
-        title="Uma empresa de tecnologia de Taubaté"
-        lead="Desenvolvemos sites, sistemas web e aplicativos para empresas do Vale do Paraíba — e publicamos os nossos próprios apps para provar que o processo funciona."
+        title="Uma empresa de tecnologia feita por quem programa"
+        lead="Desenvolvemos sites, sistemas web e aplicativos para empresas de todo o Brasil — e publicamos os nossos próprios apps para provar que o processo funciona."
       />
 
       <Section id="historia">

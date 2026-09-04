@@ -6,7 +6,11 @@ import { services } from '../../data/content/services.js';
 import Button from '../ui/Button.jsx';
 import styles from './Navbar.module.css';
 
-const links = [...services.map((s) => ({ name: s.shortName, path: s.path })), { name: 'Sobre', path: '/sobre/' }];
+const links = [
+  { name: 'Início', path: '/', end: true },
+  ...services.map((s) => ({ name: s.shortName, path: s.path })),
+  { name: 'Sobre', path: '/sobre/' },
+];
 const mark = `${import.meta.env.BASE_URL}logo/mark.png`;
 
 export default function Navbar() {
@@ -16,7 +20,7 @@ export default function Navbar() {
 
   const items = links.map((l) => (
     <li key={l.path}>
-      <NavLink to={l.path} className={({ isActive }) => (isActive ? styles.active : undefined)}>
+      <NavLink to={l.path} end={l.end} className={({ isActive }) => (isActive ? styles.active : undefined)}>
         {l.name}
       </NavLink>
     </li>

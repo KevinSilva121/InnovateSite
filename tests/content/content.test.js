@@ -19,9 +19,9 @@ describe('services content', () => {
     expect(s.faq.length).toBeGreaterThanOrEqual(4);
     expect(['apps', 'web']).toContain(s.proof);
     expect(s.seo.title.length).toBeLessThanOrEqual(60);
-    expect(s.seo.title).toMatch(/\| Innovate Apps$/);
+    expect(s.seo.title).toMatch(/^InnovateApps Co\. \| /);
     expect(s.seo.description.length).toBeLessThanOrEqual(155);
-    expect(s.hero.title).toMatch(/Taubaté|Vale do Paraíba|sua empresa/);
+    expect(s.hero.title).toMatch(/aplicativos|sites|sistemas web/i);
     const text = JSON.stringify(s);
     expect(text).not.toMatch(BANNED);
   });

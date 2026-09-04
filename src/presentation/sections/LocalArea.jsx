@@ -10,9 +10,9 @@ export default function LocalArea() {
       <div className={styles.grid}>
         <div>
           <SectionHeading
-            eyebrow="De Taubaté para o Vale"
-            title="Perto o bastante para sentar e conversar"
-            lead="Atendemos presencialmente em Taubaté e nas cidades do Vale do Paraíba e Litoral Norte. Para o restante do Brasil, trabalhamos remotamente com o mesmo processo."
+            eyebrow="Onde atendemos"
+            title="Atendemos empresas em todo o Brasil"
+            lead="Trabalhamos remotamente com todo o país, com reuniões por vídeo e entregas frequentes. No Vale do Paraíba e no Litoral Norte, também atendemos presencialmente."
           />
           <p className={styles.note}><MapPin size={18} aria-hidden="true" /> Sede em Taubaté – SP</p>
         </div>

@@ -18,7 +18,7 @@ export default function Footer() {
         <div className={styles.brand}>
           <img src={mark} alt="" width="40" height="40" />
           <p className={styles.name}>{site.name}</p>
-          <p className={styles.tagline}>Sites, sistemas web e aplicativos para empresas do Vale do Paraíba.</p>
+          <p className={styles.tagline}>Sites, sistemas web e aplicativos sob medida para a sua empresa.</p>
           <p className={styles.address}>Taubaté – SP · Atendimento presencial no Vale e remoto em todo o Brasil</p>
         </div>
 

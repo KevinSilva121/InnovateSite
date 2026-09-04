@@ -63,7 +63,7 @@ export class ProjectRepository {
       {
         id: 5,
         slug: 'advalice-camargo',
-        title: 'Advalice Camargo Advocacia',
+        title: 'Alice Camargo Advocacia',
         type: 'web',
         category: 'Site institucional',
         tagline: 'Site para escritório de advocacia que precisa transmitir autoridade.',

@@ -8,8 +8,8 @@ export const services = [
     summary: 'Do primeiro rascunho à publicação na Google Play e na App Store. Já fizemos isso com os nossos próprios apps.',
     bullets: ['Android e iOS com um só código', 'Publicação nas duas lojas incluída', 'Funciona offline quando precisa'],
     hero: {
-      title: 'Desenvolvimento de aplicativos Android e iOS em Taubaté',
-      lead: 'Criamos apps para empresas do Vale do Paraíba que precisam colocar um produto na mão do cliente ou da equipe — e cuidamos da publicação nas lojas.',
+      title: 'Desenvolvimento de aplicativos Android e iOS',
+      lead: 'Criamos apps para empresas que precisam colocar um produto na mão do cliente ou da equipe — e cuidamos da publicação nas lojas.',
     },
     audience: [
       { name: 'Comércio e serviços', text: 'Pedidos, agendamento, fidelidade e catálogo no celular do cliente.' },
@@ -30,11 +30,11 @@ export const services = [
       { q: 'Quanto tempo leva até estar nas lojas?', a: 'Projetos simples levam de 4 a 8 semanas até a publicação. A revisão da Apple e do Google leva de 1 a 7 dias e já entra no planejamento.' },
       { q: 'Vocês publicam o app no meu nome?', a: 'Sim. Criamos ou usamos as contas de desenvolvedor da sua empresa na Google Play e na App Store, para que o app seja seu.' },
       { q: 'O app funciona sem internet?', a: 'Quando faz sentido para o uso, sim. Nossos próprios apps guardam os dados no aparelho e sincronizam depois.' },
-      { q: 'Vocês atendem fora de Taubaté?', a: 'Sim. Atendemos presencialmente no Vale do Paraíba e remotamente em todo o Brasil.' },
+      { q: 'Vocês atendem empresas de outros estados?', a: 'Sim. Atendemos remotamente em todo o Brasil, com reuniões por vídeo e entregas frequentes. Presencialmente, atendemos no Vale do Paraíba e região.' },
     ],
     seo: {
-      title: 'Desenvolvimento de Aplicativos em Taubaté | Innovate Apps',
-      description: 'Desenvolvimento de aplicativos Android e iOS em Taubaté e Vale do Paraíba. Publicação nas lojas incluída. Apps publicados na Google Play e App Store.',
+      title: 'InnovateApps Co. | Desenvolvimento de Aplicativos',
+      description: 'Desenvolvimento de aplicativos Android e iOS sob medida. Publicação nas lojas incluída. Apps próprios publicados na Google Play e na App Store.',
       serviceType: 'Desenvolvimento de aplicativos móveis',
     },
   },
@@ -47,8 +47,8 @@ export const services = [
     summary: 'Site rápido, bonito e feito para aparecer no Google quando alguém da região procura o que você faz.',
     bullets: ['Otimizado para busca local', 'Carrega rápido no celular', 'Você recebe o acesso e o código'],
     hero: {
-      title: 'Criação de sites profissionais em Taubaté',
-      lead: 'Sites para empresas do Vale do Paraíba que precisam ser encontradas no Google e passar confiança no primeiro clique.',
+      title: 'Criação de sites profissionais',
+      lead: 'Sites para empresas que precisam ser encontradas no Google e passar confiança no primeiro clique.',
     },
     audience: [
       { name: 'Escritórios e clínicas', text: 'Advocacia, contabilidade, odontologia e consultórios que vivem de indicação e busca.' },
@@ -56,7 +56,7 @@ export const services = [
       { name: 'Indústria e B2B', text: 'Catálogo de produtos, certificações e canal de contato para compradores.' },
     ],
     deliverables: [
-      { title: 'SEO local desde o início', text: 'Estrutura, títulos, textos e dados estruturados pensados para buscas como "em Taubaté" e "no Vale do Paraíba".' },
+      { title: 'SEO desde o início', text: 'Estrutura, títulos, textos e dados estruturados pensados para as buscas que trazem cliente, inclusive as buscas da sua cidade.' },
       { title: 'Design próprio', text: 'Sem template pronto. Identidade visual da sua empresa aplicada com cuidado em tipografia, cores e imagens.' },
       { title: 'Performance', text: 'Páginas leves, imagens otimizadas e notas altas no Google PageSpeed — no celular também.' },
       { title: 'Contato direto', text: 'WhatsApp, telefone e mapa em destaque. O site existe para gerar conversa.' },
@@ -70,8 +70,8 @@ export const services = [
       { q: 'Posso atualizar o site sozinho?', a: 'Sim. Definimos juntos o que você vai editar e entregamos uma forma simples de fazer isso, ou cuidamos das atualizações por você.' },
     ],
     seo: {
-      title: 'Criação de Sites em Taubaté | Innovate Apps',
-      description: 'Criação de sites profissionais em Taubaté e Vale do Paraíba, otimizados para o Google e rápidos no celular. Design próprio, sem template.',
+      title: 'InnovateApps Co. | Criação de Sites Profissionais',
+      description: 'Criação de sites profissionais otimizados para o Google e rápidos no celular. Design próprio, sem template, com foco em gerar contato.',
       serviceType: 'Criação de sites',
     },
   },
@@ -85,7 +85,7 @@ export const services = [
     bullets: ['Feito para o seu processo', 'Acesso de qualquer lugar', 'Integra com o que você já usa'],
     hero: {
       title: 'Sistemas web sob medida para a sua empresa',
-      lead: 'Desenvolvemos sistemas web em Taubaté para empresas do Vale do Paraíba que cresceram além da planilha e do caderno.',
+      lead: 'Desenvolvemos sistemas web sob medida para empresas que cresceram além da planilha e do caderno.',
     },
     audience: [
       { name: 'Operação e serviços', text: 'Ordens de serviço, agenda, controle de equipe e histórico por cliente.' },
@@ -108,8 +108,8 @@ export const services = [
       { q: 'Vocês integram com o meu ERP ou sistema atual?', a: 'Sim, desde que ele ofereça alguma forma de integração (API, banco de dados ou exportação). Avaliamos isso no levantamento.' },
     ],
     seo: {
-      title: 'Sistemas Web sob Medida em Taubaté | Innovate Apps',
-      description: 'Desenvolvimento de sistemas web sob medida em Taubaté e Vale do Paraíba: pedidos, ordens de serviço, financeiro e integrações. Feito para o seu processo.',
+      title: 'InnovateApps Co. | Sistemas Web sob Medida',
+      description: 'Desenvolvimento de sistemas web sob medida: pedidos, ordens de serviço, financeiro e integrações. Feito para o processo da sua empresa.',
       serviceType: 'Desenvolvimento de sistemas web',
     },
   },

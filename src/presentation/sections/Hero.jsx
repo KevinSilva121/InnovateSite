@@ -8,20 +8,20 @@ export default function Hero({ apps }) {
     <section className={styles.hero} aria-labelledby="hero-title">
       <div className={['container', styles.grid].join(' ')}>
         <div className={styles.copy}>
-          <p className="eyebrow">Taubaté – SP · Vale do Paraíba</p>
+          <p className="eyebrow">Desenvolvimento de software sob medida</p>
           <h1 id="hero-title">
-            Sites, sistemas e <span className={styles.accent}>aplicativos</span> para empresas do Vale do Paraíba
+            Sites, sistemas e <span className={styles.accent}>aplicativos</span> sob medida para a sua empresa
           </h1>
           <p className={styles.lead}>
-            Somos uma empresa de tecnologia de Taubaté. Desenvolvemos o site, o sistema web e o app que a sua
-            empresa precisa — e já publicamos os nossos na Google Play e na App Store.
+            Desenvolvemos o site, o sistema web e o app que a sua empresa precisa, do primeiro rascunho à
+            publicação — e já publicamos os nossos na Google Play e na App Store.
           </p>
           <div className={styles.actions}>
             <Button href={contactHref(site)} size="lg" icon={ArrowRight}>{contactLabel(site)}</Button>
             <Button href="/#apps" variant="onNavy" size="lg">Ver apps publicados</Button>
           </div>
           <p className={styles.proof}>
-            <strong className="tabular">{apps.length} apps</strong> publicados nas duas lojas · atendimento presencial no Vale e remoto no Brasil
+            <strong className="tabular">{apps.length} apps</strong> publicados nas duas lojas · atendimento em todo o Brasil
           </p>
         </div>
 

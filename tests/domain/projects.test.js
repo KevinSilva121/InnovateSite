@@ -31,7 +31,7 @@ describe('ProjectRepository + GetProjects', () => {
     expect(apps.filter((a) => !a.stores.appStore).map((a) => a.slug)).toEqual(['trama']);
   });
 
-  it('returns Advalice as the single web case', () => {
+  it('returns Alice Camargo as the single web case', () => {
     const web = useCase.execute({ type: 'web' });
     expect(web).toHaveLength(1);
     expect(web[0].url).toBe('https://advalicecamargo.com.br/');

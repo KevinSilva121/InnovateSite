@@ -7,7 +7,7 @@ export const site = {
   shortName: 'Innovate Apps',
   url: (import.meta.env.VITE_SITE_URL || FALLBACK_URL).replace(/\/$/, ''),
   description:
-    'Desenvolvimento de sites, sistemas web e aplicativos Android e iOS em Taubaté, SP, para empresas do Vale do Paraíba.',
+    'Desenvolvimento de sites, sistemas web e aplicativos Android e iOS sob medida para a sua empresa.',
   whatsapp: '5512991077249', // E.164 sem "+", ex.: "5512999999999"
   email: '',
   copyrightYear: 2026, // atualizar quando virar o ano, ou no próximo deploy

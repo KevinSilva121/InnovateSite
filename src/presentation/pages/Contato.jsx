@@ -20,7 +20,7 @@ export default function Contato() {
         breadcrumb={[{ name: 'Início', path: '/' }, { name: 'Contato', path: '/contato/' }]}
         eyebrow="Contato"
         title="Fale com a Innovate Apps"
-        lead="Conte o que a sua empresa precisa. Respondemos em horário comercial e marcamos uma conversa presencial em Taubaté ou por vídeo."
+        lead="Conte o que a sua empresa precisa. Respondemos em horário comercial e marcamos uma conversa por vídeo ou presencial."
       />
 
       <Section id="canais">

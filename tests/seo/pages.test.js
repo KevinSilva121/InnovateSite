@@ -12,7 +12,7 @@ describe('pages meta', () => {
 
   it.each(Object.values(pages))('$key respects title/description limits', (p) => {
     expect(p.title.length).toBeLessThanOrEqual(60);
-    expect(p.title).toMatch(/\| Innovate Apps$/);
+    expect(p.title).toMatch(/^InnovateApps Co\. \| /);
     expect(p.description.length).toBeLessThanOrEqual(155);
     expect(p.description.length).toBeGreaterThan(60);
   });
