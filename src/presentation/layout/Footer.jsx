@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { Instagram, Linkedin, Github, Mail, MessageCircle } from 'lucide-react';
+import { Instagram, Linkedin, Mail, MessageCircle } from 'lucide-react';
 import { site, contactHref } from '../../config/site.js';
 import { services } from '../../data/content/services.js';
 import styles from './Footer.module.css';
@@ -8,7 +8,6 @@ const mark = `${import.meta.env.BASE_URL}logo/mark.png`;
 const socials = [
   ['instagram', Instagram, 'Instagram'],
   ['linkedin', Linkedin, 'LinkedIn'],
-  ['github', Github, 'GitHub'],
 ].filter(([key]) => site.social[key]);
 
 export default function Footer() {

@@ -14,9 +14,8 @@ export const site = {
   address: { locality: 'Taubaté', region: 'SP', country: 'BR' },
   areaServed: cities,
   social: {
-    instagram: '',
+    instagram: 'https://www.instagram.com/innovateappsco/',
     linkedin: '',
-    github: 'https://github.com/kevinsilva121',
   },
   stores: {
     play: 'https://play.google.com/store/apps/developer?id=InnovateApps+Co.',
@@ -33,7 +32,7 @@ export function contactHref(config, message = DEFAULT_WHATSAPP_MESSAGE) {
 }
 
 export function sameAsLinks(config) {
-  return [config.stores.play, config.stores.appStore, config.social.github, config.social.instagram, config.social.linkedin].filter(Boolean);
+  return [config.stores.play, config.stores.appStore, config.social.instagram, config.social.linkedin].filter(Boolean);
 }
 
 export const contactLabel = (config) => (config.whatsapp ? 'Falar no WhatsApp' : 'Fale com a gente');

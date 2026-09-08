@@ -14,4 +14,10 @@ describe('Footer', () => {
     expect(screen.getByRole('link', { name: 'Blog' })).toHaveAttribute('href', '/blog/');
     expect(screen.getByText(new RegExp(`© ${site.copyrightYear}`))).toBeInTheDocument();
   });
+
+  it('links the Instagram profile and no longer shows GitHub', () => {
+    render(<MemoryRouter><Footer /></MemoryRouter>);
+    expect(screen.getByRole('link', { name: 'Instagram' })).toHaveAttribute('href', site.social.instagram);
+    expect(screen.queryByRole('link', { name: 'GitHub' })).toBeNull();
+  });
 });

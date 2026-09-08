@@ -40,7 +40,7 @@ describe('site config', () => {
   });
 
   it('sameAsLinks skips empty social fields', () => {
-    const links = sameAsLinks({ ...site, social: { instagram: '', linkedin: '', github: 'https://github.com/x' } });
-    expect(links).toEqual([site.stores.play, site.stores.appStore, 'https://github.com/x']);
+    const links = sameAsLinks({ ...site, social: { instagram: 'https://www.instagram.com/x/', linkedin: '' } });
+    expect(links).toEqual([site.stores.play, site.stores.appStore, 'https://www.instagram.com/x/']);
   });
 });
