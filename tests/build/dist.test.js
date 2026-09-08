@@ -5,7 +5,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { pages, postKey } from '../../src/seo/pages.js';
 import { postsByDate, postPath } from '../../src/data/content/posts.js';
 
-const SITE_URL = (process.env.VITE_SITE_URL || 'https://kevinsilva121.github.io/InnovateSite').replace(/\/$/, '');
+const SITE_URL = (process.env.VITE_SITE_URL || 'https://innovateapps.com.br').replace(/\/$/, '');
 const BASE = process.env.VITE_BASE || '/';
 const indexable = Object.values(pages).filter((p) => p.path);
 const fileFor = (path) => (path === '/' ? 'dist/index.html' : `dist${path}index.html`);

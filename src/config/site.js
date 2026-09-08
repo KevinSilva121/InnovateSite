@@ -1,6 +1,6 @@
 import { cities } from '../data/content/cities.js';
 
-const FALLBACK_URL = 'https://kevinsilva121.github.io/InnovateSite';
+const FALLBACK_URL = 'https://innovateapps.com.br';
 
 export const site = {
   name: 'Innovate Apps Co.',
