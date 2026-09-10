@@ -1,0 +1,118 @@
+export const services = [
+  {
+    slug: 'aplicativos',
+    path: '/aplicativos/',
+    name: 'Aplicativos Android e iOS',
+    shortName: 'Aplicativos',
+    navHint: 'Android e iOS, publicados nas duas lojas',
+    summary: 'Do primeiro rascunho à publicação na Google Play e na App Store. Já fizemos isso com os nossos próprios apps.',
+    bullets: ['Android e iOS com um só código', 'Publicação nas duas lojas incluída', 'Funciona offline quando precisa'],
+    hero: {
+      title: 'Desenvolvimento de aplicativos Android e iOS',
+      lead: 'Criamos apps para empresas que precisam colocar um produto na mão do cliente ou da equipe — e cuidamos da publicação nas lojas.',
+    },
+    audience: [
+      { name: 'Comércio e serviços', text: 'Seu cliente pede, agenda e acompanha tudo pelo celular, sem depender de uma conversa solta no WhatsApp. Você recebe o pedido já organizado, com histórico por cliente e espaço para fidelidade e promoções.' },
+      { name: 'Transportadoras e autônomos', text: 'Cálculo de frete, controle de viagens, despesas e recebimentos funcionando na estrada, inclusive sem sinal. É exatamente o que o CalcFrete faz hoje para motoristas autônomos.' },
+      { name: 'Equipes em campo', text: 'Checklists, ordens de serviço, fotos e assinatura do cliente coletados direto no aparelho. A equipe trabalha offline e tudo sobe sozinho assim que a internet volta.' },
+      { name: 'Quem tem uma ideia de app', text: 'Começamos por uma versão enxuta, com o essencial para o app já ir para a loja e ser testado por gente de verdade. A partir do uso real, decidimos juntos o que vale construir em seguida.' },
+    ],
+    deliverables: [
+      { title: 'App nas duas lojas', text: 'Um único projeto gera as versões Android e iOS. Cuidamos das contas de desenvolvedor, ícones, capturas e revisão.' },
+      { title: 'Design pensado para o uso', text: 'Telas simples, fluxo curto e componentes nativos. Nada de manual de instruções.' },
+      { title: 'Offline e sincronização', text: 'Dados guardados no aparelho e sincronizados quando há conexão, como no Prazzo e no CalcFrete.' },
+      { title: 'Painel web quando faz sentido', text: 'Um sistema web para a gestão ver o que acontece no app, com o mesmo banco de dados.' },
+      { title: 'Manutenção e novas versões', text: 'Atualizações de sistema, novas funções e acompanhamento das avaliações nas lojas.' },
+    ],
+    proof: 'apps',
+    faq: [
+      { q: 'Quanto custa desenvolver um aplicativo?', a: 'Depende do que o app precisa fazer. Um app enxuto, com poucas telas e sem painel web, é bem diferente de um sistema completo. Depois de uma conversa de 30 minutos conseguimos dar uma faixa de valor e prazo.' },
+      { q: 'Quanto tempo leva até estar nas lojas?', a: 'Projetos simples levam de 4 a 8 semanas até a publicação. A revisão da Apple e do Google leva de 1 a 7 dias e já entra no planejamento.' },
+      { q: 'Vocês publicam o app no meu nome?', a: 'Sim. Criamos ou usamos as contas de desenvolvedor da sua empresa na Google Play e na App Store, para que o app seja seu.' },
+      { q: 'O app funciona sem internet?', a: 'Quando faz sentido para o uso, sim. Nossos próprios apps guardam os dados no aparelho e sincronizam depois.' },
+      { q: 'Vocês atendem empresas de outros estados?', a: 'Sim. Atendemos remotamente em todo o Brasil, com reuniões por vídeo e entregas frequentes. Presencialmente, atendemos no Vale do Paraíba e região.' },
+    ],
+    seo: {
+      title: 'InnovateApps Co. | Desenvolvimento de Aplicativos',
+      description: 'Desenvolvimento de aplicativos Android e iOS sob medida. Publicação nas lojas incluída. Apps próprios publicados na Google Play e na App Store.',
+      serviceType: 'Desenvolvimento de aplicativos móveis',
+    },
+  },
+  {
+    slug: 'sites',
+    path: '/sites/',
+    name: 'Sites profissionais',
+    shortName: 'Sites',
+    navHint: 'Institucional e landing page, prontos para o Google',
+    summary: 'Site rápido, bonito e feito para aparecer no Google quando alguém da região procura o que você faz.',
+    bullets: ['Otimizado para busca local', 'Carrega rápido no celular', 'Você recebe o acesso e o código'],
+    hero: {
+      title: 'Criação de sites profissionais',
+      lead: 'Sites para empresas que precisam ser encontradas no Google e passar confiança no primeiro clique.',
+    },
+    audience: [
+      { name: 'Escritórios e clínicas', text: 'Advocacia, contabilidade, odontologia e consultórios que vivem de indicação e de quem procura no Google. O site precisa passar credibilidade nos primeiros segundos e deixar o contato a um toque no celular.' },
+      { name: 'Comércio e prestadores', text: 'Loja, oficina, salão, assistência técnica: quem precisa aparecer quando alguém busca o serviço ali perto. Estrutura, textos e dados do negócio preparados para esse tipo de busca.' },
+      { name: 'Indústria e B2B', text: 'Catálogo de produtos, certificações e um caminho direto para o comprador pedir cotação. Cada linha de produto ganha a própria página, que é como o comprador realmente pesquisa.' },
+    ],
+    deliverables: [
+      { title: 'SEO desde o início', text: 'Estrutura, títulos, textos e dados estruturados pensados para as buscas que trazem cliente, inclusive as buscas da sua cidade.' },
+      { title: 'Design próprio', text: 'Sem template pronto. Identidade visual da sua empresa aplicada com cuidado em tipografia, cores e imagens.' },
+      { title: 'Performance', text: 'Páginas leves, imagens otimizadas e notas altas no Google PageSpeed — no celular também.' },
+      { title: 'Contato direto', text: 'WhatsApp, telefone e mapa em destaque. O site existe para gerar conversa.' },
+      { title: 'Hospedagem e domínio', text: 'Configuramos domínio, hospedagem e certificado. Você fica com todos os acessos.' },
+    ],
+    proof: 'web',
+    faq: [
+      { q: 'Quanto custa um site profissional?', a: 'Um site institucional de poucas páginas tem um valor fechado. Sites com catálogo, área do cliente ou integrações são orçados por escopo. Passamos o valor depois de entender o que você precisa.' },
+      { q: 'Em quanto tempo o site fica pronto?', a: 'Sites institucionais ficam prontos em 2 a 4 semanas, contando a produção de textos e imagens.' },
+      { q: 'O site vai aparecer no Google?', a: 'O site nasce preparado para isso: estrutura correta, textos com as buscas certas e dados para o Google entender sua empresa e sua região. O posicionamento cresce com o tempo e com conteúdo.' },
+      { q: 'Posso atualizar o site sozinho?', a: 'Sim. Definimos juntos o que você vai editar e entregamos uma forma simples de fazer isso, ou cuidamos das atualizações por você.' },
+    ],
+    seo: {
+      title: 'InnovateApps Co. | Criação de Sites Profissionais',
+      description: 'Criação de sites profissionais otimizados para o Google e rápidos no celular. Design próprio, sem template, com foco em gerar contato.',
+      serviceType: 'Criação de sites',
+    },
+  },
+  {
+    slug: 'sistemas-web',
+    path: '/sistemas-web/',
+    name: 'Sistemas web sob medida',
+    shortName: 'Sistemas web',
+    navHint: 'Painéis e automações para a sua operação',
+    summary: 'Cadastro, pedidos, ordens de serviço, financeiro: o sistema que a sua operação precisa, sem pagar por função que não usa.',
+    bullets: ['Feito para o seu processo', 'Acesso de qualquer lugar', 'Integra com o que você já usa'],
+    hero: {
+      title: 'Sistemas web sob medida para a sua empresa',
+      lead: 'Desenvolvemos sistemas web sob medida para empresas que cresceram além da planilha e do caderno.',
+    },
+    audience: [
+      { name: 'Operação e serviços', text: 'Ordens de serviço, agenda da equipe e histórico completo por cliente, com cada pessoa vendo só o que precisa. Acaba a dependência da planilha compartilhada e de quem tem o arquivo mais atualizado.' },
+      { name: 'Vendas e financeiro', text: 'Pedidos, estoque, contas a receber e inadimplência no mesmo lugar, com relatórios que a gestão lê sem pedir ajuda. É a ideia por trás do Prazzo, aplicada ao processo da sua empresa.' },
+      { name: 'Indústria e logística', text: 'Apontamento de produção, expedição e rastreio de entregas com registro de quem fez o quê e quando. Dados que servem para cobrar prazo e achar gargalo, não só para arquivar.' },
+      { name: 'Quem já tem sistema', text: 'Quando trocar tudo sai caro demais, integramos o que já existe e substituímos por partes. O sistema novo entra módulo a módulo, sem parar a operação.' },
+    ],
+    deliverables: [
+      { title: 'Levantamento do processo', text: 'Entendemos como o trabalho acontece hoje antes de desenhar qualquer tela.' },
+      { title: 'Sistema web responsivo', text: 'Funciona no computador, no tablet e no celular, com acesso por usuário e permissão.' },
+      { title: 'Integrações', text: 'WhatsApp, e-mail, emissão de notas, meios de pagamento e APIs de terceiros.' },
+      { title: 'Automação com IA quando ajuda', text: 'Leitura de documentos, classificação de mensagens e respostas automáticas — só onde economiza tempo de verdade.' },
+      { title: 'Suporte e evolução', text: 'Correções, ajustes e novas funções conforme a operação muda.' },
+    ],
+    proof: 'web',
+    faq: [
+      { q: 'Sistema sob medida ou software pronto?', a: 'Se um software pronto resolve, indicamos ele. Sob medida vale a pena quando o processo é específico, quando o pronto cobra por usuário demais ou quando as integrações não existem.' },
+      { q: 'Quanto tempo leva um sistema web?', a: 'Uma primeira versão utilizável costuma levar de 6 a 12 semanas. Entregamos por etapas para você usar o sistema enquanto ele evolui.' },
+      { q: 'Onde o sistema fica hospedado?', a: 'Em nuvem, em conta da sua empresa, com backup automático. Você é dono dos dados e do código.' },
+      { q: 'Vocês integram com o meu ERP ou sistema atual?', a: 'Sim, desde que ele ofereça alguma forma de integração (API, banco de dados ou exportação). Avaliamos isso no levantamento.' },
+    ],
+    seo: {
+      title: 'InnovateApps Co. | Sistemas Web sob Medida',
+      description: 'Desenvolvimento de sistemas web sob medida: pedidos, ordens de serviço, financeiro e integrações. Feito para o processo da sua empresa.',
+      serviceType: 'Desenvolvimento de sistemas web',
+    },
+  },
+];
+
+export const serviceBySlug = (slug) => services.find((s) => s.slug === slug);

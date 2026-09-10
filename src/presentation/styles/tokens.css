@@ -1,0 +1,51 @@
+:root {
+  --navy-900: #010D33;
+  --navy-700: #152352;
+  --navy-600: #24346B;
+  --ink: #0B1230;
+  --ink-muted: #4A5273;
+  --paper: #F3F0E8;
+  --paper-2: #E9E6DE;
+  --amber: #F0A030;
+  --amber-hover: #E29320;
+  --amber-ink: #3A2300;
+  --amber-text: #7A4E00; /* âmbar escuro para texto real sobre fundos claros (AA: ≥4.5:1 no branco e no paper-2) */
+
+  --on-navy: #F3F0E8;
+  --on-navy-muted: rgba(243, 240, 232, 0.72);
+  --line: rgba(11, 18, 48, 0.14);
+  --line-on-navy: rgba(243, 240, 232, 0.16);
+
+  --font-heading: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif;
+  --font-body: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.375rem, 2.2vw, 1.75rem);
+  --display-2: clamp(2rem, 4.2vw, 3.25rem);
+  --display-1: clamp(2.5rem, 6vw, 4.75rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --section-y: clamp(4.5rem, 9vw, 7.5rem);
+
+  --container: 72rem;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --shadow-sm: 0 1px 2px rgba(11, 18, 48, 0.06), 0 1px 1px rgba(11, 18, 48, 0.04);
+  --shadow-md: 0 10px 28px rgba(11, 18, 48, 0.10);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur: 240ms;
+  --header-h: 4.25rem;
+}

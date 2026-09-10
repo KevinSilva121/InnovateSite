@@ -3,7 +3,8 @@ export class GetProjects {
     this.projectRepository = projectRepository;
   }
 
-  async execute() {
-    return await this.projectRepository.getProjects();
+  execute({ type } = {}) {
+    const all = this.projectRepository.getProjects();
+    return type ? all.filter((p) => p.type === type) : all;
   }
 }

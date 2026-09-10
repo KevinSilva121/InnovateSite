@@ -1,0 +1,103 @@
+.stage {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.phone {
+  position: relative;
+  width: min(17rem, 72vw);
+  padding: 0.5rem;
+  border-radius: 2.6rem;
+  background: #050F2B;
+  border: 1px solid rgba(243, 240, 232, 0.18);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.45);
+}
+
+.island {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  z-index: 2;
+  width: 32%;
+  height: 1.05rem;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #050F2B;
+}
+
+/* O visor usa a mesma proporção das imagens, então cada tela o preenche por inteiro. */
+.screen {
+  position: relative;
+  aspect-ratio: 9 / 19.5;
+  overflow: hidden;
+  border-radius: 2.15rem;
+  background: var(--ink);
+  contain: paint;
+}
+
+.frame {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+
+/* Antes de o feed começar (e sem JS), aparece só a primeira tela, parada. */
+.frame:not(:first-child) { display: none; }
+
+.frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Ritmo de reels: cada tela entra deslizando em 0,75s, fica parada 3s e sai.
+   São 12 telas, ciclo de 45s, uma troca a cada 3,75s.
+
+   Cada tela é animada isoladamente e ocupa só o tamanho do visor. Uma coluna
+   única com as 12 empilhadas daria 7154px de altura, acima do limite de textura
+   de muitas GPUs, o que impede a composição e joga a animação na thread
+   principal — onde qualquer clique a interrompe. */
+/* As animações só começam junto com o carregamento das demais telas. Ligá-las já
+   na primeira pintura custava ~400ms de recálculo de estilo e atrasava o título. */
+.rodando .frame {
+  display: block;
+  animation: frame 45s cubic-bezier(0.65, 0, 0.35, 1) infinite both;
+}
+
+@keyframes frame {
+  0% { transform: translate3d(0, 100%, 0); }
+  1.6667% { transform: translate3d(0, 0, 0); }
+  8.3333% { transform: translate3d(0, 0, 0); }
+  10% { transform: translate3d(0, -100%, 0); }
+  100% { transform: translate3d(0, -100%, 0); }
+}
+
+/* Atraso de 3,75s entre telas. O -0,75s da primeira faz o feed já abrir com ela
+   posicionada, em vez de deslizando. */
+.frame:nth-child(1) { animation-delay: -0.75s; }
+.frame:nth-child(2) { animation-delay: 3s; }
+.frame:nth-child(3) { animation-delay: 6.75s; }
+.frame:nth-child(4) { animation-delay: 10.5s; }
+.frame:nth-child(5) { animation-delay: 14.25s; }
+.frame:nth-child(6) { animation-delay: 18s; }
+.frame:nth-child(7) { animation-delay: 21.75s; }
+.frame:nth-child(8) { animation-delay: 25.5s; }
+.frame:nth-child(9) { animation-delay: 29.25s; }
+.frame:nth-child(10) { animation-delay: 33s; }
+.frame:nth-child(11) { animation-delay: 36.75s; }
+.frame:nth-child(12) { animation-delay: 40.5s; }
+
+/* Pausa ao passar o mouse ou ao focar. O hover chega por atributo, e não por
+   `.stage:hover .frame`: como seletor de descendente, ele obrigava o navegador a
+   revisitar as doze telas em todo recálculo de :hover, que acontece a cada
+   movimento do ponteiro em qualquer lugar da página. */
+.stage[data-pausado='true'] .frame,
+.stage:focus-within .frame {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rodando .frame { animation: none; }
+  .rodando .frame:not(:first-child) { display: none; }
+}

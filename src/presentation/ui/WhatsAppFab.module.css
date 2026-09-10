@@ -1,0 +1,35 @@
+/* Verde do WhatsApp escurecido para o glifo branco passar em contraste de elemento (>= 3:1). */
+.fab {
+  position: fixed;
+  right: max(1.25rem, env(safe-area-inset-right));
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: #128C4A;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(11, 18, 48, 0.28);
+  transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+
+.fab:hover {
+  background: #0F7A3F;
+  transform: translateY(-2px);
+}
+
+.fab:active {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fab {
+    transition: none;
+  }
+  .fab:hover {
+    transform: none;
+  }
+}

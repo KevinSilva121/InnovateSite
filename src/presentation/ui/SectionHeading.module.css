@@ -1,0 +1,3 @@
+.heading { display: grid; gap: var(--space-4); margin-bottom: var(--space-7); max-width: 46rem; }
+.center { margin-inline: auto; text-align: center; }
+.center :global(.lede) { margin-inline: auto; }

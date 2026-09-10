@@ -1,0 +1,86 @@
+/* Linha de apoio (categoria · data · leitura), igual no destaque e na lista. */
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+}
+
+.chip {
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--amber-text);
+  background: rgba(240, 160, 48, 0.1);
+}
+
+/* O link do título cobre o bloco inteiro, então o card todo é clicável sem
+   duplicar links para leitor de tela. */
+.link { text-decoration: none; }
+.link::after { content: ''; position: absolute; inset: 0; }
+.link:hover, .featured:hover .link, .row:hover .link { text-decoration: underline; text-decoration-color: var(--amber); text-decoration-thickness: 2px; }
+
+.excerpt { color: var(--ink-muted); max-width: 46rem; }
+
+/* Destaque: o artigo mais recente. */
+.featured {
+  position: relative;
+  display: grid;
+  gap: var(--space-4);
+  padding-bottom: var(--space-7);
+  border-bottom: 1px solid var(--line);
+}
+
+.featuredTitle { font-size: clamp(1.75rem, 3vw, 2.35rem); max-width: 26ch; }
+
+.more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--amber-text);
+}
+
+.more svg { transition: transform var(--dur) var(--ease); }
+.featured:hover .more svg { transform: translateX(3px); }
+
+/* Demais artigos: sumário de revista, separado por fio. */
+.list { display: grid; }
+
+.row {
+  position: relative;
+  display: grid;
+  gap: var(--space-3);
+  padding-block: var(--space-6);
+  border-bottom: 1px solid var(--line);
+  transition: background-color var(--dur) var(--ease);
+}
+
+.list li:last-child .row { border-bottom: 0; padding-bottom: 0; }
+
+.rowBody { display: grid; gap: var(--space-3); }
+.rowTitle { font-size: var(--text-xl); max-width: 30ch; }
+
+@media (min-width: 48rem) {
+  .row {
+    grid-template-columns: 12rem minmax(0, 1fr);
+    gap: var(--space-6);
+    align-items: start;
+    /* Estende o fundo do hover para além do texto, sem mexer no fio. */
+    margin-inline: calc(var(--space-4) * -1);
+    padding-inline: var(--space-4);
+  }
+  .row .meta { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+  .row .meta span[aria-hidden='true'] { display: none; }
+  .row:hover { background: var(--paper-2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .more svg, .row { transition: none; }
+}

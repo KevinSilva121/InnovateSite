@@ -1,0 +1,151 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--navy-900);
+  color: var(--on-navy);
+  padding-block: clamp(3.5rem, 8vw, 7rem) clamp(4rem, 9vw, 7.5rem);
+}
+
+/* No desktop o hero ocupa a tela inteira abaixo do cabeçalho, para o creme da
+   próxima seção só aparecer quando a pessoa rolar. */
+@media (min-width: 64rem) {
+  .hero {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - var(--header-h));
+    min-height: calc(100svh - var(--header-h));
+  }
+}
+
+/* Textura de pontos, estática de propósito: animar background-position repinta
+   o hero inteiro a cada quadro e é o que fazia a rolagem engasgar. */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(243, 240, 232, 0.07) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+/* Halos de luz. Antes eram círculos sólidos com filter: blur(80px), que obriga o
+   navegador a recalcular o desfoque a cada quadro. O gradiente radial dá o mesmo
+   resultado visual, é rasterizado uma vez e depois só translada. */
+/* Estas duas luzes vagam sozinhas, por keyframes, e nada em JavaScript encosta
+   nelas: a animação inteira roda no compositor e não custa thread principal.
+   Já tiveram parallax ligado ao mouse; medido com tracing, aquilo custava de 30 a
+   40 ms por segundo e era o que disputava espaço com o feed do iPhone ao lado. */
+.glowA,
+.glowB {
+  position: absolute;
+  z-index: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Cada luz é desenhada na metade do tamanho e ampliada por 2. Em gradiente não
+   existe detalhe para perder, e a textura que a GPU precisa guardar e recompor a
+   cada quadro cai para um quarto. É o que sobra de custo depois que a animação
+   deixa a thread principal: banda de GPU.
+   As posições abaixo já compensam a ampliação, para o centro de cada luz cair
+   exatamente onde caía antes. */
+.glowA {
+  top: -6.5rem;
+  left: -0.5rem;
+  width: 23rem;
+  height: 23rem;
+  background: radial-gradient(closest-side, rgba(46, 66, 133, 0.9), rgba(46, 66, 133, 0));
+  animation: floatA 22s ease-in-out infinite alternate;
+}
+
+.glowB {
+  right: -4.5rem;
+  bottom: -10.5rem;
+  width: 19rem;
+  height: 19rem;
+  background: radial-gradient(closest-side, rgba(240, 160, 48, 0.17), rgba(240, 160, 48, 0));
+  animation: floatB 28s ease-in-out infinite alternate;
+}
+
+/* A escala vem depois do deslocamento na lista, então ela não multiplica o
+   deslocamento: as luzes vagam exatamente a mesma distância de antes. */
+@keyframes floatA {
+  from { transform: translate3d(-4rem, -2rem, 0) scale(2); }
+  to { transform: translate3d(10rem, 7rem, 0) scale(2); }
+}
+
+@keyframes floatB {
+  from { transform: translate3d(3rem, 2rem, 0) scale(2); }
+  to { transform: translate3d(-10rem, -6rem, 0) scale(2); }
+}
+
+/* Halo que persegue o ponteiro. Fica centrado na origem para o script só
+   precisar transladá-lo até o cursor. Ver usePointerGlow.js. */
+.glowC {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  /* Mesma economia das outras luzes: metade do tamanho, ampliada por 2 pelo
+     script que a move. Ver usePointerGlow.js. */
+  width: 21rem;
+  height: 21rem;
+  margin: -10.5rem 0 0 -10.5rem;
+  border-radius: 50%;
+  /* Núcleo mais aceso com queda suave, para o foco aparecer sem virar um disco. */
+  background: radial-gradient(
+    closest-side,
+    rgba(122, 160, 250, 0.5),
+    rgba(102, 136, 226, 0.22) 45%,
+    rgba(96, 130, 220, 0) 100%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 480ms var(--ease);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Acende ao entrar na seção e apaga ao sair, em vez de congelar onde estava. */
+.glowC[data-aceso='true'] { opacity: 1; }
+
+/* Sem mouse (celular) ou com menos movimento pedido, o halo não aparece. */
+@media (pointer: coarse) {
+  .glowC { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glowA,
+  .glowB {
+    animation: none;
+    will-change: auto;
+  }
+  .glowC { display: none; }
+}
+
+.hero :global(.eyebrow) { color: var(--amber); }
+
+.grid {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.copy { display: grid; gap: var(--space-5); max-width: 40rem; min-width: 0; }
+.accent { color: var(--amber); }
+.lead { font-size: var(--text-lg); line-height: 1.55; color: var(--on-navy-muted); max-width: min(34rem, 100%); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.proof { font-size: var(--text-sm); color: var(--on-navy-muted); }
+.proof strong { color: var(--on-navy); }
+
+@media (min-width: 64rem) {
+  .grid { grid-template-columns: 1.15fr 0.85fr; gap: var(--space-8); }
+}

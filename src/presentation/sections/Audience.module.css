@@ -1,0 +1,19 @@
+.grid { display: grid; gap: var(--space-4); }
+.card {
+  display: grid; gap: var(--space-2); padding: var(--space-5);
+  border: 1px solid var(--line); border-radius: var(--radius-md); background: #fff;
+  transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(11, 18, 48, 0.28);
+  box-shadow: var(--shadow-md);
+}
+.card h3 { font-size: var(--text-lg); }
+.card p { color: var(--ink-muted); font-size: var(--text-sm); }
+@media (min-width: 48rem) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .card { transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+  .card:hover { transform: none; }
+}

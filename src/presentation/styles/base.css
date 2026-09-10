@@ -1,0 +1,77 @@
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html {
+  color-scheme: light;
+  /* Permite animar altura de 0 até auto (usado no abre/fecha do FAQ). */
+  interpolate-size: allow-keywords;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img, svg, video { display: block; max-width: 100%; height: auto; }
+
+/* Seleção desligada no site inteiro, a pedido. Campos de formulário ficam de fora:
+   sem isso a pessoa não conseguiria corrigir o que ela mesma digitou. */
+body {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+input, textarea, select, [contenteditable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+/* Impede arrastar a imagem para fora da página (Chrome, Edge e Safari). */
+img {
+  -webkit-user-drag: none;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { background: none; border: 0; padding: 0; cursor: pointer; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+ul[class], ol[class] { list-style: none; padding: 0; }
+p { text-wrap: pretty; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: inherit;
+}
+h1 { font-size: var(--display-1); font-weight: 800; letter-spacing: -0.03em; }
+h2 { font-size: var(--display-2); }
+h3 { font-size: var(--text-xl); letter-spacing: -0.01em; }
+h4 { font-size: var(--text-lg); }
+strong { font-weight: 600; }
+::selection { background: var(--amber); color: var(--amber-ink); }
+
+:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; border-radius: 2px; }
+:focus:not(:focus-visible) { outline: none; }
+
+.skip-link {
+  position: absolute; left: 1rem; top: -100%;
+  z-index: 100; padding: 0.75rem 1rem;
+  background: var(--amber); color: var(--amber-ink);
+  font-weight: 600; border-radius: var(--radius-sm);
+}
+.skip-link:focus { top: 1rem; }
+
+/* Reveal ao rolar: o HTML pré-renderizado nasce visível; só com JS ("html.js") escondemos até entrar na tela. */
+[data-reveal] { transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+html.js [data-reveal]:not(.is-in) { opacity: 0; transform: translateY(14px); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  [data-reveal] { transition: none; }
+  html.js [data-reveal]:not(.is-in) { opacity: 1; transform: none; }
+}

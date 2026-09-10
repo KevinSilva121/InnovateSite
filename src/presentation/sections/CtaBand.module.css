@@ -1,0 +1,4 @@
+.band { padding-block: clamp(3.5rem, 7vw, 5.5rem); }
+.inner { display: grid; gap: var(--space-5); max-width: 44rem; }
+.inner p { color: var(--on-navy-muted); font-size: var(--text-lg); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }

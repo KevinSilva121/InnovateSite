@@ -1,0 +1,53 @@
+name: Deploy no Firebase Hosting
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: firebase-hosting
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      # Variável do repositório. Deixe vazia até o domínio próprio estar no ar;
+      # sem ela o site é publicado com a URL .web.app do projeto.
+      SITE_URL: ${{ vars.SITE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+
+      # O canonical, o sitemap e o JSON-LD precisam apontar para o endereço em que
+      # o site vai responder de verdade, então a URL é definida antes do build.
+      - name: Definir projeto e URL do site
+        run: |
+          PROJETO=$(node -p "JSON.parse(require('fs').readFileSync('.firebaserc','utf8')).projects.default")
+          if [ -z "$PROJETO" ] || [ "$PROJETO" = "SEU-PROJETO-FIREBASE" ]; then
+            echo "::error::.firebaserc ainda está com o valor de exemplo. Rode 'firebase use --add'."
+            exit 1
+          fi
+          echo "FIREBASE_PROJECT=$PROJETO" >> "$GITHUB_ENV"
+          echo "VITE_BASE=/" >> "$GITHUB_ENV"
+          if [ -n "$SITE_URL" ]; then
+            echo "VITE_SITE_URL=${SITE_URL%/}" >> "$GITHUB_ENV"
+          else
+            echo "VITE_SITE_URL=https://$PROJETO.web.app" >> "$GITHUB_ENV"
+          fi
+
+      - run: npm run build
+      - run: npm run test:build
+
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: ${{ env.FIREBASE_PROJECT }}
+          channelId: live

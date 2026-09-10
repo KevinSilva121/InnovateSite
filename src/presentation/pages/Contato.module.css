@@ -1,0 +1,13 @@
+.grid { display: grid; gap: var(--space-7); align-items: start; }
+.channels { display: grid; gap: var(--space-4); }
+.card { display: grid; gap: var(--space-2); padding: var(--space-5); background: #fff; border: 1px solid var(--line); border-radius: var(--radius-md); }
+.card svg { color: var(--amber-hover); }
+.card h2 { font-size: var(--text-lg); }
+.card p { color: var(--ink-muted); }
+.card > a { justify-self: start; margin-top: var(--space-2); }
+.link { font-weight: 600; }
+.aside { display: grid; gap: var(--space-4); }
+.aside h2 { font-size: var(--text-md); font-family: var(--font-body); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); }
+.cities { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.cities li { padding: 0.45rem 0.85rem; border: 1px solid var(--line); border-radius: 999px; font-size: var(--text-sm); background: #fff; }
+@media (min-width: 64rem) { .grid { grid-template-columns: 1.2fr 0.8fr; gap: var(--space-8); } .channels { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

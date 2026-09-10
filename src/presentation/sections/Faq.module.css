@@ -1,0 +1,37 @@
+.list { display: grid; max-width: 46rem; border-top: 1px solid var(--line); }
+.item { border-bottom: 1px solid var(--line); }
+.summary {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+  padding: 1.1rem 0; cursor: pointer; list-style: none;
+  font-family: var(--font-heading); font-weight: 600; font-size: var(--text-lg); letter-spacing: -0.01em;
+  transition: color var(--dur) var(--ease);
+}
+.summary::-webkit-details-marker { display: none; }
+.summary:hover { color: var(--amber-text); }
+.chevron { flex: none; transition: transform 320ms var(--ease); }
+.item[open] .chevron { transform: rotate(180deg); }
+.answer { padding-bottom: 1.25rem; color: var(--ink-muted); max-width: 40rem; }
+
+/* Abre e fecha animado, sem JS. Depende de ::details-content e de
+   `interpolate-size: allow-keywords` (declarado em base.css), que é o que
+   permite animar até `auto`. Onde o navegador não suportar, abre na hora,
+   exatamente como antes. */
+.item::details-content {
+  block-size: 0;
+  opacity: 0;
+  overflow: clip;
+  transition:
+    block-size 320ms var(--ease),
+    opacity 240ms var(--ease),
+    content-visibility 320ms allow-discrete;
+}
+
+.item[open]::details-content {
+  block-size: auto;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item::details-content,
+  .chevron { transition: none; }
+}
