@@ -13,6 +13,7 @@ export function localBusiness(site) {
     '@id': businessId(site),
     name: site.name,
     url: `${site.url}/`,
+    ...(site.alternateNames?.length ? { alternateName: site.alternateNames } : {}),
     logo: `${site.url}/logo/mark-512.png`,
     image: `${site.url}/og/default.png`,
     description: site.description,
@@ -27,11 +28,30 @@ export function localBusiness(site) {
   };
   if (site.whatsapp) node.telephone = `+${site.whatsapp}`;
   if (site.email) node.email = site.email;
+  if (site.founder) node.founder = { '@type': 'Person', name: site.founder };
+  if (site.hours) {
+    node.openingHoursSpecification = {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: site.hours.days,
+      opens: site.hours.opens,
+      closes: site.hours.closes,
+    };
+  }
   return node;
 }
 
+// O Google tira daqui o nome mostrado acima do link nos resultados. Sem nome
+// consistente com título e og:site_name, ele cai para o domínio.
 export function webSite(site) {
-  return { '@type': 'WebSite', name: site.name, url: `${site.url}/`, inLanguage: 'pt-BR' };
+  return {
+    '@type': 'WebSite',
+    '@id': `${site.url}/#website`,
+    name: site.name,
+    ...(site.alternateNames?.length ? { alternateName: site.alternateNames } : {}),
+    url: `${site.url}/`,
+    inLanguage: 'pt-BR',
+    publisher: { '@id': businessId(site) },
+  };
 }
 
 export function breadcrumb(site, items) {

@@ -18,6 +18,7 @@ describe('Footer', () => {
   it('links the Instagram profile and no longer shows GitHub', () => {
     render(<MemoryRouter><Footer /></MemoryRouter>);
     expect(screen.getByRole('link', { name: 'Instagram' })).toHaveAttribute('href', site.social.instagram);
+    expect(screen.getByRole('link', { name: 'LinkedIn' })).toHaveAttribute('href', 'https://www.linkedin.com/company/innovateapps-co/');
     expect(screen.queryByRole('link', { name: 'GitHub' })).toBeNull();
   });
 });

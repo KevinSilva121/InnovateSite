@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import { site } from '../../config/site.js';
 import { ProjectRepository } from '../../data/repositories/ProjectRepository.js';
 import { GetProjects } from '../../domain/usecases/GetProjects.js';
@@ -25,7 +26,7 @@ export default function Sobre() {
         breadcrumb={[{ name: 'Início', path: '/' }, { name: 'Sobre', path: '/sobre/' }]}
         eyebrow={`Sobre a ${site.shortName}`}
         title="Uma empresa de tecnologia feita por quem programa"
-        lead="Desenvolvemos sites, sistemas web e aplicativos para empresas de todo o Brasil — e publicamos os nossos próprios apps para provar que o processo funciona."
+        lead="Desenvolvemos sites, sistemas web e aplicativos para empresas de Taubaté, do Vale do Paraíba e de todo o Brasil — e publicamos os nossos próprios apps para provar que o processo funciona."
       />
 
       <Section id="historia">
@@ -33,6 +34,7 @@ export default function Sobre() {
           <div className={styles.text}>
             <SectionHeading eyebrow="Quem está por trás" title="Feita por quem programa" />
             <p>A Innovate Apps foi fundada por <strong>{site.founder}</strong>, desenvolvedor de software com experiência em aplicativos Android e iOS, sistemas web e integrações. A empresa nasceu em Taubaté, SP, para atender empresas que precisam de tecnologia sob medida sem contratar uma equipe inteira.</p>
+            <p>Hoje fazemos <Link to="/sites/">criação de sites</Link>, <Link to="/sistemas-web/">sistemas web sob medida</Link> e <Link to="/aplicativos/">aplicativos Android e iOS</Link> para empresas de Taubaté, São José dos Campos e das demais cidades do Vale do Paraíba, além de clientes de outros estados.</p>
             <p>Além dos projetos para clientes, mantemos produtos próprios nas lojas: CalcFrete, Contador de Cantos, Prazzo e Trama. Cada um passou pelo mesmo caminho que oferecemos a você — conversa, proposta, desenvolvimento por etapas e publicação.</p>
             <p>Trabalhamos com poucas frentes ao mesmo tempo, de propósito. Quem conversa com você no orçamento é quem escreve o código.</p>
           </div>

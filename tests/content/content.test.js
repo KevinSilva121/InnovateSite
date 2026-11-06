@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { services, serviceBySlug } from '../../src/data/content/services.js';
+import { services, serviceBySlug, serviceByCategory } from '../../src/data/content/services.js';
+import { postsByDate } from '../../src/data/content/posts.js';
 import { processSteps } from '../../src/data/content/process.js';
 import { homeFaq } from '../../src/data/content/faq.js';
 
@@ -17,10 +18,11 @@ describe('services content', () => {
     expect(s.deliverables.length).toBeGreaterThanOrEqual(4);
     expect(s.faq.length).toBeGreaterThanOrEqual(4);
     expect(['apps', 'web']).toContain(s.proof);
-    expect(s.seo.title.length).toBeLessThanOrEqual(60);
-    expect(s.seo.title).toMatch(/^InnovateApps Co\. \| /);
+    expect(s.seo.title.length).toBeLessThanOrEqual(65);
+    expect(s.seo.title).toMatch(/ \| Innovate Apps$/);
     expect(s.seo.description.length).toBeLessThanOrEqual(155);
     expect(s.hero.title).toMatch(/aplicativos|sites|sistemas web/i);
+    expect(s.hero.title).toMatch(/Taubaté/);
     const text = JSON.stringify(s);
     expect(text).not.toMatch(BANNED);
   });
@@ -28,6 +30,11 @@ describe('services content', () => {
   it('serviceBySlug finds and misses', () => {
     expect(serviceBySlug('sites').name).toMatch(/Sites/);
     expect(serviceBySlug('nope')).toBeUndefined();
+  });
+
+  it('every blog category maps to a service page', () => {
+    for (const post of postsByDate()) expect(serviceByCategory(post.category)).toBeDefined();
+    expect(serviceByCategory('Sites').path).toBe('/sites/');
   });
 });
 

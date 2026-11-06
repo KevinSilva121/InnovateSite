@@ -1,6 +1,8 @@
 .story { display: grid; gap: var(--space-7); align-items: start; }
 .text { display: grid; gap: var(--space-4); max-width: 40rem; }
 .text p { color: var(--ink-muted); }
+.text a { color: var(--ink); font-weight: 600; text-decoration-color: var(--amber); text-underline-offset: 0.15em; }
+.text a:hover { text-decoration-thickness: 2px; }
 .facts { display: grid; gap: var(--space-4); padding: var(--space-6); background: var(--navy-900); color: var(--on-navy); border-radius: var(--radius-lg); }
 .facts dt { font-size: var(--text-xs); letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); }
 .facts dd { font-family: var(--font-heading); font-weight: 700; font-size: var(--text-lg); }

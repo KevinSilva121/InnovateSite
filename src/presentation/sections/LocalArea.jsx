@@ -11,8 +11,8 @@ export default function LocalArea() {
         <div>
           <SectionHeading
             eyebrow="Onde atendemos"
-            title="Atendemos empresas em todo o Brasil"
-            lead="Trabalhamos remotamente com todo o país, com reuniões por vídeo e entregas frequentes. No Vale do Paraíba e no Litoral Norte, também atendemos presencialmente."
+            title="Empresa de software no Vale do Paraíba"
+            lead="A sede fica em Taubaté e atendemos presencialmente empresas de São José dos Campos, Pindamonhangaba, Jacareí e de todo o Vale do Paraíba e Litoral Norte. Para o resto do Brasil, trabalhamos remotamente, com reuniões por vídeo e entregas frequentes."
           />
           <p className={styles.note}><MapPin size={18} aria-hidden="true" /> Sede em Taubaté – SP</p>
         </div>

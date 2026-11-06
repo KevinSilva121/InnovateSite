@@ -21,7 +21,20 @@ describe('localBusiness', () => {
     expect(lb.address).toEqual({ '@type': 'PostalAddress', addressLocality: 'Taubaté', addressRegion: 'SP', addressCountry: 'BR' });
     expect(lb.areaServed[0]).toEqual({ '@type': 'City', name: 'Taubaté' });
     expect(lb.sameAs).toContain(site.stores.play);
+    expect(lb.sameAs).toContain('https://www.linkedin.com/company/innovateapps-co/');
     expect(lb.logo).toBe(`${site.url}/logo/mark-512.png`);
+  });
+
+  it('carries opening hours, founder and the other spellings of the brand', () => {
+    const lb = localBusiness(site);
+    expect(lb.openingHoursSpecification).toEqual({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '09:00',
+      closes: '18:00',
+    });
+    expect(lb.founder).toEqual({ '@type': 'Person', name: site.founder });
+    expect(lb.alternateName).toContain('InnovateApps Co.');
   });
 
   it('omits telephone and email when empty, includes them when set', () => {
@@ -33,8 +46,15 @@ describe('localBusiness', () => {
 });
 
 describe('page-level nodes', () => {
-  it('webSite carries name and url', () => {
-    expect(webSite(site)).toMatchObject({ '@type': 'WebSite', name: site.name, url: `${site.url}/` });
+  it('webSite carries name, alternate names, url and publisher', () => {
+    expect(webSite(site)).toMatchObject({
+      '@type': 'WebSite',
+      '@id': `${site.url}/#website`,
+      name: site.name,
+      alternateName: site.alternateNames,
+      url: `${site.url}/`,
+      publisher: { '@id': `${site.url}/#business` },
+    });
   });
 
   it('breadcrumb positions items from 1', () => {

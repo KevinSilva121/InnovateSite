@@ -103,5 +103,10 @@ Para regenerar: `npm run assets` (fontes, ícones, marca) e `node scripts/assets
 
 - Projeto do Firebase em `.firebaserc` (`firebase use --add`)
 - Link do Trama na App Store, se existir, em `ProjectRepository.js`
-- Instagram/LinkedIn em `site.js`
 - Domínio → `.env.production` e variável `SITE_URL` no GitHub
+- `www.innovateapps.com.br` ainda não existe no DNS: adicionar no Firebase Hosting como domínio que redireciona para o endereço sem `www`
+- Perfil da Empresa no Google: depois de criado, acrescentar o link dele em `sameAsLinks` (`site.js`)
+
+## SEO local
+
+Os títulos seguem `<serviço ou assunto> em <cidade> | Innovate Apps`: o que o cliente digita vem primeiro, a marca no fim. Os testes em `tests/seo/pages.test.js` falham se uma página voltar a começar pela marca ou se a home e as páginas de serviço perderem a cidade.

@@ -9,7 +9,12 @@ import { graph, localBusiness, webSite, breadcrumb, faqPage, service, softwareAp
 const apps = () => new GetProjects(new ProjectRepository()).execute({ type: 'app' });
 const base = () => [localBusiness(site), webSite(site)];
 const crumbs = (name, path) => breadcrumb(site, [{ name: 'Início', path: '/' }, { name, path }]);
-const BRAND = 'InnovateApps Co.';
+
+// Títulos começam pelo que o cliente digita no Google (serviço + cidade) e
+// terminam na marca. Se o Google cortar, corta a marca, que ele já mostra
+// em cima do link.
+export const BRAND = 'Innovate Apps';
+export const withBrand = (text) => `${text} | ${BRAND}`;
 
 // Cada artigo do blog vira uma página indexável. A chave leva o slug para que
 // routes.jsx e o teste de rotas continuem casando um-para-um com `pages`.
@@ -18,7 +23,7 @@ export const postKey = (slug) => `post:${slug}`;
 const postPage = (post) => ({
   key: postKey(post.slug),
   path: postPath(post.slug),
-  title: `${BRAND} | ${post.seo.title}`,
+  title: withBrand(post.seo.title),
   description: post.seo.description,
   article: { published: post.date, modified: post.updated ?? post.date, section: post.category },
   jsonLd: () =>
@@ -44,8 +49,8 @@ export const pages = {
   home: {
     key: 'home',
     path: '/',
-    title: 'InnovateApps Co. | Sites, sistemas e aplicativos',
-    description: 'Criamos sites, sistemas web e aplicativos Android e iOS sob medida para a sua empresa. Apps próprios publicados na Google Play e na App Store.',
+    title: withBrand('Empresa de software em Taubaté e Vale do Paraíba'),
+    description: 'Criação de sites, sistemas web e aplicativos sob medida em Taubaté, São José dos Campos e todo o Vale do Paraíba. Apps próprios na Google Play e App Store.',
     jsonLd: () => graph(...base(), softwareAppList(site, apps()), faqPage(homeFaq)),
   },
   aplicativos: servicePage('aplicativos', 'aplicativos', () => [softwareAppList(site, apps())]),
@@ -54,7 +59,7 @@ export const pages = {
   blog: {
     key: 'blog',
     path: '/blog/',
-    title: `${BRAND} | Blog`,
+    title: withBrand('Blog sobre sites, sistemas e aplicativos'),
     description: 'Artigos sobre sites, sistemas web e aplicativos para quem toca uma empresa: o que investir em tecnologia muda na prática e por onde começar.',
     jsonLd: () => graph(...base(), blog(site, postsByDate()), crumbs('Blog', '/blog/')),
   },
@@ -63,21 +68,21 @@ export const pages = {
   sobre: {
     key: 'sobre',
     path: '/sobre/',
-    title: 'InnovateApps Co. | Sobre nós',
-    description: 'Somos uma empresa de desenvolvimento de software. Sites, sistemas web e aplicativos feitos por quem programa, do primeiro rascunho à publicação.',
+    title: withBrand('Quem somos: desenvolvedores em Taubaté – SP'),
+    description: 'Empresa de desenvolvimento de software fundada em Taubaté – SP. Sites, sistemas web e aplicativos feitos por quem programa, do rascunho à publicação.',
     jsonLd: () => graph(...base(), crumbs('Sobre', '/sobre/')),
   },
   contato: {
     key: 'contato',
     path: '/contato/',
-    title: 'InnovateApps Co. | Contato',
-    description: 'Fale com a Innovate Apps por WhatsApp ou e-mail. Orçamento de sites, sistemas web e aplicativos Android e iOS para a sua empresa.',
+    title: withBrand('Contato e orçamento em Taubaté – SP'),
+    description: 'Fale com a Innovate Apps por WhatsApp ou e-mail. Orçamento de sites, sistemas web e aplicativos para empresas de Taubaté e do Vale do Paraíba.',
     jsonLd: () => graph(...base(), crumbs('Contato', '/contato/')),
   },
   notFound: {
     key: 'notFound',
     path: null,
-    title: 'InnovateApps Co. | Página não encontrada',
+    title: withBrand('Página não encontrada'),
     description: 'A página que você procurou não existe. Volte para o início e conheça os sites, sistemas e aplicativos da Innovate Apps.',
     robots: 'noindex, nofollow',
     jsonLd: () => graph(...base()),

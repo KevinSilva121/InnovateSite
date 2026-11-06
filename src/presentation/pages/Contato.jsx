@@ -20,7 +20,7 @@ export default function Contato() {
         breadcrumb={[{ name: 'Início', path: '/' }, { name: 'Contato', path: '/contato/' }]}
         eyebrow="Contato"
         title="Fale com a Innovate Apps"
-        lead="Conte o que a sua empresa precisa. Respondemos em horário comercial e marcamos uma conversa por vídeo ou presencial."
+        lead="Conte o que a sua empresa precisa. Respondemos em horário comercial e marcamos uma conversa por vídeo ou presencial em Taubaté e região."
       />
 
       <Section id="canais">
@@ -45,7 +45,7 @@ export default function Contato() {
             <div className={styles.card}>
               <Clock size={24} aria-hidden="true" />
               <h2>Horário</h2>
-              <p>Segunda a sexta, das 9h às 18h.</p>
+              <p>{site.hours.label}</p>
             </div>
             <div className={styles.card}>
               <MapPin size={24} aria-hidden="true" />

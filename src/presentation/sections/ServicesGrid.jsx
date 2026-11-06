@@ -11,7 +11,7 @@ export default function ServicesGrid() {
       <SectionHeading
         eyebrow="O que fazemos"
         title="Três frentes, um mesmo jeito de trabalhar"
-        lead="Escopo por escrito, entregas frequentes e o código é seu no final. Escolha por onde começar."
+        lead="Desenvolvimento de software sob medida: criação de sites, sistemas web e aplicativos. Escopo por escrito, entregas frequentes e o código é seu no final."
       />
       <div className={styles.grid}>
         {services.map((s) => (

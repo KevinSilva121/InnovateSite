@@ -21,11 +21,24 @@ describe('pages meta', () => {
     expect(pages.notFound.robots).toBe('noindex, nofollow');
   });
 
+  // Assunto primeiro, marca no fim. Até 65: se o Google cortar por largura,
+  // o que some é a marca, nunca o serviço ou a cidade.
   it.each(Object.values(pages))('$key respects title/description limits', (p) => {
-    expect(p.title.length).toBeLessThanOrEqual(60);
-    expect(p.title).toMatch(/^InnovateApps Co\. \| /);
+    expect(p.title.length).toBeLessThanOrEqual(65);
+    expect(p.title).toMatch(/ \| Innovate Apps$/);
+    expect(p.title).not.toMatch(/^Innovate/);
     expect(p.description.length).toBeLessThanOrEqual(155);
     expect(p.description.length).toBeGreaterThan(60);
+  });
+
+  it('home and service pages name the city in title and description', () => {
+    for (const key of ['home', 'aplicativos', 'sites', 'sistemasWeb']) {
+      expect(pages[key].title).toMatch(/Taubaté/);
+      expect(pages[key].description).toMatch(/Taubaté/);
+    }
+    expect(pages.home.title).toMatch(/^Empresa de software/);
+    expect(pages.sites.title).toMatch(/^Criação de sites/);
+    expect(pages.sistemasWeb.title).toMatch(/^Criação de sistemas/);
   });
 
   it.each(indexable)('$key jsonLd is a schema.org graph with LocalBusiness', (p) => {

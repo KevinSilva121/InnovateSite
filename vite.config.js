@@ -9,7 +9,7 @@ export default defineConfig({
       apply: 'serve',
       transformIndexHtml(html) {
         const devHead = [
-          '<title>Innovate Apps Co. | Sites, Sistemas Web e Aplicativos</title>',
+          '<title>Empresa de software em Taubaté e Vale do Paraíba | Innovate Apps</title>',
           '<meta name="robots" content="index, follow" />',
           '<link rel="canonical" href="https://innovateapps.com.br/" />',
         ].join('\n    ');

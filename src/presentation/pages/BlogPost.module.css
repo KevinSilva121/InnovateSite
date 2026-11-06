@@ -98,6 +98,9 @@
   color: var(--ink-muted);
 }
 
+.by a { color: var(--amber-text); font-weight: 600; text-underline-offset: 0.15em; }
+.by a:hover { text-decoration-thickness: 2px; }
+
 .back a {
   display: inline-flex;
   align-items: center;

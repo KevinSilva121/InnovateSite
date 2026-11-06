@@ -8,8 +8,8 @@ export const services = [
     summary: 'Do primeiro rascunho à publicação na Google Play e na App Store. Já fizemos isso com os nossos próprios apps.',
     bullets: ['Android e iOS com um só código', 'Publicação nas duas lojas incluída', 'Funciona offline quando precisa'],
     hero: {
-      title: 'Desenvolvimento de aplicativos Android e iOS',
-      lead: 'Criamos apps para empresas que precisam colocar um produto na mão do cliente ou da equipe — e cuidamos da publicação nas lojas.',
+      title: 'Criação de aplicativos Android e iOS em Taubaté e região',
+      lead: 'Desenvolvemos apps para empresas de Taubaté, do Vale do Paraíba e de todo o Brasil que precisam colocar um produto na mão do cliente ou da equipe — e cuidamos da publicação nas lojas.',
     },
     audience: [
       { name: 'Comércio e serviços', text: 'Seu cliente pede, agenda e acompanha tudo pelo celular, sem depender de uma conversa solta no WhatsApp. Você recebe o pedido já organizado, com histórico por cliente e espaço para fidelidade e promoções.' },
@@ -33,8 +33,8 @@ export const services = [
       { q: 'Vocês atendem empresas de outros estados?', a: 'Sim. Atendemos remotamente em todo o Brasil, com reuniões por vídeo e entregas frequentes. Presencialmente, atendemos no Vale do Paraíba e região.' },
     ],
     seo: {
-      title: 'InnovateApps Co. | Desenvolvimento de Aplicativos',
-      description: 'Desenvolvimento de aplicativos Android e iOS sob medida. Publicação nas lojas incluída. Apps próprios publicados na Google Play e na App Store.',
+      title: 'Criação de aplicativos Android e iOS em Taubaté | Innovate Apps',
+      description: 'Desenvolvimento de aplicativos Android e iOS em Taubaté e no Vale do Paraíba, com publicação na Google Play e na App Store incluída.',
       serviceType: 'Desenvolvimento de aplicativos móveis',
     },
   },
@@ -47,8 +47,8 @@ export const services = [
     summary: 'Site rápido, bonito e feito para aparecer no Google quando alguém da região procura o que você faz.',
     bullets: ['Otimizado para busca local', 'Carrega rápido no celular', 'Você recebe o acesso e o código'],
     hero: {
-      title: 'Criação de sites profissionais',
-      lead: 'Sites para empresas que precisam ser encontradas no Google e passar confiança no primeiro clique.',
+      title: 'Criação de sites profissionais em Taubaté e região',
+      lead: 'Sites para empresas de Taubaté, São José dos Campos e todo o Vale do Paraíba que precisam ser encontradas no Google e passar confiança no primeiro clique.',
     },
     audience: [
       { name: 'Escritórios e clínicas', text: 'Advocacia, contabilidade, odontologia e consultórios que vivem de indicação e de quem procura no Google. O site precisa passar credibilidade nos primeiros segundos e deixar o contato a um toque no celular.' },
@@ -68,10 +68,11 @@ export const services = [
       { q: 'Em quanto tempo o site fica pronto?', a: 'Sites institucionais ficam prontos em 2 a 4 semanas, contando a produção de textos e imagens.' },
       { q: 'O site vai aparecer no Google?', a: 'O site nasce preparado para isso: estrutura correta, textos com as buscas certas e dados para o Google entender sua empresa e sua região. O posicionamento cresce com o tempo e com conteúdo.' },
       { q: 'Posso atualizar o site sozinho?', a: 'Sim. Definimos juntos o que você vai editar e entregamos uma forma simples de fazer isso, ou cuidamos das atualizações por você.' },
+      { q: 'Vocês fazem sites para empresas de outras cidades do Vale?', a: 'Sim. A sede é em Taubaté e atendemos presencialmente São José dos Campos, Pindamonhangaba, Caçapava, Jacareí, Guaratinguetá e as demais cidades do Vale do Paraíba e do Litoral Norte. Fora da região, o atendimento é por vídeo.' },
     ],
     seo: {
-      title: 'InnovateApps Co. | Criação de Sites Profissionais',
-      description: 'Criação de sites profissionais otimizados para o Google e rápidos no celular. Design próprio, sem template, com foco em gerar contato.',
+      title: 'Criação de sites em Taubaté e Vale do Paraíba | Innovate Apps',
+      description: 'Criação de sites profissionais em Taubaté, São José dos Campos e Vale do Paraíba. Rápidos no celular, prontos para o Google e feitos para gerar contato.',
       serviceType: 'Criação de sites',
     },
   },
@@ -84,8 +85,8 @@ export const services = [
     summary: 'Cadastro, pedidos, ordens de serviço, financeiro: o sistema que a sua operação precisa, sem pagar por função que não usa.',
     bullets: ['Feito para o seu processo', 'Acesso de qualquer lugar', 'Integra com o que você já usa'],
     hero: {
-      title: 'Sistemas web sob medida para a sua empresa',
-      lead: 'Desenvolvemos sistemas web sob medida para empresas que cresceram além da planilha e do caderno.',
+      title: 'Criação de sistemas web sob medida em Taubaté e região',
+      lead: 'Desenvolvemos sistemas web e software sob medida para empresas de Taubaté e do Vale do Paraíba que cresceram além da planilha e do caderno.',
     },
     audience: [
       { name: 'Operação e serviços', text: 'Ordens de serviço, agenda da equipe e histórico completo por cliente, com cada pessoa vendo só o que precisa. Acaba a dependência da planilha compartilhada e de quem tem o arquivo mais atualizado.' },
@@ -106,13 +107,17 @@ export const services = [
       { q: 'Quanto tempo leva um sistema web?', a: 'Uma primeira versão utilizável costuma levar de 6 a 12 semanas. Entregamos por etapas para você usar o sistema enquanto ele evolui.' },
       { q: 'Onde o sistema fica hospedado?', a: 'Em nuvem, em conta da sua empresa, com backup automático. Você é dono dos dados e do código.' },
       { q: 'Vocês integram com o meu ERP ou sistema atual?', a: 'Sim, desde que ele ofereça alguma forma de integração (API, banco de dados ou exportação). Avaliamos isso no levantamento.' },
+      { q: 'Vocês vão até a empresa para entender o processo?', a: 'Sim, em Taubaté e no Vale do Paraíba. O levantamento de um sistema rende mais quando vemos a operação de perto: quem lança o quê, onde o papel ainda circula, onde o trabalho trava. Fora da região, fazemos tudo por vídeo.' },
     ],
     seo: {
-      title: 'InnovateApps Co. | Sistemas Web sob Medida',
-      description: 'Desenvolvimento de sistemas web sob medida: pedidos, ordens de serviço, financeiro e integrações. Feito para o processo da sua empresa.',
+      title: 'Criação de sistemas web sob medida em Taubaté | Innovate Apps',
+      description: 'Criação e desenvolvimento de sistemas web sob medida em Taubaté e no Vale do Paraíba: pedidos, ordens de serviço, financeiro e integrações.',
       serviceType: 'Desenvolvimento de sistemas web',
     },
   },
 ];
 
 export const serviceBySlug = (slug) => services.find((s) => s.slug === slug);
+
+// A categoria de cada artigo do blog é o shortName de um serviço ("Sites", "Sistemas web", "Aplicativos").
+export const serviceByCategory = (category) => services.find((s) => s.shortName === category);

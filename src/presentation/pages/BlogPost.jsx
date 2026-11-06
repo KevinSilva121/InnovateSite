@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { site } from '../../config/site.js';
 import { postPath, formatDate, readingMinutes, relatedPosts, outline } from '../../data/content/posts.js';
+import { serviceByCategory } from '../../data/content/services.js';
 import PageHero from '../ui/PageHero.jsx';
 import Section from '../ui/Section.jsx';
 import PostBody from '../ui/PostBody.jsx';
@@ -11,6 +12,7 @@ import styles from './BlogPost.module.css';
 export default function BlogPost({ post }) {
   const sugestoes = relatedPosts(post);
   const sumario = outline(post);
+  const servico = serviceByCategory(post.category);
 
   return (
     <>
@@ -53,9 +55,17 @@ export default function BlogPost({ post }) {
               </aside>
             ) : null}
 
+            {/* O link para a página do serviço é o que liga o artigo ao que vendemos:
+                passa relevância para a página que deve aparecer na busca. */}
             <p className={styles.by}>
-              Escrito pela equipe da {site.shortName}, que desenvolve sites, sistemas web e aplicativos
-              para empresas em todo o Brasil.
+              Escrito pela equipe da {site.shortName}, empresa de software em Taubaté – SP que desenvolve
+              sites, sistemas web e aplicativos para empresas do Vale do Paraíba e de todo o Brasil.
+              {servico ? (
+                <>
+                  {' '}Veja como trabalhamos com{' '}
+                  <Link to={servico.path}>{servico.hero.title.charAt(0).toLowerCase() + servico.hero.title.slice(1)}</Link>.
+                </>
+              ) : null}
             </p>
 
             <p className={styles.back}>

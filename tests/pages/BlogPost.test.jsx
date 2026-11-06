@@ -3,6 +3,7 @@ import { render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import BlogPost from '../../src/presentation/pages/BlogPost.jsx';
 import { postsByDate, postPath, formatDate, readingMinutes, relatedPosts, outline } from '../../src/data/content/posts.js';
+import { serviceByCategory } from '../../src/data/content/services.js';
 
 const artigos = postsByDate();
 const r = (post) => render(<MemoryRouter><BlogPost post={post} /></MemoryRouter>);
@@ -13,8 +14,11 @@ describe('BlogPost', () => {
     const titulos = document.querySelectorAll('h1');
     expect(titulos).toHaveLength(1);
     expect(titulos[0]).toHaveTextContent(post.title);
-    expect(screen.getByText(formatDate(post.date))).toHaveAttribute('datetime', post.date);
-    expect(screen.getByText(`${readingMinutes(post)} min de leitura`)).toBeInTheDocument();
+    // A data também aparece nos cards de "Leia também" quando dois artigos saem no
+    // mesmo dia, por isso a busca fica restrita ao cabeçalho do artigo.
+    const cabecalho = within(titulos[0].closest('section'));
+    expect(cabecalho.getByText(formatDate(post.date))).toHaveAttribute('datetime', post.date);
+    expect(cabecalho.getByText(`${readingMinutes(post)} min de leitura`)).toBeInTheDocument();
   });
 
   it.each(artigos)('$slug turns every body block into real markup', (post) => {
@@ -58,6 +62,13 @@ describe('BlogPost', () => {
       expect(within(sumario).getByRole('link', { name: item.text })).toHaveAttribute('href', `#${item.id}`);
       expect(document.getElementById(item.id)?.tagName).toBe('H2');
     }
+  });
+
+  it.each(artigos)('$slug links to the service page of its category', (post) => {
+    r(post);
+    const servico = serviceByCategory(post.category);
+    const link = screen.getByRole('link', { name: new RegExp(`^${servico.hero.title}$`, 'i') });
+    expect(link).toHaveAttribute('href', servico.path);
   });
 
   it('puts the shortened title at the end of the breadcrumb', () => {

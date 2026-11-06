@@ -21,9 +21,9 @@ export default function Hero({ apps }) {
 
       <div className={['container', styles.grid].join(' ')}>
         <div className={styles.copy}>
-          <p className="eyebrow">Desenvolvimento de software sob medida</p>
+          <p className="eyebrow">Empresa de software em Taubaté – SP</p>
           <h1 id="hero-title">
-            Sites, sistemas e <span className={styles.accent}>aplicativos</span> sob medida para a sua empresa
+            Sites, sistemas e <span className={styles.accent}>aplicativos</span> sob medida no Vale do Paraíba
           </h1>
           <p className={styles.lead}>
             Seu site atraindo cliente, seu sistema organizando a operação e seu app na mão de
@@ -34,7 +34,7 @@ export default function Hero({ apps }) {
             <Button href="/#apps" variant="onNavy" size="lg">Ver apps publicados</Button>
           </div>
           <p className={styles.proof}>
-            <strong className="tabular">{apps.length} apps</strong> publicados nas duas lojas · atendimento em todo o Brasil
+            <strong className="tabular">{apps.length} apps</strong> publicados nas duas lojas · sede em Taubaté, atendimento em todo o Brasil
           </p>
         </div>
 
