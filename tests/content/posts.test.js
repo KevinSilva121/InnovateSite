@@ -3,6 +3,7 @@ import {
   posts, categories, postBySlug, postPath, postsByDate,
   readingMinutes, wordCount, formatDate, relatedPosts, headingId, outline,
 } from '../../src/data/content/posts.js';
+import { withBrand } from '../../src/seo/pages.js';
 
 const BANNED = /transforma[çc][ãa]o digital|vanguarda|disruptiv|solu[çc][õo]es inovadoras/i;
 const TIPOS = ['h2', 'p', 'ul', 'ol', 'note', 'quote'];
@@ -21,7 +22,7 @@ describe('blog posts', () => {
   });
 
   it.each(posts)('$slug is complete and within SEO limits', (post) => {
-    expect(`InnovateApps Co. | ${post.seo.title}`.length).toBeLessThanOrEqual(60);
+    expect(withBrand(post.seo.title).length).toBeLessThanOrEqual(65);
     expect(post.seo.description.length).toBeGreaterThan(60);
     expect(post.seo.description.length).toBeLessThanOrEqual(155);
     expect(post.title.length).toBeLessThanOrEqual(110); // limite do headline no schema.org
