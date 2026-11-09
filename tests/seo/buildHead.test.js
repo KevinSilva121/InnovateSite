@@ -38,6 +38,17 @@ describe('buildHead', () => {
     expect(out).not.toContain('rel="canonical"');
   });
 
+  it('loads the Google tools as a same-origin file only when an id is configured', () => {
+    expect(head).not.toContain('tag-google.js');
+    const comTag = buildHead(meta, { ...site, googleTagId: 'GTM-ABC123' });
+    expect(comTag).toContain('<script src="/tag-google.js" data-id="GTM-ABC123"></script>');
+    expect(comTag).not.toContain('googletagmanager.com');
+    const soAnalytics = buildHead(meta, { ...site, googleAnalyticsId: 'G-XYZ' });
+    expect(soAnalytics).toContain('<script src="/tag-google.js" data-analytics="G-XYZ"></script>');
+    const ambos = buildHead(meta, { ...site, googleTagId: 'GTM-ABC123', googleAnalyticsId: 'G-XYZ' });
+    expect(ambos).toContain('<script src="/tag-google.js" data-id="GTM-ABC123" data-analytics="G-XYZ"></script>');
+  });
+
   it('escapeHtml handles the five characters', () => {
     expect(escapeHtml(`<a href="x">'&`)).toBe('&lt;a href=&quot;x&quot;&gt;&#39;&amp;');
   });

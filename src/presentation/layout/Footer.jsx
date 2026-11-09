@@ -1,7 +1,8 @@
 import { Link } from 'react-router';
 import { Instagram, Linkedin, Mail, MessageCircle } from 'lucide-react';
-import { site, contactHref } from '../../config/site.js';
+import { site, contactHref, hasGoogleTags } from '../../config/site.js';
 import { services } from '../../data/content/services.js';
+import { OPEN_CONSENT_EVENT } from '../ui/CookieConsent.jsx';
 import styles from './Footer.module.css';
 
 const mark = `${import.meta.env.BASE_URL}logo/mark.png`;
@@ -60,6 +61,12 @@ export default function Footer() {
       <div className={['container', styles.bottom].join(' ')}>
         {/* O nome já termina em ponto ("Co."); sem isto o texto sairia "Co.. Todos". */}
         <p>© {site.copyrightYear} {site.name.replace(/\.$/, '')}. Todos os direitos reservados.</p>
+        {/* Reabre o aviso de cookies: quem aceitou precisa conseguir voltar atrás. */}
+        {hasGoogleTags(site) ? (
+          <button type="button" className={styles.cookies} onClick={() => window.dispatchEvent(new Event(OPEN_CONSENT_EVENT))}>
+            Preferências de cookies
+          </button>
+        ) : null}
       </div>
     </footer>
   );

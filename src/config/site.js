@@ -32,7 +32,21 @@ export const site = {
     appStore: 'https://apps.apple.com/br/developer/kevin-silva/id6797971217',
   },
   founder: 'Kevin Silva',
+  // Contêiner da tag do Google (Google Ads). Entra só no HTML de produção, gerado
+  // pelo prerender. Com este e googleAnalyticsId vazios, saem também o aviso de
+  // cookies e o link do rodapé.
+  googleTagId: 'GTM-P2BGH4B5',
+  // Google Analytics 4: visitas, páginas e origem do público. Mesma regra: vazio desliga.
+  googleAnalyticsId: 'G-4QRX8269FX',
 };
+
+// Há alguma ferramenta do Google ligada? Controla o aviso de cookies e o link do rodapé.
+export const hasGoogleTags = (config) => Boolean(config.googleTagId || config.googleAnalyticsId);
+
+// Chave em que a escolha do aviso de cookies fica guardada no navegador.
+// public/tag-google.js lê a mesma chave antes de carregar o Google: se mudar
+// aqui, mude lá também.
+export const CONSENT_KEY = 'consentimento-cookies';
 
 export const DEFAULT_WHATSAPP_MESSAGE = 'Olá! Vim pelo site da Innovate Apps e quero conversar sobre um projeto.';
 

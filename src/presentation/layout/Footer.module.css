@@ -14,4 +14,7 @@
 .social a:hover { border-color: var(--on-navy); }
 .bottom { display: flex; flex-wrap: wrap; justify-content: center; text-align: center; gap: var(--space-3); margin-top: var(--space-8); padding-top: var(--space-5); border-top: 1px solid var(--line-on-navy); font-size: var(--text-xs); color: var(--on-navy-muted); }
 
+.cookies { padding: 0; border: 0; background: none; font: inherit; color: inherit; text-decoration: underline; text-decoration-color: var(--line-on-navy); text-underline-offset: 0.2em; cursor: pointer; }
+.cookies:hover { color: var(--on-navy); text-decoration-color: var(--on-navy); }
+
 @media (min-width: 48rem) { .grid { grid-template-columns: 1.4fr 1fr 1fr 1fr; } }

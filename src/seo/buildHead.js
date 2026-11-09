@@ -9,6 +9,16 @@ export function escapeHtml(value) {
 
 const meta = (attr, key, value) => `<meta ${attr}="${key}" content="${escapeHtml(value)}">`;
 
+// Um único <script> para as ferramentas do Google; os ids vão em atributos.
+function googleTagScript(site) {
+  if (!site.googleTagId && !site.googleAnalyticsId) return null;
+  const attrs = [
+    site.googleTagId ? ` data-id="${escapeHtml(site.googleTagId)}"` : '',
+    site.googleAnalyticsId ? ` data-analytics="${escapeHtml(site.googleAnalyticsId)}"` : '',
+  ].join('');
+  return `<script src="/tag-google.js"${attrs}></script>`;
+}
+
 // Gera as tags do <head> de uma página. Puro: recebe meta da rota e o site, devolve string.
 // Páginas de artigo declaram `article` e ganham og:type article mais as datas.
 export function buildHead(page, site) {
@@ -37,6 +47,10 @@ export function buildHead(page, site) {
     meta('name', 'twitter:image', image),
     meta('name', 'theme-color', '#010D33'),
     `<script type="application/ld+json">${JSON.stringify(page.jsonLd()).replace(/<\/script/gi, '<\\/script')}</script>`,
+    // Tag do Google: arquivo do próprio site (ver public/tag-google.js), para a
+    // CSP seguir sem script embutido. Só entra aqui, no HTML do prerender, então
+    // o `vite dev` não manda visita de teste para o Google.
+    googleTagScript(site),
   ];
   return lines.filter(Boolean).join('\n    ');
 }

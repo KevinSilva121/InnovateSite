@@ -1,0 +1,30 @@
+/* No celular o aviso ocupa a largura e fica acima do botão do WhatsApp
+   (3,5rem + folga) para não cobri-lo. Do tablet para cima vira um cartão no
+   canto esquerdo, longe do botão. */
+.aviso {
+  position: fixed;
+  z-index: 70;
+  left: max(1rem, env(safe-area-inset-left));
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: calc(max(1.25rem, env(safe-area-inset-bottom)) + 4.25rem);
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: var(--shadow-md);
+}
+
+@media (min-width: 40rem) {
+  .aviso {
+    right: auto;
+    bottom: max(1.25rem, env(safe-area-inset-bottom));
+    max-width: 24rem;
+  }
+}
+
+.titulo { font-weight: 700; font-size: var(--text-sm); }
+.texto { font-size: var(--text-sm); line-height: 1.5; color: var(--ink-muted); }
+.acoes { display: flex; flex-wrap: wrap; gap: var(--space-3); }

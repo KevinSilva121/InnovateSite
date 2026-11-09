@@ -4,6 +4,7 @@ import { describe, it, expect, beforeAll } from 'vitest';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { pages, postKey } from '../../src/seo/pages.js';
 import { postsByDate, postPath } from '../../src/data/content/posts.js';
+import { site } from '../../src/config/site.js';
 
 const SITE_URL = (process.env.VITE_SITE_URL || 'https://innovateapps.com.br').replace(/\/$/, '');
 const BASE = process.env.VITE_BASE || '/';
@@ -124,6 +125,28 @@ describe('firebase hosting', () => {
     // Estilo inline existe (a barra do menu e o brilho escrevem em style),
     // então style-src precisa permitir.
     expect(csp).toContain("style-src 'self' 'unsafe-inline'");
+  });
+
+  it('ships the Google tag on every page and the CSP lets it load and report', () => {
+    const csp = cabecalhos('**')['Content-Security-Policy'];
+    const diretiva = (nome) => csp.split(';').map((d) => d.trim()).find((d) => d.startsWith(`${nome} `)) ?? '';
+    expect(existsSync('dist/tag-google.js')).toBe(true);
+    const tag = `<script src="/tag-google.js" data-id="${site.googleTagId}" data-analytics="${site.googleAnalyticsId}"></script>`;
+    for (const html of [...indexable.map((page) => read(fileFor(page.path))), read('dist/404.html')]) {
+      // Dentro do <head>, como o Google pede ("antes de </head>").
+      const head = html.slice(html.indexOf('<head>'), html.indexOf('</head>'));
+      expect(head).toContain(tag);
+    }
+    // Nada de 'unsafe-inline' em scripts: a tag vem de arquivo, não de código embutido.
+    expect(diretiva('script-src')).not.toContain('unsafe-inline');
+    expect(diretiva('script-src')).toContain('https://www.googletagmanager.com');
+    // Remarketing do Google Ads carrega script daqui; a doc de CSP do Google não
+    // lista, mas o navegador bloqueou no teste real em canal de prévia.
+    expect(diretiva('script-src')).toContain('https://googleads.g.doubleclick.net');
+    expect(diretiva('connect-src')).toContain('https://*.google-analytics.com');
+    expect(diretiva('connect-src')).toContain('https://www.googleadservices.com');
+    expect(diretiva('connect-src')).toContain('https://*.google.com.br');
+    expect(diretiva('img-src')).toContain('https://*.doubleclick.net');
   });
 
   it('every cached directory named in the config exists in the build', () => {

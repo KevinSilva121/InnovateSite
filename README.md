@@ -107,6 +107,14 @@ Para regenerar: `npm run assets` (fontes, ícones, marca) e `node scripts/assets
 - `www.innovateapps.com.br` ainda não existe no DNS: adicionar no Firebase Hosting como domínio que redireciona para o endereço sem `www`
 - Perfil da Empresa no Google: depois de criado, acrescentar o link dele em `sameAsLinks` (`site.js`)
 
+## Tag do Google, cookies e conversões
+
+- O contêiner fica em `googleTagId`, em `src/config/site.js`. Deixar vazio desliga a tag, o aviso de cookies e o link "Preferências de cookies" do rodapé.
+- `public/tag-google.js` faz o papel do snippet que o Google entrega. Ele é um arquivo do site, e não código embutido no HTML, para a CSP continuar sem `'unsafe-inline'`. Entra só no HTML de produção (prerender), então o `npm run dev` não manda visita de teste para o Google.
+- **Consentimento (LGPD):** começa negado. Até a pessoa aceitar no aviso, o Google não grava cookie e recebe só sinais anônimos, que usa para estimar conversões. A escolha fica no navegador e o rodapé permite mudar.
+- **Eventos para conversão:** todo clique em link do WhatsApp ou de e-mail manda `clique_whatsapp` ou `clique_email` para o `dataLayer`, com `pagina` e `botao`. No Tag Manager, um acionador "Evento personalizado" com esse nome liga a conversão do Google Ads.
+- **CSP:** os domínios do Google estão em `firebase.json`. Se uma tag nova no Tag Manager não funcionar e o console do navegador mostrar "violates the Content Security Policy", acrescente o domínio indicado. Tags do tipo "HTML personalizado" não rodam com essa CSP; prefira os modelos prontos do Tag Manager.
+
 ## SEO local
 
 Os títulos seguem `<serviço ou assunto> em <cidade> | Innovate Apps`: o que o cliente digita vem primeiro, a marca no fim. Os testes em `tests/seo/pages.test.js` falham se uma página voltar a começar pela marca ou se a home e as páginas de serviço perderem a cidade.
