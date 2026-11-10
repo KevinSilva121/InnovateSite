@@ -1,31 +1,48 @@
 :root {
-  --navy-900: #010D33;
-  --navy-700: #152352;
-  --navy-600: #24346B;
-  --ink: #0B1230;
-  --ink-muted: #4A5273;
-  --paper: #F3F0E8;
-  --paper-2: #E9E6DE;
-  --amber: #F0A030;
-  --amber-hover: #E29320;
-  --amber-ink: #3A2300;
-  --amber-text: #7A4E00; /* âmbar escuro para texto real sobre fundos claros (AA: ≥4.5:1 no branco e no paper-2) */
+  /* Paleta curta: uma cor forte (azul elétrico, parente do marinho da logo),
+     grafite quase preto e off-white. Contrastes medidos (WCAG AA):
+     branco sobre --blue 5,7:1 · --blue sobre --paper 5,1:1 · --ink-muted sobre
+     --paper 6,2:1 · --blue-on-dark sobre --ink 7,7:1 · --on-blue-muted sobre --blue 4,8:1 */
+  --blue: #2B50FF;
+  --blue-hover: #1D3EE8;
+  --blue-deep: #1A33C2;
+  --blue-text: #2B50FF;
+  --blue-on-dark: #8DA0FF;
 
-  --on-navy: #F3F0E8;
-  --on-navy-muted: rgba(243, 240, 232, 0.72);
-  --line: rgba(11, 18, 48, 0.14);
-  --line-on-navy: rgba(243, 240, 232, 0.16);
+  --ink: #0E0F13;
+  --ink-800: #17191F;
+  --ink-700: #22252D;
+  --ink-muted: #565A63;
+  --paper: #F4F3EE;
+  --paper-2: #EAE8E1;
+  --white: #FFFFFF;
 
-  --font-heading: 'Bricolage Grotesque', 'Arial Narrow', Arial, sans-serif;
-  --font-body: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --on-dark: #F4F3EE;
+  --on-dark-muted: rgba(244, 243, 238, 0.68);
+  --on-blue: #FFFFFF;
+  --on-blue-muted: #E6EAFF;
 
+  --line: rgba(14, 15, 19, 0.14);
+  --line-strong: rgba(14, 15, 19, 0.8);
+  --line-on-dark: rgba(244, 243, 238, 0.16);
+  --line-on-blue: rgba(255, 255, 255, 0.3);
+
+  /* Três papéis tipográficos. */
+  --font-display: 'Special Gothic Condensed One', 'Condensed Fallback', 'Arial Narrow', sans-serif;
+  --font-body: 'IBM Plex Sans', 'Plex Fallback', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --text-2xs: 0.75rem;
   --text-xs: 0.8125rem;
   --text-sm: 0.9375rem;
   --text-md: 1.0625rem;
   --text-lg: 1.25rem;
-  --text-xl: clamp(1.375rem, 2.2vw, 1.75rem);
-  --display-2: clamp(2rem, 4.2vw, 3.25rem);
-  --display-1: clamp(2.5rem, 6vw, 4.75rem);
+  --text-xl: clamp(1.375rem, 2vw, 1.625rem);
+  /* A fonte de título é condensada: precisa de corpo maior para o mesmo peso visual. */
+  --display-3: clamp(1.875rem, 3vw, 2.5rem);
+  --display-2: clamp(2.75rem, 6vw, 5rem);
+  --display-1: clamp(3.5rem, 9vw, 8rem);
+  --mono-tracking: 0.06em;
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -35,17 +52,35 @@
   --space-6: 2rem;
   --space-7: 3rem;
   --space-8: 4rem;
-  --section-y: clamp(4.5rem, 9vw, 7.5rem);
+  --space-9: 6rem;
+  --section-y: clamp(4.5rem, 10vw, 8.5rem);
 
-  --container: 72rem;
-  --gutter: clamp(1.25rem, 4vw, 2.5rem);
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  --container: 80rem;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
 
-  --shadow-sm: 0 1px 2px rgba(11, 18, 48, 0.06), 0 1px 1px rgba(11, 18, 48, 0.04);
-  --shadow-md: 0 10px 28px rgba(11, 18, 48, 0.10);
+  --shadow-sm: 0 1px 2px rgba(14, 15, 19, 0.06);
+  --shadow-md: 0 18px 40px rgba(14, 15, 19, 0.14);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   --dur: 240ms;
-  --header-h: 4.25rem;
+  --header-h: 5rem;
+  /* Quanto o header ocupa agora no topo da tela: zero quando ele some ao rolar
+     para baixo (Navbar marca html[data-header]). Para elementos fixos na rolagem. */
+  --header-ocupa: var(--header-h);
+
+  /* Apelidos da paleta anterior, para as páginas internas continuarem coerentes
+     até receberem o visual novo. Remover quando nenhum CSS usar mais. */
+  --navy-900: var(--ink);
+  --navy-700: var(--ink-800);
+  --navy-600: var(--ink-700);
+  --amber: #6F8BFF;
+  --amber-hover: #5A79FF;
+  --amber-ink: var(--ink);
+  --amber-text: var(--blue-text);
+  --on-navy: var(--on-dark);
+  --on-navy-muted: var(--on-dark-muted);
+  --line-on-navy: var(--line-on-dark);
+  --font-heading: var(--font-display);
 }

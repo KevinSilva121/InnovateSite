@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 import { Instagram, Linkedin, Mail, MessageCircle } from 'lucide-react';
 import { site, contactHref, hasGoogleTags } from '../../config/site.js';
@@ -5,18 +6,66 @@ import { services } from '../../data/content/services.js';
 import { OPEN_CONSENT_EVENT } from '../ui/CookieConsent.jsx';
 import styles from './Footer.module.css';
 
-const mark = `${import.meta.env.BASE_URL}logo/mark.png`;
 const socials = [
   ['instagram', Instagram, 'Instagram'],
   ['linkedin', Linkedin, 'LinkedIn'],
 ].filter(([key]) => site.social[key]);
 
+// Rodapé "por trás do site" (envelope abrindo): quando cabe na tela, fica parado
+// no fundo dela, por baixo do conteúdo, e o fim da página sobe e o descobre de
+// baixo para cima (CSS: [data-revela]). Ele mesmo não se mexe.
+// Mais alto que a tela (celular baixo), segue o fluxo normal: preso no fundo, a
+// parte de cima nunca apareceria. No celular o rodapé é compacto para caber.
+//
+// A decisão (cabe ou não) é refeita ao abrir, quando CSS e fontes chegam, quando
+// a tela ou o rodapé mudam de tamanho e também durante a rolagem, mas só
+// enquanto o fim da página ainda está longe: a altura da tela no celular muda
+// com a barra de endereço, e assim, quando o rodapé começa a aparecer, a decisão
+// já está certa e não muda no meio da revelação.
+function useRodapeRevelado(ref) {
+  useEffect(() => {
+    const rodape = ref.current;
+    if (!rodape) return undefined;
+    const conteudo = document.getElementById('conteudo');
+    const medir = () => {
+      if (rodape.offsetHeight <= window.innerHeight - 40) rodape.dataset.revela = '';
+      else delete rodape.dataset.revela;
+    };
+    let quadro = 0;
+    const rolar = () => {
+      if (quadro) return;
+      quadro = requestAnimationFrame(() => {
+        quadro = 0;
+        if (!conteudo || conteudo.getBoundingClientRect().bottom > window.innerHeight + 80) medir();
+      });
+    };
+    medir();
+    window.addEventListener('resize', medir);
+    window.addEventListener('load', medir);
+    window.addEventListener('scroll', rolar, { passive: true });
+    document.fonts?.ready?.then(medir).catch(() => {});
+    const depois = setTimeout(medir, 600);
+    const tamanho = typeof ResizeObserver === 'function' ? new ResizeObserver(medir) : null;
+    tamanho?.observe(rodape);
+    return () => {
+      window.removeEventListener('resize', medir);
+      window.removeEventListener('load', medir);
+      window.removeEventListener('scroll', rolar);
+      clearTimeout(depois);
+      if (quadro) cancelAnimationFrame(quadro);
+      tamanho?.disconnect();
+    };
+  }, [ref]);
+}
+
 export default function Footer() {
+  const ref = useRef(null);
+  useRodapeRevelado(ref);
   return (
-    <footer className={styles.footer}>
+    <footer className={styles.footer} ref={ref}>
       <div className={['container', styles.grid].join(' ')}>
         <div className={styles.brand}>
-          <img src={mark} alt="" width="40" height="40" />
+          <span className={styles.glyph} aria-hidden="true" />
           <p className={styles.name}>{site.name}</p>
           <p className={styles.tagline}>Empresa de software no Vale do Paraíba: sites, sistemas web e aplicativos sob medida.</p>
           <p className={styles.address}>Taubaté – SP · Atendimento presencial no Vale e remoto em todo o Brasil</p>

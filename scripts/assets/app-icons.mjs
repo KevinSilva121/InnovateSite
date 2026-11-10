@@ -7,6 +7,8 @@ const icons = {
   'contador-de-cantos': 'https://play-lh.googleusercontent.com/rrjPWwiHTpusMQcubqoH7o8lKfMsQPg_3uVqDJVdOSZ3dPJKWNuqVnqm-8oagi7suh7zkTdLVpAMTcVaSwLyEqY=s512',
   prazzo: 'https://play-lh.googleusercontent.com/eb8llslzPPn7l7W3H_vHoHdh6PCurmKLebTvPumLdZFHNUfoLv3G_qhsS9e_KJl-qzk2vkecyTU3D1NI-DkS=s512',
   trama: 'https://play-lh.googleusercontent.com/i5wdMEJqoLpv5bdBKkWq2wO-GW4dm-04OfouxuhfekmkmsTKYePtvmakJD2dxnHHIrAT0SqywlNAcPXexz9mrw=s512',
+  // Ícone da ficha da App Store (lookup público do iTunes, id 6827282757).
+  cascata: 'https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/b1/1c/e6/b11ce651-764d-2ca2-0e23-4215b8005f2d/AppIcon-1x_U007ephone-0-1-85-220-0.png/512x512bb.jpg',
 };
 
 const badges = {
@@ -25,7 +27,9 @@ mkdirSync('public/badges', { recursive: true });
 
 for (const [slug, url] of Object.entries(icons)) {
   const png = await fetchBuffer(url);
-  await sharp(png).resize(192, 192).webp({ quality: 86 }).toFile(`public/apps/${slug}.webp`);
+  // Fundo branco atrás de ícone com transparência (o do Contador de Cantos vem
+  // assim da Play Store): sobre o fundo escuro do site ele sumiria.
+  await sharp(png).flatten({ background: '#ffffff' }).resize(192, 192).webp({ quality: 86 }).toFile(`public/apps/${slug}.webp`);
   console.log('ícone:', slug);
 }
 for (const [file, url] of Object.entries(badges)) {

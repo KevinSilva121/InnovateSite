@@ -1,5 +1,101 @@
-.steps { display: grid; gap: var(--space-5); counter-reset: step; }
-.step { display: grid; gap: var(--space-3); padding-top: var(--space-4); border-top: 2px solid var(--ink); }
-.number { font-family: var(--font-heading); font-weight: 800; font-size: var(--text-sm); letter-spacing: 0.1em; color: var(--amber-text); }
-.step p { color: var(--ink-muted); font-size: var(--text-sm); }
-@media (min-width: 48rem) { .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-6); } }
+/* O recuo do fio fica nos itens: a regra global ol[class] { padding: 0 } é
+   mais específica que .steps e anularia um padding aqui. */
+.steps {
+  /* Progresso da rolagem (0 a 1), escrito pelo JS. Sem JS: tudo completo. */
+  --p: 1;
+  /* O fio azul chega ao fim um pouco antes do último passo terminar. */
+  --fio: clamp(0, var(--p) / 0.9, 1);
+  position: relative;
+  display: grid;
+  gap: var(--space-7);
+}
+
+/* O fio: um traço claro de base, a linha toda, e por cima o azul, que cresce
+   com a rolagem e liga os passos já carregados. */
+.steps::before,
+.steps::after {
+  content: '';
+  position: absolute;
+  top: 0.4rem;
+  bottom: 0.4rem;
+  left: 0.45rem;
+  width: 1px;
+  transform-origin: top;
+}
+.steps::before { background: var(--line-strong); opacity: 0.25; }
+.steps::after {
+  width: 2px;
+  margin-left: -0.5px;
+  background: var(--blue);
+  transform: scaleY(var(--fio));
+}
+
+/* Cada passo tem a sua janela (--ini a --fim) no progresso. --t: quanto já
+   carregou (0 a 1); --e suaviza (smoothstep). */
+.step {
+  --t: clamp(0, (var(--p) - var(--ini)) / (var(--fim) - var(--ini)), 1);
+  --e: calc(var(--t) * var(--t) * (3 - 2 * var(--t)));
+  position: relative;
+  display: grid;
+  gap: var(--space-3);
+  padding-left: 2.25rem;
+}
+.step h3,
+.step p {
+  opacity: clamp(0, calc(var(--t) * 1.6), 1);
+  transform: translateY(calc((1 - var(--e)) * 22px));
+}
+.step p { opacity: clamp(0, calc(var(--t) * 1.6 - 0.25), 1); }
+
+.number {
+  line-height: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: var(--mono-tracking);
+  color: var(--blue-text);
+  /* Apagado até o passo carregar. */
+  opacity: calc(0.3 + 0.7 * var(--e));
+}
+/* O quadrado: contorno vazio que se enche de azul quando o passo carrega. */
+.node {
+  position: absolute;
+  top: 0.15rem;
+  left: 0;
+  z-index: 1;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: var(--paper-2);
+  border: 1px solid var(--ink);
+}
+.node::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: var(--blue);
+  transform: scale(var(--e));
+}
+.step h3 { font-size: var(--display-3); }
+.step p { color: var(--ink-muted); max-width: 22rem; }
+
+@media (min-width: 56rem) {
+  .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-6); padding-left: 0; padding-top: 0; }
+  /* Centro do nó: linha do número (1,25rem) + espaço (space-3) + meio do nó (0,45rem). */
+  .steps::before,
+  .steps::after {
+    top: calc(1.25rem + var(--space-3) + 0.45rem);
+    bottom: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 1px;
+    transform-origin: left;
+  }
+  .steps::after { height: 2px; margin-left: 0; margin-top: -0.5px; transform: scaleX(var(--fio)); }
+  .step { grid-template-rows: 1.25rem 0.9rem auto 1fr; padding-left: 0; }
+  .node { position: relative; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .steps { --p: 1 !important; }
+}

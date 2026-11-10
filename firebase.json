@@ -27,7 +27,7 @@
         ]
       },
       {
-        "source": "/@(fonts|showcase|apps|badges|logo|og)/**",
+        "source": "/@(fonts|img|apps|badges|logo|og|video)/**",
         "headers": [
           { "key": "Cache-Control", "value": "public, max-age=2592000" }
         ]

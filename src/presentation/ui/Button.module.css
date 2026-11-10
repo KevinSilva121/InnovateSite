@@ -1,22 +1,108 @@
+/* Botão quadrado, no mesmo desenho do botão de contato do header: borda fina,
+   texto mono em maiúsculas e "›" no fim.
+   Hover: a cor enche o botão da esquerda para a direita, como uma barra de
+   carregamento, e o texto troca de cor exatamente na borda do preenchimento.
+   Ao tirar o mouse, o preenchimento volta esvaziando para a esquerda.
+   Como funciona: o botão e o texto usam o mesmo degradê, do mesmo tamanho e na
+   mesma posição (presos à esquerda). No botão ele é o fundo; no texto ele só
+   aparece dentro das letras (background-clip: text). Os dois crescem e
+   encolhem juntos, então a borda bate. Para isso o texto (o <span>) ocupa o
+   botão inteiro: o espaçamento interno fica nele, não no botão.
+
+   Cada variante só define as cores: em repouso (fundo, texto, borda) e as do
+   preenchimento (cor que enche e cor do texto sobre ela). */
 .button {
-  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-  min-height: 2.75rem; padding: 0 1.25rem;
-  border-radius: var(--radius-sm); border: 1.5px solid transparent;
-  font-weight: 600; font-size: var(--text-sm); line-height: 1; text-decoration: none;
-  white-space: nowrap; transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  --b-fundo: transparent;
+  --b-texto: var(--ink);
+  --b-borda: var(--line-strong);
+  --b-enche: var(--ink);
+  --b-enche-texto: var(--paper);
+  --b-tempo: 0.55s;
+  --b-curva: cubic-bezier(0.65, 0, 0.35, 1);
+  display: inline-flex;
+  align-items: stretch;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0;
+  border: 1px solid var(--b-borda);
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--text-xs);
+  letter-spacing: var(--mono-tracking);
+  text-transform: uppercase;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--b-texto);
+  background-color: var(--b-fundo);
+  background-image: linear-gradient(var(--b-enche), var(--b-enche));
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
+  cursor: pointer;
+  transition: background-size var(--b-tempo) var(--b-curva), border-color 0.3s var(--ease);
 }
-.button:active { transform: translateY(1px); }
-.icon { flex: none; transition: transform var(--dur) var(--ease); }
-.button:hover .icon { transform: translateX(2px); }
+.button > span {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0 1.25rem;
+}
+/* "›" decorativo: a segunda declaração esconde o sinal de leitores de tela onde há suporte. */
+.button > span::after {
+  content: '›';
+  content: '›' / '';
+  font-size: 1.35em;
+  line-height: 0;
+  transform: translateY(-0.04em);
+}
+.button:hover,
+.button:focus-visible { background-size: 100% 100%; }
 
-.primary { background: var(--amber); color: var(--amber-ink); }
-.primary:hover { background: var(--amber-hover); }
-.secondary { background: transparent; color: var(--ink); border-color: var(--ink); }
-.secondary:hover { background: var(--paper-2); }
-.ghost { background: transparent; color: var(--ink); padding-inline: 0.5rem; }
-.ghost:hover { text-decoration: underline; }
-.onNavy { background: transparent; color: var(--on-navy); border-color: var(--line-on-navy); }
-.onNavy:hover { border-color: var(--on-navy); }
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .button > span {
+    background-image:
+      linear-gradient(var(--b-enche-texto), var(--b-enche-texto)),
+      linear-gradient(var(--b-texto), var(--b-texto));
+    background-repeat: no-repeat;
+    background-position: left center, 0 0;
+    background-size: 0% 100%, 100% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transition: background-size var(--b-tempo) var(--b-curva);
+  }
+  .button:hover > span,
+  .button:focus-visible > span { background-size: 100% 100%, 100% 100%; }
+}
+/* Sem suporte a texto recortado: o texto só troca de cor no meio do caminho. */
+@supports not ((background-clip: text) or (-webkit-background-clip: text)) {
+  .button { transition: background-size var(--b-tempo) var(--b-curva), border-color 0.3s var(--ease), color 0.2s var(--ease) 0.2s; }
+  .button:hover, .button:focus-visible { color: var(--b-enche-texto); }
+}
 
-.sm { min-height: 2.375rem; padding: 0 1rem; font-size: var(--text-xs); }
-.lg { min-height: 3.25rem; padding: 0 1.75rem; font-size: var(--text-md); }
+/* Principal: azul cheio; enche de branco com texto azul (o mesmo fim do botão do header). */
+.primary { --b-fundo: var(--blue); --b-texto: var(--white); --b-borda: var(--blue); --b-enche: var(--white); --b-enche-texto: var(--blue-text); }
+/* Contorno escuro sobre fundo claro; enche de grafite. */
+.secondary,
+.ghost { --b-fundo: transparent; --b-texto: var(--ink); --b-borda: var(--line-strong); --b-enche: var(--ink); --b-enche-texto: var(--paper); }
+/* "Ver mais" dentro dos cards: o mesmo contorno, menor. */
+.ghost { min-height: 2.5rem; font-size: var(--text-2xs); }
+.ghost > span { padding: 0 1rem; }
+/* Contorno claro sobre fundo escuro; enche de off-white. */
+.onNavy { --b-fundo: transparent; --b-texto: var(--on-dark); --b-borda: rgba(244, 243, 238, 0.55); --b-enche: var(--on-dark); --b-enche-texto: var(--ink); }
+/* Sobre fundo azul: branco cheio (enche de grafite) e contorno branco (enche de branco). */
+.light { --b-fundo: var(--white); --b-texto: var(--blue-text); --b-borda: var(--white); --b-enche: var(--ink); --b-enche-texto: var(--white); }
+.onBlue { --b-fundo: transparent; --b-texto: var(--white); --b-borda: var(--white); --b-enche: var(--white); --b-enche-texto: var(--blue-text); }
+
+.sm { min-height: 2.5rem; font-size: var(--text-2xs); }
+.sm > span { padding: 0 1rem; }
+.lg { min-height: 3.5rem; font-size: var(--text-xs); }
+.lg > span { padding: 0 1.5rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .button, .button > span { transition: none; }
+}

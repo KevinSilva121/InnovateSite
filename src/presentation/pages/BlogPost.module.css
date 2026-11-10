@@ -12,7 +12,8 @@
   .sumario {
     display: block;
     position: sticky;
-    top: calc(var(--header-h) + var(--space-6));
+    top: calc(var(--header-ocupa) + var(--space-6));
+    transition: top 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     align-self: start;
     padding-left: var(--space-5);
     border-left: 1px solid var(--line);
@@ -58,7 +59,7 @@
 .sumarioList a:hover::before, .sumarioList a:focus-visible::before { width: 0.7rem; background: var(--amber); opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
-  .sumarioList a, .sumarioList a::before { transition: none; }
+  .sumario, .sumarioList a, .sumarioList a::before { transition: none; }
 }
 
 

@@ -1,14 +1,54 @@
-.grid { display: grid; gap: var(--space-5); }
-.card {
-  display: grid; gap: var(--space-4);
-  grid-template-rows: auto auto 1fr auto;
-  padding: var(--space-6); background: #fff; border: 1px solid var(--line); border-radius: var(--radius-lg);
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+.grid { display: grid; border-top: 1px solid var(--line-strong); }
+.block {
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  gap: var(--space-4);
+  padding: var(--space-6) 0 var(--space-7);
+  border-bottom: 1px solid var(--line);
 }
-.card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-.summary { color: var(--ink-muted); }
-.bullets { display: grid; gap: 0.5rem; font-size: var(--text-sm); }
-.bullets li { display: flex; align-items: center; gap: 0.5rem; }
-.bullets svg { color: var(--amber-hover); flex: none; }
-.card > a { justify-self: start; margin-top: auto; }
-@media (min-width: 48rem) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+/* Altura fixa: as três cenas têm proporções diferentes, e assim os títulos
+   dos três blocos ficam na mesma linha. O SVG se ajusta dentro (meet). */
+.art {
+  --art-fill: var(--paper);
+  height: clamp(11rem, 19vw, 15rem);
+  margin-bottom: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+}
+.art svg { width: 100%; height: 100%; }
+.block h3 { font-size: var(--display-3); max-width: 12ch; }
+.summary { color: var(--ink-muted); max-width: 30rem; }
+
+/* Tópicos em mono, com traço no lugar do ✓. */
+.bullets {
+  display: grid;
+  gap: 0.45rem;
+  align-content: start;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--mono-tracking);
+  text-transform: uppercase;
+}
+.bullets li { display: flex; gap: 0.6rem; }
+.bullets li::before { content: '—'; color: var(--blue-text); }
+.block > a { justify-self: start; }
+
+@media (min-width: 56rem) {
+  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 1px solid var(--line); }
+  .block { padding: var(--space-6) var(--space-6) var(--space-7); border-bottom: 0; }
+  .block:first-child { padding-left: 0; }
+  .block:last-child { padding-right: 0; }
+  .block + .block { border-left: 1px solid var(--line); }
+}
+
+/* Desktop: a seção inteira (título e os três blocos) cabe numa tela. Ilustração,
+   títulos e espaços acompanham a altura da tela; o título de cada bloco fica
+   numa linha só. */
+@media (min-width: 64rem) {
+  .block {
+    gap: clamp(0.5rem, 1.5svh, 1rem);
+    padding-block: clamp(1rem, 3svh, 2rem) clamp(1rem, 3svh, 3rem);
+  }
+  .art { height: clamp(6.5rem, 17svh, 15rem); margin-bottom: 0; padding-block: 0; }
+  .block h3 { font-size: clamp(1.5rem, min(2.4vw, 4.6svh), 2.5rem); max-width: none; }
+  .summary { font-size: var(--text-sm); line-height: 1.55; }
+}

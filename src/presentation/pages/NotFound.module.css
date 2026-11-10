@@ -1,0 +1,2 @@
+.pagina { min-height: 70svh; padding-top: calc(var(--header-h) + var(--section-y)); }
+.pagina :global(.container) { display: grid; gap: var(--space-5); justify-items: start; }

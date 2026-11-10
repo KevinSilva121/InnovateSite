@@ -16,9 +16,9 @@ describe('Project', () => {
 describe('ProjectRepository + GetProjects', () => {
   const useCase = new GetProjects(new ProjectRepository());
 
-  it('returns four apps with icons and Play Store links', () => {
+  it('returns five apps with icons and Play Store links', () => {
     const apps = useCase.execute({ type: 'app' });
-    expect(apps.map((a) => a.slug)).toEqual(['calcfrete', 'contador-de-cantos', 'prazzo', 'trama']);
+    expect(apps.map((a) => a.slug)).toEqual(['calcfrete', 'contador-de-cantos', 'prazzo', 'trama', 'cascata']);
     for (const app of apps) {
       expect(app.icon).toMatch(/\/apps\/[a-z-]+\.webp$/);
       expect(app.stores.play).toContain('play.google.com/store/apps/details?id=');
@@ -37,7 +37,13 @@ describe('ProjectRepository + GetProjects', () => {
     expect(web[0].url).toBe('https://advalicecamargo.com.br/');
   });
 
+  it('marks the two games as GameApplication for the schema', () => {
+    const apps = useCase.execute({ type: 'app' });
+    expect(apps.filter((a) => a.appCategory === 'GameApplication').map((a) => a.slug)).toEqual(['trama', 'cascata']);
+    expect(apps.find((a) => a.slug === 'calcfrete').appCategory).toBe('BusinessApplication');
+  });
+
   it('returns everything without a filter', () => {
-    expect(useCase.execute()).toHaveLength(5);
+    expect(useCase.execute()).toHaveLength(6);
   });
 });

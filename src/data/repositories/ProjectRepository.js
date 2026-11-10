@@ -59,6 +59,22 @@ export class ProjectRepository {
         desc: 'Jogo de palavras cruzadas em português com novos desafios e interface limpa.',
         icon: icon('trama'),
         stores: { play: play('com.trama.kevinramon122') },
+        appCategory: 'GameApplication',
+      },
+      {
+        id: 6,
+        slug: 'cascata',
+        title: 'Cascata',
+        type: 'app',
+        category: 'Puzzle de blocos',
+        tagline: 'Encaixe, limpe e veja tudo desabar!',
+        desc: 'Puzzle de blocos em que, depois de cada linha limpa, todas as peças caem com gravidade. Quatro modos de jogo, desafio diário e estilos de bloco.',
+        icon: icon('cascata'),
+        stores: {
+          play: play('com.kevinramon122.cascata'),
+          appStore: 'https://apps.apple.com/br/app/cascata-gravity-block-puzzle/id6827282757',
+        },
+        appCategory: 'GameApplication',
       },
       {
         id: 5,

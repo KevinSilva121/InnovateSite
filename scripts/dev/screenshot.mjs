@@ -96,6 +96,17 @@ async function main() {
 
   await send('Page.enable');
   await send('Runtime.enable');
+  // Captura de desenvolvimento não é visita: bloqueia as tags do Google para não
+  // mandar acesso de teste ao Analytics e ao Google Ads.
+  await send('Network.enable');
+  await send('Network.setBlockedURLs', {
+    urls: ['*googletagmanager.com*', '*google-analytics.com*', '*doubleclick.net*', '*googleadservices.com*'],
+  });
+  // SHOT_REDUCED_MOTION=1 captura o estado final, sem animação no meio: traços já
+  // desenhados, números no valor final, esteira parada.
+  if (process.env.SHOT_REDUCED_MOTION) {
+    await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+  }
 
   const evalJs = async (expression) =>
     (await send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true })).result?.result
@@ -150,8 +161,9 @@ async function main() {
       });
       // Expandir para a altura total do conteúdo torna tudo "visível" de uma vez, o que
       // reaciona o IntersectionObserver de [data-reveal] para as seções que ainda não tinham
-      // entrado na viewport original; aguarda o observer disparar e a transição CSS (0.6s) terminar.
-      await sleep(900);
+      // entrado na viewport original; aguarda o observer disparar, as imagens sob demanda
+      // carregarem e os traços das ilustrações terminarem de se desenhar (SHOT_WAIT, em ms).
+      await sleep(Number(process.env.SHOT_WAIT || 3000));
 
       const shot = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true });
       const out = resolve('screenshots', `${name}-${label}.png`);

@@ -93,7 +93,7 @@ export function softwareAppList(site, apps) {
         '@type': 'SoftwareApplication',
         name: app.title,
         description: app.tagline,
-        applicationCategory: 'BusinessApplication',
+        applicationCategory: app.appCategory ?? 'BusinessApplication',
         operatingSystem: app.platforms.join(', '),
         installUrl: [app.stores.play, app.stores.appStore].filter(Boolean),
         image: publicIconUrl(site, app),

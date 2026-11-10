@@ -150,7 +150,7 @@ describe('firebase hosting', () => {
   });
 
   it('every cached directory named in the config exists in the build', () => {
-    const grupo = config.headers.find((h) => h.source.includes('fonts|showcase'));
+    const grupo = config.headers.find((h) => h.source.includes('fonts|img'));
     const pastas = grupo.source.match(/@\(([^)]+)\)/)[1].split('|');
     for (const pasta of pastas) expect(existsSync(`dist/${pasta}`), pasta).toBe(true);
   });
@@ -172,10 +172,10 @@ describe('site files', () => {
   });
 
   it('ships fonts, favicons, badges, app icons and no server bundle', () => {
-    for (const f of ['dist/.nojekyll', 'dist/fonts/bricolage-grotesque.woff2', 'dist/fonts/instrument-sans.woff2', 'dist/favicon.svg', 'dist/favicon-32.png', 'dist/apple-touch-icon.png', 'dist/site.webmanifest', 'dist/og/default.png', 'dist/logo/mark.png', 'dist/badges/google-play-pt-br.png', 'dist/badges/app-store-pt-br.svg']) {
+    for (const f of ['dist/.nojekyll', 'dist/fonts/special-gothic-condensed-one.woff2', 'dist/fonts/ibm-plex-sans.woff2', 'dist/fonts/jetbrains-mono.woff2', 'dist/img/cases/advalice-camargo-desktop-960.avif', 'dist/favicon.svg', 'dist/favicon-32.png', 'dist/apple-touch-icon.png', 'dist/site.webmanifest', 'dist/og/default.png', 'dist/logo/mark.png', 'dist/badges/google-play-pt-br.png', 'dist/badges/app-store-pt-br.svg']) {
       expect(existsSync(f), f).toBe(true);
     }
-    expect(readdirSync('dist/apps')).toHaveLength(4);
+    expect(readdirSync('dist/apps')).toHaveLength(5);
     expect(existsSync('dist/server')).toBe(false);
   });
 
@@ -195,7 +195,9 @@ describe('site files', () => {
   it('CSS references local fonts with the configured base', () => {
     const cssFile = readdirSync('dist/assets').find((f) => f.endsWith('.css'));
     const css = read(`dist/assets/${cssFile}`);
-    expect(css).toMatch(/url\([^)]*fonts\/bricolage-grotesque\.woff2\)/);
+    for (const fonte of ['special-gothic-condensed-one', 'ibm-plex-sans', 'jetbrains-mono']) {
+      expect(css).toMatch(new RegExp(`url\\([^)]*fonts/${fonte}\\.woff2\\)`));
+    }
     expect(css).not.toContain('googleapis');
   });
 });

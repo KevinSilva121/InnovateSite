@@ -1,14 +1,37 @@
 @font-face {
-  font-family: 'Bricolage Grotesque';
+  font-family: 'Special Gothic Condensed One';
   font-style: normal;
-  font-weight: 200 800;
+  font-weight: 400;
   font-display: swap;
-  src: url('/fonts/bricolage-grotesque.woff2') format('woff2-variations');
+  src: url('/fonts/special-gothic-condensed-one.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Instrument Sans';
+  font-family: 'IBM Plex Sans';
   font-style: normal;
-  font-weight: 400 700;
+  font-weight: 100 700;
   font-display: swap;
-  src: url('/fonts/instrument-sans.woff2') format('woff2-variations');
+  src: url('/fonts/ibm-plex-sans.woff2') format('woff2-variations');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono.woff2') format('woff2-variations');
+}
+
+/* Fontes locais com métricas ajustadas, usadas enquanto as de cima carregam:
+   o texto não pula de tamanho quando a fonte real chega (menos CLS). */
+@font-face {
+  font-family: 'Condensed Fallback';
+  src: local('Arial Narrow'), local('ArialNarrow'), local('Roboto Condensed'), local('Arial');
+  size-adjust: 86%;
+  ascent-override: 96%;
+}
+@font-face {
+  font-family: 'Plex Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
+  size-adjust: 104%;
+  ascent-override: 98%;
+  descent-override: 26%;
 }

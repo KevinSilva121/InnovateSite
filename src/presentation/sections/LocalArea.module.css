@@ -1,7 +1,52 @@
-.grid { display: grid; gap: var(--space-6); align-items: start; }
-.note { display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 600; }
-.cities { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-.cities li { padding: 0.55rem 0.95rem; border: 1px solid var(--line); border-radius: 999px; background: #fff; font-size: var(--text-sm); font-weight: 500; }
-.hq { background: var(--navy-900) !important; color: var(--on-navy); border-color: var(--navy-900) !important; }
-.hq small { color: var(--amber); font-weight: 600; margin-left: 0.35rem; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7em; }
-@media (min-width: 64rem) { .grid { grid-template-columns: 1fr 1fr; gap: var(--space-8); } }
+.grid { display: grid; gap: var(--space-7); align-items: center; }
+.text :global(h2) { max-width: 12ch; }
+.text > div { margin-bottom: var(--space-6); }
+
+.note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: var(--space-5);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--mono-tracking);
+  text-transform: uppercase;
+  color: var(--blue-text);
+}
+
+/* Lista em colunas, com régua entre os itens: nada de nuvem de etiquetas. */
+.cities {
+  columns: 2;
+  column-gap: var(--space-6);
+  border-top: 1px solid var(--line-strong);
+}
+.cities li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--line);
+  break-inside: avoid;
+  font-size: var(--text-sm);
+}
+.hq { font-weight: 600; }
+.cities small {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--mono-tracking);
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--blue);
+  padding: 0.1rem 0.4rem;
+}
+
+.map { padding: var(--space-4); border: 1px solid var(--line); background: var(--white); }
+
+@media (min-width: 40rem) {
+  .cities { columns: 3; }
+}
+@media (min-width: 64rem) {
+  .grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-9); }
+  .cities { columns: 2; }
+}

@@ -1,6 +1,17 @@
 .section { padding-block: var(--section-y); }
+@media (min-width: 64rem) {
+  .cabe { padding-block: clamp(1.75rem, 5svh, 5rem); }
+}
 .paper { background: var(--paper); color: var(--ink); }
 .paper2 { background: var(--paper-2); color: var(--ink); }
-.navy { background: var(--navy-900); color: var(--on-navy); }
-.navy :global(.eyebrow) { color: var(--amber); }
-.navy :global(.lede) { color: var(--on-navy-muted); }
+.white { background: var(--white); color: var(--ink); }
+
+/* "navy" é o nome antigo da seção escura; hoje é grafite. */
+.navy, .ink { background: var(--ink); color: var(--on-dark); }
+.navy :global(.eyebrow), .ink :global(.eyebrow) { color: var(--blue-on-dark); }
+.navy :global(.lede), .ink :global(.lede) { color: var(--on-dark-muted); }
+
+/* Seção inteira pintada de azul. */
+.blue { background: var(--blue); color: var(--on-blue); }
+.blue :global(.eyebrow) { color: var(--on-blue-muted); }
+.blue :global(.lede) { color: var(--on-blue-muted); }

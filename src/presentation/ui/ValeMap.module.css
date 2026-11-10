@@ -1,0 +1,37 @@
+.map { width: 100%; height: auto; overflow: visible; font-family: var(--font-mono); }
+.map text { font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; fill: var(--ink); }
+
+/* Grade de coordenadas: fina, tracejada e discreta. */
+.grade line { stroke: var(--line); stroke-dasharray: 2 4; }
+.grade text { font-size: 8.5px; fill: var(--ink-muted); letter-spacing: 0.02em; }
+
+.rio, .costa { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.rio { stroke: var(--blue); stroke-width: 2.25; }
+.costa { stroke: var(--ink); stroke-width: 1.25; }
+.legenda text { font-size: 9px; fill: var(--ink-muted); letter-spacing: 0.08em; }
+.marcaSede { fill: var(--blue); }
+
+.cidade rect { fill: var(--ink); }
+.sede rect { fill: var(--blue); }
+.sede text { font-weight: 700; fill: var(--blue-text); font-size: 12px; }
+
+/* Anel que pulsa em volta da sede. */
+.pulso {
+  fill: none !important;
+  stroke: var(--blue);
+  stroke-width: 1;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulso 2.6s var(--ease) infinite;
+}
+@keyframes pulso {
+  0% { opacity: 0.9; transform: scale(0.6); }
+  100% { opacity: 0; transform: scale(2.2); }
+}
+
+/* O mapa nasce completo (rio, costa, cidades, grade e legenda): sem animação de
+   entrada, para não aparecer em branco antes de "carregar". Só o pulso da sede
+   se mexe. */
+@media (prefers-reduced-motion: reduce) {
+  .pulso { animation: none; opacity: 0; }
+}

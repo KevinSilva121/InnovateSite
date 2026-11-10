@@ -1,5 +1,5 @@
 import Hero from '../sections/Hero.jsx';
-import TrustStrip from '../sections/TrustStrip.jsx';
+import AppsBand from '../sections/AppsBand.jsx';
 import ServicesGrid from '../sections/ServicesGrid.jsx';
 import AppsShowcase from '../sections/AppsShowcase.jsx';
 import WebCase from '../sections/WebCase.jsx';
@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <>
       <Hero apps={apps} />
-      <TrustStrip appCount={apps.length} />
+      <AppsBand />
       <ServicesGrid />
       <AppsShowcase apps={apps} />
       <WebCase project={webCase} />

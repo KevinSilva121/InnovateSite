@@ -10,7 +10,7 @@
     "test": "vitest run --exclude tests/build/**",
     "test:watch": "vitest --exclude tests/build/**",
     "test:build": "vitest run tests/build",
-    "assets": "node scripts/assets/fonts.mjs && node scripts/assets/app-icons.mjs && node scripts/assets/logo.mjs",
+    "assets": "node scripts/assets/fonts.mjs && node scripts/assets/app-icons.mjs && node scripts/assets/logo.mjs && node scripts/assets/logo-glyph.mjs",
     "deploy": "node scripts/deploy-firebase.mjs"
   },
   "dependencies": {
@@ -20,8 +20,9 @@
     "react-router": "^7.18.3"
   },
   "devDependencies": {
-    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
-    "@fontsource-variable/instrument-sans": "^5.3.0",
+    "@fontsource-variable/ibm-plex-sans": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource/special-gothic-condensed-one": "^5.3.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.3",
     "@types/react": "^18.3.3",

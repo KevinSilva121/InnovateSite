@@ -1,1 +1,10 @@
-.main { min-height: 60vh; }
+/* O conteúdo fica numa camada acima do rodapé, com fundo próprio e uma sombra
+   na borda de baixo: quando o rodapé está preso no fundo da tela (Footer,
+   [data-revela]), o fim da página sobe por cima dele como uma cortina. */
+.main {
+  position: relative;
+  z-index: 1;
+  min-height: 60vh;
+  background: var(--paper);
+  box-shadow: 0 28px 56px rgba(0, 0, 0, 0.45);
+}

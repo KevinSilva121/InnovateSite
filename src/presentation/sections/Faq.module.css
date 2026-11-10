@@ -1,21 +1,48 @@
-.list { display: grid; max-width: 46rem; border-top: 1px solid var(--line); }
+.layout { display: grid; gap: var(--space-6); }
+.side :global(h2) { max-width: 11ch; }
+.side > div { margin-bottom: 0; }
+
+.list { display: grid; border-top: 1px solid var(--line-strong); }
 .item { border-bottom: 1px solid var(--line); }
 .summary {
-  display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
-  padding: 1.1rem 0; cursor: pointer; list-style: none;
-  font-family: var(--font-heading); font-weight: 600; font-size: var(--text-lg); letter-spacing: -0.01em;
+  position: relative;
+  display: block;
+  padding: 1.35rem 3rem 1.35rem 0;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  line-height: 1.35;
   transition: color var(--dur) var(--ease);
 }
 .summary::-webkit-details-marker { display: none; }
-.summary:hover { color: var(--amber-text); }
-.chevron { flex: none; transition: transform 320ms var(--ease); }
-.item[open] .chevron { transform: rotate(180deg); }
-.answer { padding-bottom: 1.25rem; color: var(--ink-muted); max-width: 40rem; }
+.summary:hover { color: var(--blue-text); }
+
+/* Quadrado com "+" em mono; aberto, vira "−" e ganha o azul. */
+.summary::after {
+  content: '+';
+  content: '+' / '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-top: -1rem;
+  border: 1px solid var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 400;
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.item[open] .summary::after { content: '−'; content: '−' / ''; background: var(--blue); border-color: var(--blue); color: var(--white); }
+.answer { padding-bottom: 1.5rem; color: var(--ink-muted); max-width: 42rem; }
 
 /* Abre e fecha animado, sem JS. Depende de ::details-content e de
    `interpolate-size: allow-keywords` (declarado em base.css), que é o que
-   permite animar até `auto`. Onde o navegador não suportar, abre na hora,
-   exatamente como antes. */
+   permite animar até `auto`. Onde o navegador não suportar, abre na hora. */
 .item::details-content {
   block-size: 0;
   opacity: 0;
@@ -25,13 +52,13 @@
     opacity 240ms var(--ease),
     content-visibility 320ms allow-discrete;
 }
+.item[open]::details-content { block-size: auto; opacity: 1; }
 
-.item[open]::details-content {
-  block-size: auto;
-  opacity: 1;
+@media (min-width: 64rem) {
+  .layout { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-8); align-items: start; }
+  .side { position: sticky; top: calc(var(--header-ocupa) + var(--space-6)); transition: top 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .item::details-content,
-  .chevron { transition: none; }
+  .side, .item::details-content, .summary::after { transition: none; }
 }

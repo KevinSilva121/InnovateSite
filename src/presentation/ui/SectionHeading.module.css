@@ -1,3 +1,28 @@
-.heading { display: grid; gap: var(--space-4); margin-bottom: var(--space-7); max-width: 46rem; }
-.center { margin-inline: auto; text-align: center; }
+.heading { display: grid; gap: var(--space-5); margin-bottom: var(--space-8); }
+.stack { max-width: 52rem; }
+.title { max-width: 18ch; }
+.center { margin-inline: auto; text-align: center; justify-items: center; }
 .center :global(.lede) { margin-inline: auto; }
+
+/* Régua: a etiqueta fica numa linha fina que atravessa a seção. */
+.rule { padding-top: var(--space-4); border-top: 1px solid color-mix(in srgb, currentColor 30%, transparent); }
+.rule .title { max-width: 22ch; }
+
+@media (min-width: 56rem) {
+  .split {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    grid-template-areas: 'titulo etiqueta' 'titulo texto';
+    grid-template-rows: 1fr auto;
+    column-gap: var(--space-8);
+    row-gap: var(--space-4);
+  }
+  .split .title { grid-area: titulo; max-width: 14ch; align-self: end; }
+  .split .eyebrow { grid-area: etiqueta; align-self: end; }
+  .split .lead { grid-area: texto; }
+}
+
+@media (min-width: 64rem) {
+  .compacto { gap: clamp(0.75rem, 2svh, 1.5rem); margin-bottom: clamp(1.25rem, 4svh, 4rem); }
+  .compacto .title { font-size: clamp(2.5rem, min(5vw, 8svh), 5rem); }
+  .compacto.rule .title { max-width: none; }
+}

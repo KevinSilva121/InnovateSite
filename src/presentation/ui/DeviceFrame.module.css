@@ -1,0 +1,74 @@
+/* iPhone desenhado em CSS. Borda, cantos e ilha são proporcionais à largura do
+   aparelho (unidades cqi: % da largura do .phone, que é um container), então
+   todo iPhone do site tem o mesmo desenho, grande ou pequeno. As medidas são as
+   do iPhone de 189 px de largura dos cases (borda 7 px, canto 34 px, ilha de
+   16 px a 15 px do topo). A linha em px antes de cada uma é a reserva para
+   navegador sem cqi. */
+.phone {
+  position: relative;
+  display: grid; /* sem colapso de margem: a borda é a margem da tela */
+  width: 100%;
+  container-type: inline-size;
+  border-radius: 34px;
+  border-radius: 18% / 8.65%;
+  background: #0A0B0E;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+    0 30px 60px rgba(8, 10, 20, 0.35),
+    0 8px 16px rgba(8, 10, 20, 0.25);
+}
+.island {
+  position: absolute;
+  top: 15px;
+  top: 7.9cqi;
+  left: 50%;
+  z-index: 1;
+  width: 28%;
+  height: 16px;
+  height: 8.5cqi;
+  border-radius: 999px;
+  background: #0A0B0E;
+  transform: translateX(-50%);
+}
+.screen {
+  overflow: hidden;
+  margin: 7px;
+  margin: 3.7cqi;
+  border-radius: 27px;
+  border-radius: 14.3cqi;
+  aspect-ratio: 9 / 19.5;
+  background: #1B1D22;
+}
+.screen img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+.browser {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: #0A0B0E;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08) inset, 0 30px 60px rgba(8, 10, 20, 0.35);
+}
+.chrome {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: #16181D;
+}
+.chrome i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.18); }
+.address {
+  flex: 1;
+  margin-left: 12px;
+  max-width: 22rem;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.06);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  color: rgba(244, 243, 238, 0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.viewport { aspect-ratio: 1440 / 900; background: #1B1D22; }
+.viewport img { width: 100%; height: 100%; object-fit: cover; object-position: top; }

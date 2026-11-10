@@ -1,4 +1,18 @@
-.band { padding-block: clamp(3.5rem, 7vw, 5.5rem); }
-.inner { display: grid; gap: var(--space-5); max-width: 44rem; }
-.inner p { color: var(--on-navy-muted); font-size: var(--text-lg); }
+.band {
+  position: relative;
+  overflow: hidden;
+  /* Grade fina sobre o azul, a mesma linguagem dos painéis dos cases. */
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.inner { display: grid; gap: var(--space-6); }
+.inner h2 { max-width: 13ch; font-size: clamp(3rem, 7.5vw, 6.5rem); }
+.side { display: grid; gap: var(--space-5); align-content: end; }
+.side p { font-size: var(--text-lg); line-height: 1.55; color: var(--on-blue-muted); max-width: 32rem; }
 .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+@media (min-width: 64rem) {
+  .inner { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-8); align-items: end; }
+}

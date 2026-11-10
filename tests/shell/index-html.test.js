@@ -9,8 +9,9 @@ describe('index.html shell', () => {
     expect(html).toContain('<html lang="pt-BR">');
     expect(html).toContain('<!--app-head-->');
     expect(html).toContain('<div id="root"><!--app-html--></div>');
-    expect(html).toContain('%BASE_URL%fonts/bricolage-grotesque.woff2');
-    expect(html).toContain('%BASE_URL%fonts/instrument-sans.woff2');
+    expect(html).toContain('%BASE_URL%fonts/special-gothic-condensed-one.woff2');
+    expect(html).toContain('%BASE_URL%fonts/ibm-plex-sans.woff2');
+    expect(html).toContain('%BASE_URL%fonts/jetbrains-mono.woff2');
     expect(html).toContain('src="/src/entry-client.jsx"');
     expect(html).not.toContain('fonts.googleapis.com');
     expect(html).not.toContain('<title>');

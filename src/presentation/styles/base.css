@@ -9,6 +9,18 @@ html {
   scroll-padding-top: calc(var(--header-h) + 1rem);
   -webkit-text-size-adjust: 100%;
 }
+html[data-header='escondido'] { --header-ocupa: 0px; }
+
+/* Escala proporcional no desktop: o tamanho-base acompanha a largura da tela,
+   e como texto, espaços, container e header são medidos em rem, o site inteiro
+   encolhe e cresce junto, mantendo a composição.
+     1024 px -> 14 px   ·   1440 px -> 16 px (o desenho)   ·   1860 px ou mais -> 18 px
+   Em porcentagem, e não em px, para respeitar quem aumenta a fonte no navegador.
+   Abaixo de 1024 px (celular e tablet) o layout é outro e a base fica em 16 px.
+   As media queries em rem não mudam com isso: elas usam sempre os 16 px iniciais. */
+@media (min-width: 64rem) {
+  html { font-size: clamp(87.5%, 56.7% + 0.48vw, 112.5%); }
+}
 body {
   font-family: var(--font-body);
   font-size: var(--text-md);
@@ -41,37 +53,53 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.15e
 ul[class], ol[class] { list-style: none; padding: 0; }
 p { text-wrap: pretty; }
 
+/* Títulos na condensada: peso único, entrelinha curta, sem tracking negativo. */
 h1, h2, h3, h4 {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: 0.005em;
   text-wrap: balance;
   color: inherit;
 }
-h1 { font-size: var(--display-1); font-weight: 800; letter-spacing: -0.03em; }
+h1 { font-size: var(--display-1); line-height: 0.92; }
 h2 { font-size: var(--display-2); }
-h3 { font-size: var(--text-xl); letter-spacing: -0.01em; }
-h4 { font-size: var(--text-lg); }
+h3 { font-size: var(--display-3); line-height: 1; }
+h4 { font-size: var(--text-xl); }
 strong { font-weight: 600; }
-::selection { background: var(--amber); color: var(--amber-ink); }
+::selection { background: var(--blue); color: var(--white); }
 
-:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; border-radius: 2px; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 0; }
 :focus:not(:focus-visible) { outline: none; }
 
 .skip-link {
   position: absolute; left: 1rem; top: -100%;
   z-index: 100; padding: 0.75rem 1rem;
-  background: var(--amber); color: var(--amber-ink);
-  font-weight: 600; border-radius: var(--radius-sm);
+  background: var(--blue); color: var(--white);
+  font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: var(--mono-tracking);
 }
 .skip-link:focus { top: 1rem; }
 
 /* Reveal ao rolar: o HTML pré-renderizado nasce visível; só com JS ("html.js") escondemos até entrar na tela. */
-[data-reveal] { transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
-html.js [data-reveal]:not(.is-in) { opacity: 0; transform: translateY(14px); }
+[data-reveal] { transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+html.js [data-reveal]:not(.is-in) { opacity: 0; transform: translateY(16px); }
+
+/* Desenho de linha: dentro de um [data-draw], só os traços com pathLength="1"
+   se desenham ao entrar na tela. O resto do SVG (grades, pontos) segue normal. */
+[data-draw] [pathLength] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1.6s var(--ease);
+}
+html.js [data-draw]:not(.is-in) [pathLength] { stroke-dashoffset: 1; }
+
+/* Blocos das seções esperando para entrar (marcados pelo useScrollReveal só
+   quando estão abaixo da tela; a entrada em si é animada pelo JS). */
+html.js [data-surge] { opacity: 0; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  [data-reveal] { transition: none; }
+  [data-reveal], [data-draw] [pathLength] { transition: none; }
   html.js [data-reveal]:not(.is-in) { opacity: 1; transform: none; }
+  html.js [data-draw]:not(.is-in) [pathLength] { stroke-dashoffset: 0; }
 }

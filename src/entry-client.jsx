@@ -1,8 +1,11 @@
+// O CSS global vem antes de App: assim o bundle põe tokens, base e utilitários
+// primeiro e o CSS de cada componente depois, e um ajuste num componente
+// (ex.: a cor de .eyebrow no hero) ganha da regra global de mesma especificidade.
+import './presentation/styles/index.css';
 import React from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 import App from './App.jsx';
-import './presentation/styles/index.css';
 
 document.documentElement.classList.add('js');
 

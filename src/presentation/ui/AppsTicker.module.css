@@ -1,0 +1,67 @@
+/* Faixa no pé do hero, por cima do vídeo: fio fino em cima e as pontas somem
+   num degradê. Fica sobre a parte mais escura da película do hero. */
+.ticker {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  padding-block: clamp(0.75rem, 1.8svh, 1.35rem);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+}
+
+/* Anda sempre, mesmo com o mouse em cima. Velocidade: uma cópia inteira a cada
+   52 s, uns 27 px por segundo em 1440 px (a esteira antiga andava 36). */
+.belt {
+  display: flex;
+  width: max-content;
+  animation: rolar 52s linear infinite;
+}
+.track { display: flex; align-items: center; }
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding-inline: clamp(1.75rem, 3.6vw, 3.25rem);
+  white-space: nowrap;
+}
+.item img {
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.6rem;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+.texto { display: grid; gap: 0.15rem; }
+.texto strong {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--white);
+}
+.texto small {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: var(--mono-tracking);
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+@keyframes rolar {
+  to { transform: translateX(-50%); }
+}
+
+/* Celular: o botão flutuante do WhatsApp fica sobre a ponta direita da faixa;
+   ali os apps já somem antes de chegar nele. */
+@media (max-width: 39.99rem) {
+  .ticker {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 58%, transparent 80%);
+    mask-image: linear-gradient(90deg, transparent, #000 9%, #000 58%, transparent 80%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .belt { animation: none; }
+}

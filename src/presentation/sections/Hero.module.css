@@ -2,150 +2,123 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: var(--navy-900);
-  color: var(--on-navy);
-  padding-block: clamp(3.5rem, 8vw, 7rem) clamp(4rem, 9vw, 7.5rem);
+  /* Conteúdo em cima e a esteira dos apps encostada embaixo, os dois dentro da
+     primeira tela. */
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  color: var(--white);
+  background: var(--ink);
 }
 
-/* No desktop o hero ocupa a tela inteira abaixo do cabeçalho, para o creme da
-   próxima seção só aparecer quando a pessoa rolar. */
-@media (min-width: 64rem) {
-  .hero {
-    display: flex;
-    align-items: center;
-    min-height: calc(100vh - var(--header-h));
-    min-height: calc(100svh - var(--header-h));
-  }
-}
-
-/* Textura de pontos, estática de propósito: animar background-position repinta
-   o hero inteiro a cada quadro e é o que fazia a rolagem engasgar. */
-.hero::before {
+/* Película de contraste entre o fundo animado e o texto: escura à esquerda
+   (título e parágrafo), embaixo (números) e no topo (header). O meio e a direita
+   ficam livres, com o azul vivo. Calculada para o pior caso (o azul claro
+   #8DA0FF passando atrás do texto): o texto pequeno fica acima de 7:1. */
+.hero::after {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
-  background-image: radial-gradient(rgba(243, 240, 232, 0.07) 1px, transparent 1px);
-  background-size: 34px 34px;
+  background:
+    linear-gradient(180deg, rgba(14, 15, 19, 0.45) 0%, rgba(14, 15, 19, 0) 20%),
+    linear-gradient(0deg, rgba(14, 15, 19, 0.6) 0%, rgba(14, 15, 19, 0) 40%),
+    linear-gradient(90deg, rgba(14, 15, 19, 0.7) 0%, rgba(14, 15, 19, 0.45) 45%, rgba(14, 15, 19, 0) 75%);
 }
 
-/* Halos de luz. Antes eram círculos sólidos com filter: blur(80px), que obriga o
-   navegador a recalcular o desfoque a cada quadro. O gradiente radial dá o mesmo
-   resultado visual, é rasterizado uma vez e depois só translada. */
-/* Estas duas luzes vagam sozinhas, por keyframes, e nada em JavaScript encosta
-   nelas: a animação inteira roda no compositor e não custa thread principal.
-   Já tiveram parallax ligado ao mouse; medido com tracing, aquilo custava de 30 a
-   40 ms por segundo e era o que disputava espaço com o feed do iPhone ao lado. */
-.glowA,
-.glowB {
-  position: absolute;
-  z-index: 0;
-  border-radius: 50%;
-  pointer-events: none;
-  will-change: transform;
-  backface-visibility: hidden;
-}
-
-/* Cada luz é desenhada na metade do tamanho e ampliada por 2. Em gradiente não
-   existe detalhe para perder, e a textura que a GPU precisa guardar e recompor a
-   cada quadro cai para um quarto. É o que sobra de custo depois que a animação
-   deixa a thread principal: banda de GPU.
-   As posições abaixo já compensam a ampliação, para o centro de cada luz cair
-   exatamente onde caía antes. */
-.glowA {
-  top: -6.5rem;
-  left: -0.5rem;
-  width: 23rem;
-  height: 23rem;
-  background: radial-gradient(closest-side, rgba(46, 66, 133, 0.9), rgba(46, 66, 133, 0));
-  animation: floatA 22s ease-in-out infinite alternate;
-}
-
-.glowB {
-  right: -4.5rem;
-  bottom: -10.5rem;
-  width: 19rem;
-  height: 19rem;
-  background: radial-gradient(closest-side, rgba(240, 160, 48, 0.17), rgba(240, 160, 48, 0));
-  animation: floatB 28s ease-in-out infinite alternate;
-}
-
-/* A escala vem depois do deslocamento na lista, então ela não multiplica o
-   deslocamento: as luzes vagam exatamente a mesma distância de antes. */
-@keyframes floatA {
-  from { transform: translate3d(-4rem, -2rem, 0) scale(2); }
-  to { transform: translate3d(10rem, 7rem, 0) scale(2); }
-}
-
-@keyframes floatB {
-  from { transform: translate3d(3rem, 2rem, 0) scale(2); }
-  to { transform: translate3d(-10rem, -6rem, 0) scale(2); }
-}
-
-/* Halo que persegue o ponteiro. Fica centrado na origem para o script só
-   precisar transladá-lo até o cursor. Ver usePointerGlow.js. */
-.glowC {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 0;
-  /* Mesma economia das outras luzes: metade do tamanho, ampliada por 2 pelo
-     script que a move. Ver usePointerGlow.js. */
-  width: 21rem;
-  height: 21rem;
-  margin: -10.5rem 0 0 -10.5rem;
-  border-radius: 50%;
-  /* Núcleo mais aceso com queda suave, para o foco aparecer sem virar um disco. */
-  background: radial-gradient(
-    closest-side,
-    rgba(122, 160, 250, 0.5),
-    rgba(102, 136, 226, 0.22) 45%,
-    rgba(96, 130, 220, 0) 100%
-  );
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 480ms var(--ease);
-  will-change: transform;
-  backface-visibility: hidden;
-}
-
-/* Acende ao entrar na seção e apaga ao sair, em vez de congelar onde estava. */
-.glowC[data-aceso='true'] { opacity: 1; }
-
-/* Sem mouse (celular) ou com menos movimento pedido, o halo não aparece. */
-@media (pointer: coarse) {
-  .glowC { display: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .glowA,
-  .glowB {
-    animation: none;
-    will-change: auto;
-  }
-  .glowC { display: none; }
-}
-
-.hero :global(.eyebrow) { color: var(--amber); }
-
+/* O header é fixo e passa por cima: o hero começa atrás dele.
+   O hero inteiro (título, parágrafo, botão e números) cabe na primeira tela:
+   título, números e espaços seguem a largura OU a altura da tela, o que for
+   menor (min(vw, svh)). Numa tela larga e baixa, como a de notebook, tudo
+   diminui na mesma proporção em vez de ficar cortado embaixo. */
 .grid {
-  position: relative;
-  z-index: 1;
-  width: 100%;
+  flex: 1 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-8);
-  align-items: center;
+  align-content: end;
+  gap: clamp(1.25rem, min(6vw, 4svh), 4.5rem);
+  padding-block:
+    calc(var(--header-h) + clamp(1.25rem, min(8vw, 6svh), 6rem))
+    clamp(1.25rem, min(5vw, 3.5svh), 3.5rem);
+}
+.hero h1 {
+  max-width: 15ch;
+  font-size: clamp(3.25rem, min(8.4vw, 9.4svh), 7.5rem);
+  line-height: 0.92;
+}
+.top { display: grid; gap: clamp(0.75rem, 2svh, 1.25rem); }
+/* Etiqueta acima do título, no azul claro das seções escuras. */
+.eyebrow { color: var(--blue-on-dark); }
+.bottom { display: grid; gap: clamp(1.25rem, 3.5svh, 3rem); align-items: end; }
+.copy { display: grid; gap: clamp(1rem, 3svh, 2rem); justify-items: start; max-width: 40rem; }
+.lead { font-size: var(--text-lg); line-height: 1.5; color: rgba(255, 255, 255, 0.88); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.numeros { display: grid; gap: var(--space-4); }
+/* Linha de prova sob os números, em mono discreto. */
+.proof {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--mono-tracking);
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.72);
+  /* Quebra na largura dos números, sem alargar a coluna deles (que apertaria
+     o parágrafo e os botões ao lado). */
+  width: 0;
+  min-width: 100%;
 }
 
-.copy { display: grid; gap: var(--space-5); max-width: 40rem; min-width: 0; }
-.accent { color: var(--amber); }
-.lead { font-size: var(--text-lg); line-height: 1.55; color: var(--on-navy-muted); max-width: min(34rem, 100%); }
-.actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-.proof { font-size: var(--text-sm); color: var(--on-navy-muted); }
-.proof strong { color: var(--on-navy); }
+/* Números grandes na fonte de título, rótulo mono embaixo. Sempre os três na
+   mesma linha; numa tela estreita o rótulo quebra em duas linhas. */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+  gap: var(--space-5) clamp(1rem, 4vw, 3rem);
+}
+.stat { display: flex; flex-direction: column-reverse; gap: var(--space-2); }
+.number {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, min(6vw, 8svh), 4.75rem);
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+}
+.stat dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--mono-tracking);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+/* Celular: título, parágrafo e números acompanham a largura (em 390 px ficam como no
+   desenho; em 320 px, uns 18% menores, sem estourar a tela) e também a altura,
+   num aparelho baixo. */
+@media (max-width: 39.99rem) {
+  .hero h1 { font-size: clamp(2.25rem, min(12.4vw, 7.2svh), 3.25rem); }
+  .actions > a { min-height: 3rem; }
+  .actions { gap: 0.5rem; }
+  .numeros { gap: 0.75rem; }
+  .lead { font-size: clamp(1rem, 4.6vw, 1.1875rem); line-height: 1.45; }
+  .stats { column-gap: clamp(0.75rem, 3.5vw, 1.25rem); }
+  .number { font-size: clamp(2.25rem, 12.3vw, 3rem); }
+}
+/* Celular baixo (até 700 px de altura): o hero não cabe inteiro e os números
+   caem bem na borda da tela, onde fica o botão flutuante do WhatsApp. Ali eles
+   abrem espaço para ele. Nas outras telas a esteira fica embaixo dos números e o
+   botão passa por cima dela. */
+@media (max-width: 39.99rem) and (max-height: 43.75rem) {
+  .stats { padding-right: 4rem; }
+}
+
+/* Em tela vertical o texto ocupa a largura toda: película mais uniforme. */
+@media (max-aspect-ratio: 1 / 1) {
+  .hero::after {
+    background:
+      linear-gradient(180deg, rgba(14, 15, 19, 0.5) 0%, rgba(14, 15, 19, 0.42) 55%, rgba(14, 15, 19, 0.65) 100%);
+  }
+}
 
 @media (min-width: 64rem) {
-  .grid { grid-template-columns: 1.15fr 0.85fr; gap: var(--space-8); }
+  .bottom { grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--space-8); }
 }
