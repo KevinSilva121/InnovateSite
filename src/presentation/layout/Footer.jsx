@@ -28,7 +28,7 @@ function useRodapeRevelado(ref) {
     if (!rodape) return undefined;
     const conteudo = document.getElementById('conteudo');
     const medir = () => {
-      if (rodape.offsetHeight <= window.innerHeight - 40) rodape.dataset.revela = '';
+      if (rodape.offsetHeight <= window.innerHeight - 24) rodape.dataset.revela = '';
       else delete rodape.dataset.revela;
     };
     let quadro = 0;

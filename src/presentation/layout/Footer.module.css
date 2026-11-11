@@ -44,25 +44,28 @@
 
 @media (min-width: 48rem) { .grid { grid-template-columns: 1.4fr 1fr 1fr 1fr; } }
 
-/* Celular: o rodapé compacto, para caber numa tela e ter o mesmo efeito de
-   envelope do desktop (o JS só liga o efeito quando ele cabe). Nenhum texto
-   sai: a marca vai em cima, "Navegação" e "Nossos apps" lado a lado, "Contato"
-   na largura toda com os links em linha, e os espaços ficam mais justos. */
+/* Celular: o rodapé compacto, para caber na área visível do navegador (num
+   iPhone, com as barras do Safari, ~660 px) e ter o mesmo efeito de envelope
+   do desktop (o JS só liga o efeito quando ele cabe). Nenhum texto sai:
+   - marca em cima, com o símbolo ao lado do nome;
+   - "Navegação" na largura toda, com os links em duas colunas;
+   - "Nossos apps" (coluna estreita) e "Contato" (larga, o e-mail cabe) lado a lado;
+   - letras e espaços um pouco menores. */
 @media (max-width: 47.99rem) {
-  .footer { padding-block: 2rem 1.25rem; }
-  .grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem 1.25rem; }
-  /* Símbolo ao lado do nome, e não acima. */
-  .brand { grid-column: 1 / -1; grid-template-columns: auto 1fr; align-items: center; gap: 0.5rem 0.6rem; max-width: none; }
+  .footer { padding-block: 1.75rem 1rem; }
+  .grid { grid-template-columns: auto minmax(0, 1fr); gap: 1.1rem 1.5rem; }
+  .brand { grid-column: 1 / -1; grid-template-columns: auto 1fr; align-items: center; gap: 0.35rem 0.6rem; max-width: none; }
   .tagline, .address { grid-column: 1 / -1; }
-  .glyph { width: 1.6rem; height: 1.7rem; }
-  .name { font-size: 1.75rem; }
-  .tagline { font-size: var(--text-sm); line-height: 1.5; }
-  .address { line-height: 1.5; }
-  .colTitle { margin-bottom: 0.6rem; padding-bottom: 0.45rem; }
-  .list { gap: 0.45rem; }
-  .list a { line-height: 1.35; }
-  .grid > :last-child { grid-column: 1 / -1; }
-  .grid > :last-child .list { display: flex; flex-wrap: wrap; gap: 0.45rem 1.25rem; }
-  .social { margin-top: 0.75rem; }
-  .bottom { margin-top: 1.5rem; padding-top: 1rem; gap: 0.5rem; }
+  .glyph { width: 1.5rem; height: 1.6rem; }
+  .name { font-size: 1.6rem; }
+  .tagline { font-size: 0.875rem; line-height: 1.45; }
+  .address { font-size: 0.6875rem; line-height: 1.45; }
+  .grid > nav { grid-column: 1 / -1; }
+  .grid > nav .list { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.4rem 1.25rem; }
+  .colTitle { margin-bottom: 0.5rem; padding-bottom: 0.4rem; }
+  .list { gap: 0.4rem; }
+  .list a { font-size: 0.875rem; line-height: 1.3; }
+  .social { margin-top: 0.6rem; }
+  .social a { padding: 0.45rem; }
+  .bottom { margin-top: 1.1rem; padding-top: 0.75rem; gap: 0.35rem; font-size: 0.6875rem; }
 }
