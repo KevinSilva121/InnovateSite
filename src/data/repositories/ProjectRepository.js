@@ -1,6 +1,9 @@
 import { Project } from '../../domain/entities/Project.js';
 
-const icon = (slug) => `${import.meta.env.BASE_URL}apps/${slug}.webp`;
+// ?v=2: o ícone do Contador de Cantos ganhou fundo branco; a versão no endereço
+// faz quem tinha o arquivo antigo em cache (30 dias) baixar o novo. Ao trocar
+// algum ícone de novo, suba o número.
+const icon = (slug) => `${import.meta.env.BASE_URL}apps/${slug}.webp?v=2`;
 const play = (id) => `https://play.google.com/store/apps/details?id=${id}&hl=pt_BR`;
 
 // Dados estáticos: os apps publicados e o case web. Sem API por enquanto.

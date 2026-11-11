@@ -20,7 +20,8 @@ describe('ProjectRepository + GetProjects', () => {
     const apps = useCase.execute({ type: 'app' });
     expect(apps.map((a) => a.slug)).toEqual(['calcfrete', 'contador-de-cantos', 'prazzo', 'trama', 'cascata']);
     for (const app of apps) {
-      expect(app.icon).toMatch(/\/apps\/[a-z-]+\.webp$/);
+      // O "?v=N" no fim força quem tem o ícone antigo em cache a baixar o novo.
+      expect(app.icon).toMatch(/\/apps\/[a-z-]+\.webp(\?v=\d+)?$/);
       expect(app.stores.play).toContain('play.google.com/store/apps/details?id=');
       expect(app.tagline.length).toBeLessThanOrEqual(90);
     }

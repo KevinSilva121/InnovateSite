@@ -4,7 +4,9 @@
 
 .info { display: grid; gap: var(--space-4); align-content: center; justify-items: start; }
 .head { display: flex; align-items: center; gap: var(--space-4); }
-.icon { width: 64px; height: 64px; border-radius: 15px; box-shadow: 0 0 0 1px var(--line-on-dark); }
+/* Fundo branco atrás do ícone (como no carrossel do topo): ícone com partes
+   transparentes nunca aparece sobre o fundo escuro. */
+.icon { width: 64px; height: 64px; border-radius: 15px; background: #fff; box-shadow: 0 0 0 1px var(--line-on-dark); }
 .info h3 { font-size: clamp(2.5rem, 5vw, 3.75rem); }
 
 /* Etiqueta mono na cor do produto. */

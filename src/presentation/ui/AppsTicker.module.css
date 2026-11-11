@@ -25,7 +25,9 @@
   padding-inline: clamp(1.75rem, 3.6vw, 3.25rem);
   white-space: nowrap;
 }
+/* Fundo branco atrás do ícone: ícone com partes transparentes nunca some no escuro. */
 .item img {
+  background: #fff;
   flex: none;
   width: 2.5rem;
   height: 2.5rem;
