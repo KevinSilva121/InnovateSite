@@ -76,7 +76,10 @@
   justify-content: start;
   gap: var(--space-5) clamp(1rem, 4vw, 3rem);
 }
-.stat { display: flex; flex-direction: column-reverse; gap: var(--space-2); }
+/* Número em cima, rótulo embaixo (column-reverse), tudo encostado no topo
+   (flex-end, por causa do reverse): os três números ficam na mesma linha mesmo
+   quando um rótulo quebra em duas linhas e outro não. */
+.stat { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: var(--space-2); }
 .number {
   font-family: var(--font-display);
   font-size: clamp(3rem, min(6vw, 8svh), 4.75rem);
